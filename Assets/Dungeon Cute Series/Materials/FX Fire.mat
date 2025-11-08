@@ -17,6 +17,7 @@ Material:
   - _SURFACETYPE_OPAQUE
   m_InvalidKeywords:
   - _ALPHABLEND_ON
+  - _ZWRITE_ON
   m_LightmapFlags: 0
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0

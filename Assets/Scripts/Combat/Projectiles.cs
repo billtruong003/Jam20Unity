@@ -19,6 +19,16 @@ namespace EchoMage.Combat
         private int _currentPierce;
         private Coroutine _lifetimeCoroutine;
 
+        public struct ProjectileData
+        {
+            public float Damage;
+            public float Speed;
+            public int PierceCount;
+            public float Lifetime;
+            public float Scale;
+            // You could add more here later, like a "DamageType" enum or "StatusEffect"
+        }
+
         public void Initialize(PlayerStats stats)
         {
             _damage = stats.Damage;
