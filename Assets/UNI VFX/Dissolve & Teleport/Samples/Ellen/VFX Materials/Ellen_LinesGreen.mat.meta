@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 4ea5d9be5f2aa884ebc40a2776aef0cd
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 273371
+  packageName: 'UNI VFX: Ultimate pack for Visual Effect Graph'
+  packageVersion: 1.0.1
+  assetPath: Assets/UNI VFX/Dissolve & Teleport/Samples/Ellen/VFX Materials/Ellen_LinesGreen.mat
+  uploadId: 710133

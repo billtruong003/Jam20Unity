@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: ae239a5cef11b5a47a45f295cd6cf3bd
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 273371
+  packageName: 'UNI VFX: Ultimate pack for Visual Effect Graph'
+  packageVersion: 1.0.1
+  assetPath: Assets/UNI VFX/Essentials/Prefabs/Pickup Golden VFX.prefab
+  uploadId: 710133

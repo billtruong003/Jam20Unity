@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: MinionsArt_URP_Interactive Snow
+  m_Shader: {fileID: 4800000, guid: d5a0e6abb76e240b5b67071a8afc0366, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 2d2693bae7610d04bac0741e58fe00ff, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NoiseTexture:
+        m_Texture: {fileID: 2800000, guid: a8fa850c77aa4f74aae1290031b23a9a, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Normal:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SparkleNoise:
+        m_Texture: {fileID: 2800000, guid: ac4dd8865a36e734186671cdfb0021f0, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _MaxTessellationDistance: 64
+    - _NoiseScale: 2
+    - _NoiseWeight: 2
+    - _NormalStrength: 1
+    - _PathBlending: 3
+    - _RimPower: 20
+    - _SnowHeight: 0.487
+    - _SnowNormalStrength: 0.5
+    - _SnowPathStrength: 4
+    - _SnowTextureOpacity: 0.3
+    - _SnowTextureScale: 0
+    - _SparkCutoff: 1
+    - _SparkleScale: 10
+    - _TessellationFactor: 32
+    m_Colors:
+    - _PathColorIn: {r: 0.7122642, g: 0.7727625, b: 1, a: 1}
+    - _PathColorOut: {r: 0, g: 0.28151685, b: 3.0314326, a: 1}
+    - _RimColor: {r: 2, g: 2, b: 2, a: 1}
+    - _ShadowColor: {r: 2.6226416, g: 2.845988, b: 4, a: 1}
+    - _SnowColor: {r: 1, g: 1, b: 1, a: 1}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1

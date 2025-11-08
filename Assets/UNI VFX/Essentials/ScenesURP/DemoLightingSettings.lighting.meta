@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 82b344a0ff5432040ae32e348551284a
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 4890085278179872738
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 273371
+  packageName: 'UNI VFX: Ultimate pack for Visual Effect Graph'
+  packageVersion: 1.0.1
+  assetPath: Assets/UNI VFX/Essentials/ScenesURP/DemoLightingSettings.lighting
+  uploadId: 710133

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: b9618524ae36f6e45b17cb924b500dca
+VisualEffectImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 273371
+  packageName: 'UNI VFX: Ultimate pack for Visual Effect Graph'
+  packageVersion: 1.0.1
+  assetPath: Assets/UNI VFX/Essentials/Visual Effects/UNI_Buff.vfx
+  uploadId: 710133

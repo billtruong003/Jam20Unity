@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 52f16d7e18ef7c840b777dba7f77a7c9
+VisualEffectImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 273371
+  packageName: 'UNI VFX: Ultimate pack for Visual Effect Graph'
+  packageVersion: 1.0.1
+  assetPath: Assets/UNI VFX/Dissolve & Teleport/Visual Effects/UNI_smoke_dm.vfx
+  uploadId: 710133

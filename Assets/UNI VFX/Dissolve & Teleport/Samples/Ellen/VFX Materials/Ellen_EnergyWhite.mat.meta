@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 0802904cbe123ec4695cdadbcb7ef0c9
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 273371
+  packageName: 'UNI VFX: Ultimate pack for Visual Effect Graph'
+  packageVersion: 1.0.1
+  assetPath: Assets/UNI VFX/Dissolve & Teleport/Samples/Ellen/VFX Materials/Ellen_EnergyWhite.mat
+  uploadId: 710133

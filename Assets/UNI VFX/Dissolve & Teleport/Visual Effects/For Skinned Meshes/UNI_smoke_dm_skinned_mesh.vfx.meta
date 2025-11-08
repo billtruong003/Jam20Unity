@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: abdb2581d2636a34387fc0319031acfd
+VisualEffectImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 273371
+  packageName: 'UNI VFX: Ultimate pack for Visual Effect Graph'
+  packageVersion: 1.0.1
+  assetPath: Assets/UNI VFX/Dissolve & Teleport/Visual Effects/For Skinned Meshes/UNI_smoke_dm_skinned_mesh.vfx
+  uploadId: 710133

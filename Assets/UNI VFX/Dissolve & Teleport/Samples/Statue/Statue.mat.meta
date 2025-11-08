@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 19fba0f77a4f97b4fa8635e7c9be0919
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 273371
+  packageName: 'UNI VFX: Ultimate pack for Visual Effect Graph'
+  packageVersion: 1.0.1
+  assetPath: Assets/UNI VFX/Dissolve & Teleport/Samples/Statue/Statue.mat
+  uploadId: 710133

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 1e6a94e08c6b77748a3a263c71085711
+VisualEffectImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 273371
+  packageName: 'UNI VFX: Ultimate pack for Visual Effect Graph'
+  packageVersion: 1.0.1
+  assetPath: Assets/UNI VFX/Dissolve & Teleport/Visual Effects/For Skinned Meshes/UNI_energy_dm_skinned_mesh.vfx
+  uploadId: 710133

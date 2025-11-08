@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: e6be31442cd2b314988a8e81b185606e
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 273371
+  packageName: 'UNI VFX: Ultimate pack for Visual Effect Graph'
+  packageVersion: 1.0.1
+  assetPath: Assets/UNI VFX/Essentials/Prefabs/Heal Azure VFX.prefab
+  uploadId: 710133

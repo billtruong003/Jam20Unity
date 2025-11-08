@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 69c2c054e57ebb84aaa8bb98747ebd79
+VisualEffectImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 273371
+  packageName: 'UNI VFX: Ultimate pack for Visual Effect Graph'
+  packageVersion: 1.0.1
+  assetPath: Assets/UNI VFX/Dissolve & Teleport/Visual Effects/UNI_gateway.vfx
+  uploadId: 710133

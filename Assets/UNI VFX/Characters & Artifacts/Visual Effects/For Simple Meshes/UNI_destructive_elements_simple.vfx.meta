@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 2f651153cafbf584b8fb0503f4dd157c
+VisualEffectImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 273371
+  packageName: 'UNI VFX: Ultimate pack for Visual Effect Graph'
+  packageVersion: 1.0.1
+  assetPath: Assets/UNI VFX/Characters & Artifacts/Visual Effects/For Simple Meshes/UNI_destructive_elements_simple.vfx
+  uploadId: 710133

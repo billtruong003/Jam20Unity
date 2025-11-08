@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: ad7471d6612e92c4d911218c149eb2f4
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11700000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 273371
+  packageName: 'UNI VFX: Ultimate pack for Visual Effect Graph'
+  packageVersion: 1.0.1
+  assetPath: Assets/UNI VFX/Shields & Defense/Models/uni_shield_dir_SDF.asset
+  uploadId: 710133

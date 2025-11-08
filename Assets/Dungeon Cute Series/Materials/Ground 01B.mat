@@ -1,0 +1,182 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Ground 01B
+  m_Shader: {fileID: 4800000, guid: e59e1e651fcd84f6098709d6252b9213, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords:
+  - _FAKELIGHT_ON
+  - _OUTLINEMODE_FRESNEL
+  m_InvalidKeywords:
+  - _GLOSSYREFLECTIONS_OFF
+  - _NORMALMAP
+  - _SPECULARHIGHLIGHTS_OFF
+  - _ZWRITE_ON
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BaseMap:
+        m_Texture: {fileID: 2800000, guid: 0d2b6751413e384469f46cb85325bb96, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BaseMapB:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BumpMap:
+        m_Texture: {fileID: 2800000, guid: 311331f98901ccc46b6c17b078a84d66, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailAlbedoMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DetailNormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DitherPatternTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 0d2b6751413e384469f46cb85325bb96, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NoiseTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _OcclusionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ParallaxMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Ramp:
+        m_Texture: {fileID: 2800000, guid: 0be2d43e9b8192b47bccf4b6a8b481a0, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ToonShade:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _AddLightMidtoneThreshold: 0.6
+    - _AddLightRampSmoothness: 0.1
+    - _AddLightShadowThreshold: 0.1
+    - _BlingFresnelPower: 2
+    - _BlingIntensity: 2
+    - _BlingScale: 50
+    - _BlingSpeed: 1
+    - _BlingThreshold: 0.95
+    - _BlingWorldSpace: 0
+    - _Brightness: 1.3
+    - _BumpScale: 1
+    - _CullMode: 2
+    - _Cutoff: 0.5
+    - _DetailNormalMapScale: 1
+    - _DitherEdgeWidth: 0.1
+    - _DitherFadeEnd: 1
+    - _DitherFadeStart: 2
+    - _DitherFadeToggle: 0
+    - _DitherScale: 50
+    - _DstBlend: 0
+    - _EmissionMode: 0
+    - _FakeLightMode: 1
+    - _ForceFakeLight: 0
+    - _FresnelOutlinePower: 5
+    - _FresnelOutlineSharpness: 2
+    - _FresnelOutlineToggle: 1
+    - _FresnelOutlineWidth: 0.1
+    - _GlintScale: 20
+    - _GlintSpeed: 2
+    - _GlintThreshold: 0.95
+    - _GlintToggle: 0
+    - _GlossMapScale: 1
+    - _Glossiness: 0
+    - _GlossyReflections: 0
+    - _HighlightOffset: 0.9
+    - _IndirectSpecular: 0
+    - _IndirectSpecularIntensity: 1
+    - _MaxBrightness: 1.5
+    - _Metallic: 0
+    - _MidtoneThreshold: 0.8
+    - _Mode: 0
+    - _Morph: 0
+    - _MorphToggle: 0
+    - _OcclusionStrength: 1
+    - _Offset: 0.8
+    - _Parallax: 0.02
+    - _RampSmooth: 0.1
+    - _RampThreshold: 0.5
+    - _RenderMode: 0
+    - _RimPower: 6
+    - _ShadowThreshold: 0.4
+    - _Shininess: 0.1
+    - _SmoothnessTextureChannel: 0
+    - _SpecSmooth: 0.05
+    - _SpecularHighlights: 0
+    - _SrcBlend: 1
+    - _SurfaceType: 0
+    - _ToonRampSmoothness: 0.05
+    - _ToonStyle: 0
+    - _TranslucencyStrength: 1
+    - _UVSec: 0
+    - _WindAmplitude: 0.1
+    - _WindFrequency: 2
+    - _ZWrite: 1
+    m_Colors:
+    - _AddLightMidtoneColor: {r: 0.7, g: 0.7, b: 0.7, a: 1}
+    - _AddLightShadowTint: {r: 0.19999996, g: 0.19999996, b: 0.29999998, a: 1}
+    - _AmbientColor: {r: 0.5, g: 0.5, b: 0.5, a: 0}
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _BlingColor: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _DitherEdgeColor: {r: 0.5, g: 0.8, b: 1, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _FakeLightColor: {r: 0.8, g: 0.8, b: 0.8, a: 1}
+    - _FakeLightDirection: {r: 0.5, g: 0.5, b: -0.5, a: 0}
+    - _FresnelOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+    - _GlintColor: {r: 1, g: 1, b: 0.5, a: 1}
+    - _HColor: {r: 0.5188679, g: 0.5188679, b: 0.5188679, a: 1}
+    - _HiColor: {r: 1, g: 1, b: 1, a: 1}
+    - _MidtoneColor: {r: 0.6, g: 0.6, b: 0.6, a: 1}
+    - _RimColor: {r: 1, g: 0.3, b: 0.3, a: 1}
+    - _SColor: {r: 0.19499996, g: 0.19499996, b: 0.19499996, a: 1}
+    - _ShadowTint: {r: 0.09999997, g: 0.09999997, b: 0.19999996, a: 1}
+    - _SpecColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+    - _SpecuColor: {r: 0.8, g: 0.45, b: 0.2, a: 1}
+    - _TranslucencyColor: {r: 0.7, g: 0.9, b: 0.3, a: 1}
+    - _WindDirection: {r: 1, g: 0, b: 0.5, a: 0}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1

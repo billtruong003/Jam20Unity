@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: d658c1af72e08f943b2729cca51ac3ce
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 273371
+  packageName: 'UNI VFX: Ultimate pack for Visual Effect Graph'
+  packageVersion: 1.0.1
+  assetPath: Assets/UNI VFX/Dissolve & Teleport/Samples/Ellen/VFX Materials/Ellen_SmokeOrange.mat
+  uploadId: 710133

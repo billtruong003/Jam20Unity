@@ -1,0 +1,306 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &886134242962944472
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 886134242962944473}
+  - component: {fileID: 886134242962944477}
+  - component: {fileID: 886134242962944476}
+  m_Layer: 0
+  m_Name: Area Defense Emerald VFX
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &886134242962944473
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 886134242962944472}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!2083052967 &886134242962944477
+VisualEffect:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 886134242962944472}
+  m_Enabled: 1
+  m_Asset: {fileID: 8926484042661614526, guid: d282ebf408fcf6d4886b97faf7e9198c, type: 3}
+  m_InitialEventName: create
+  m_InitialEventNameOverriden: 0
+  m_StartSeed: 0
+  m_ResetSeedOnPlay: 1
+  m_ResourceVersion: 1
+  m_PropertySheet:
+    m_Float:
+      m_Array:
+      - m_Value: 8
+        m_Name: SparkSpawnRate
+        m_Overridden: 1
+      - m_Value: 2
+        m_Name: RibbonLengthMultiplier
+        m_Overridden: 1
+      - m_Value: 0.3
+        m_Name: DotsMaxSize
+        m_Overridden: 1
+      - m_Value: 4
+        m_Name: DotsSpawnRate
+        m_Overridden: 1
+      - m_Value: 0.75
+        m_Name: ExplosionSizeMultiplier
+        m_Overridden: 1
+      - m_Value: 16
+        m_Name: ExplosionTrailsSpawnRate
+        m_Overridden: 1
+      - m_Value: 16
+        m_Name: ExplosionSweetenerSpawnRate
+        m_Overridden: 1
+      - m_Value: 16
+        m_Name: StreakSpawnRate
+        m_Overridden: 1
+      - m_Value: 0.2
+        m_Name: AlphaMultiplier
+        m_Overridden: 1
+      - m_Value: -1
+        m_Name: RimMultiplier
+        m_Overridden: 1
+      - m_Value: 0.1
+        m_Name: DisplacementMultiplier
+        m_Overridden: 1
+      - m_Value: 4
+        m_Name: HoopSpawnRate
+        m_Overridden: 0
+      - m_Value: 0.35
+        m_Name: HoopAlphaMultiplier
+        m_Overridden: 1
+      - m_Value: 32
+        m_Name: RunnersSpawnRate
+        m_Overridden: 1
+      - m_Value: 1.5
+        m_Name: TrailSizeMultiplier
+        m_Overridden: 1
+      - m_Value: 0.75
+        m_Name: DotsSpawnRateMultiplier
+        m_Overridden: 1
+      - m_Value: 32
+        m_Name: SwirlsSpawnRate
+        m_Overridden: 1
+      - m_Value: 0.75
+        m_Name: SwirlsTrailLifetime
+        m_Overridden: 1
+      - m_Value: 0.02
+        m_Name: GroundAlphaMultiplier
+        m_Overridden: 1
+      - m_Value: 0.25
+        m_Name: RingAlphaMultiplier
+        m_Overridden: 1
+      - m_Value: 64
+        m_Name: GroundSpawnRate
+        m_Overridden: 1
+      - m_Value: 1
+        m_Name: BreakRingAlphaMultiplier
+        m_Overridden: 1
+      - m_Value: 256
+        m_Name: BreakDotsCount
+        m_Overridden: 1
+      - m_Value: 64
+        m_Name: BreakSwirlCount
+        m_Overridden: 1
+      - m_Value: 0.5
+        m_Name: HitDuration
+        m_Overridden: 1
+      - m_Value: 1
+        m_Name: HitRingAlphaMultiplier
+        m_Overridden: 1
+      - m_Value: 256
+        m_Name: HitDotSpawnCount
+        m_Overridden: 1
+      - m_Value: 16
+        m_Name: CreateSwirlCount
+        m_Overridden: 1
+      - m_Value: 32
+        m_Name: EndSwirlCount
+        m_Overridden: 1
+      - m_Value: 0.55
+        m_Name: IntersectionOffset
+        m_Overridden: 1
+    m_Vector2f:
+      m_Array:
+      - m_Value: {x: 0.8, y: 1.6}
+        m_Name: CenterSizeMinMax
+        m_Overridden: 1
+      - m_Value: {x: 0.6, y: 0.9}
+        m_Name: DotsLifetimeMinMax
+        m_Overridden: 1
+      - m_Value: {x: 0.9, y: 1.3}
+        m_Name: GlowSizeMinMax
+        m_Overridden: 1
+      - m_Value: {x: 0.15, y: 0.6}
+        m_Name: RunnersLifetimeMinMax
+        m_Overridden: 1
+      - m_Value: {x: 4, y: 8}
+        m_Name: RunnersUpVelocityMinMax
+        m_Overridden: 1
+      - m_Value: {x: 0.1, y: 0.3}
+        m_Name: DotsSizeMinMax
+        m_Overridden: 1
+      - m_Value: {x: 0.7, y: 0.9}
+        m_Name: SwirlsLifetimeMinMax
+        m_Overridden: 1
+      - m_Value: {x: 4.5, y: 6}
+        m_Name: SwirlsUpVelocityMinMax
+        m_Overridden: 1
+      - m_Value: {x: 0.1, y: 0.2}
+        m_Name: DotsAlphaMinMax
+        m_Overridden: 1
+    m_Vector3f:
+      m_Array: []
+    m_Vector4f:
+      m_Array:
+      - m_Value: {x: 0, y: 2.7607844, z: 47.937256, w: 0}
+        m_Name: Color
+        m_Overridden: 1
+      - m_Value: {x: 0, y: 47.937256, z: 14.807843, w: 0}
+        m_Name: DissolveEdgeColor
+        m_Overridden: 1
+    m_Uint:
+      m_Array: []
+    m_Int:
+      m_Array: []
+    m_Matrix4x4f:
+      m_Array: []
+    m_AnimationCurve:
+      m_Array: []
+    m_Gradient:
+      m_Array:
+      - m_Value:
+          serializedVersion: 2
+          key0: {r: 0, g: 8.452829, b: 2.0862122, a: 1}
+          key1: {r: 0.6703224, g: 1.0241398, b: 0.15013565, a: 1}
+          key2: {r: 0.9811321, g: 0.09718761, b: 0.9747346, a: 0}
+          key3: {r: 0, g: 0, b: 0, a: 0}
+          key4: {r: 0, g: 0, b: 0, a: 0}
+          key5: {r: 0, g: 0, b: 0, a: 0}
+          key6: {r: 0, g: 0, b: 0, a: 0}
+          key7: {r: 0, g: 0, b: 0, a: 0}
+          ctime0: 12143
+          ctime1: 52428
+          ctime2: 48959
+          ctime3: 0
+          ctime4: 0
+          ctime5: 0
+          ctime6: 0
+          ctime7: 0
+          atime0: 0
+          atime1: 65535
+          atime2: 0
+          atime3: 0
+          atime4: 0
+          atime5: 0
+          atime6: 0
+          atime7: 0
+          m_Mode: 0
+          m_NumColorKeys: 2
+          m_NumAlphaKeys: 2
+        m_Name: ColorOverLife
+        m_Overridden: 1
+      - m_Value:
+          serializedVersion: 2
+          key0: {r: 0, g: 2.9960785, b: 0.0627451, a: 1}
+          key1: {r: 0.020205554, g: 0.3529412, b: 0, a: 1}
+          key2: {r: 0, g: 0.3529412, b: 0.03137255, a: 0}
+          key3: {r: 0, g: 0, b: 0, a: 0}
+          key4: {r: 0, g: 0, b: 0, a: 0}
+          key5: {r: 0, g: 0, b: 0, a: 0}
+          key6: {r: 0, g: 0, b: 0, a: 0}
+          key7: {r: 0, g: 0, b: 0, a: 0}
+          ctime0: 0
+          ctime1: 52428
+          ctime2: 65535
+          ctime3: 0
+          ctime4: 0
+          ctime5: 0
+          ctime6: 0
+          ctime7: 0
+          atime0: 0
+          atime1: 65535
+          atime2: 65535
+          atime3: 65535
+          atime4: 0
+          atime5: 0
+          atime6: 0
+          atime7: 0
+          m_Mode: 0
+          m_NumColorKeys: 2
+          m_NumAlphaKeys: 2
+        m_Name: SecondaryGradient
+        m_Overridden: 1
+    m_NamedObject:
+      m_Array:
+      - m_Value: {fileID: 2800000, guid: b2b628c66bc93ff429fb331fada70d98, type: 3}
+        m_Name: DotsTexture
+        m_Overridden: 1
+      - m_Value: {fileID: 2800000, guid: 47e9626d517a84a4a90b71419bca3589, type: 3}
+        m_Name: TexturePattern
+        m_Overridden: 1
+      - m_Value: {fileID: 2800000, guid: 95531fe5c3f7e6d45a83f42047dcbc44, type: 3}
+        m_Name: TrailTexture
+        m_Overridden: 1
+    m_Bool:
+      m_Array: []
+--- !u!73398921 &886134242962944476
+VFXRenderer:
+  serializedVersion: 1
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 886134242962944472}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 0
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0

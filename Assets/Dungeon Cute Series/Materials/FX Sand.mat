@@ -1,0 +1,161 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: FX Sand
+  m_Shader: {fileID: 4800000, guid: e59e1e651fcd84f6098709d6252b9213, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords:
+  - _FAKELIGHT_ON
+  - _OUTLINEMODE_FRESNEL
+  m_InvalidKeywords:
+  - _ALPHABLEND_ON
+  - _FADING_ON
+  m_LightmapFlags: 0
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses:
+  - GRABPASS
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BaseMap:
+        m_Texture: {fileID: 2800000, guid: 57c558f0f8c781f4a84ae6a5001c480d, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BaseMapB:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BumpMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _DitherPatternTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 57c558f0f8c781f4a84ae6a5001c480d, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MetallicGlossMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NoiseTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Ramp:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _AddLightMidtoneThreshold: 0.6
+    - _AddLightRampSmoothness: 0.1
+    - _AddLightShadowThreshold: 0.1
+    - _BlendOp: 0
+    - _BlingFresnelPower: 2
+    - _BlingIntensity: 2
+    - _BlingScale: 50
+    - _BlingSpeed: 1
+    - _BlingThreshold: 0.95
+    - _BlingWorldSpace: 0
+    - _Brightness: 1.3
+    - _BumpScale: 1
+    - _CameraFadingEnabled: 0
+    - _CameraFarFadeDistance: 2
+    - _CameraNearFadeDistance: 1
+    - _Cull: 2
+    - _CullMode: 2
+    - _Cutoff: 0.5
+    - _DistortionBlend: 0.5
+    - _DistortionEnabled: 0
+    - _DistortionStrength: 1
+    - _DistortionStrengthScaled: 0
+    - _DitherEdgeWidth: 0.1
+    - _DitherFadeEnd: 1
+    - _DitherFadeStart: 2
+    - _DitherFadeToggle: 0
+    - _DitherScale: 50
+    - _DstBlend: 10
+    - _EmissionEnabled: 0
+    - _EmissionMode: 0
+    - _FakeLightMode: 1
+    - _FlipbookMode: 0
+    - _ForceFakeLight: 0
+    - _FresnelOutlinePower: 5
+    - _FresnelOutlineSharpness: 2
+    - _FresnelOutlineToggle: 1
+    - _FresnelOutlineWidth: 0.1
+    - _GlintScale: 20
+    - _GlintSpeed: 2
+    - _GlintThreshold: 0.95
+    - _GlintToggle: 0
+    - _Glossiness: 0.5
+    - _HighlightOffset: 0.9
+    - _IndirectSpecular: 0
+    - _IndirectSpecularIntensity: 1
+    - _InvFade: 1
+    - _LightingEnabled: 1
+    - _MaxBrightness: 1.5
+    - _Metallic: 0
+    - _MidtoneThreshold: 0.8
+    - _Mode: 2
+    - _Morph: 0
+    - _MorphToggle: 0
+    - _Offset: 0.8
+    - _RenderMode: 0
+    - _RimPower: 6
+    - _ShadowThreshold: 0.4
+    - _SoftParticlesEnabled: 1
+    - _SoftParticlesFarFadeDistance: 1
+    - _SoftParticlesNearFadeDistance: 0
+    - _SrcBlend: 5
+    - _SurfaceType: 0
+    - _ToonRampSmoothness: 0.05
+    - _ToonStyle: 0
+    - _TranslucencyStrength: 1
+    - _WindAmplitude: 0.1
+    - _WindFrequency: 2
+    - _ZWrite: 0
+    m_Colors:
+    - _AddLightMidtoneColor: {r: 0.7, g: 0.7, b: 0.7, a: 1}
+    - _AddLightShadowTint: {r: 0.19999996, g: 0.19999996, b: 0.29999998, a: 1}
+    - _AmbientColor: {r: 0.5, g: 0.5, b: 0.5, a: 0}
+    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _BlingColor: {r: 1, g: 1, b: 1, a: 1}
+    - _CameraFadeParams: {r: 0, g: Infinity, b: 0, a: 0}
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _DitherEdgeColor: {r: 0.5, g: 0.8, b: 1, a: 1}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _FakeLightColor: {r: 0.8, g: 0.8, b: 0.8, a: 1}
+    - _FakeLightDirection: {r: 0.5, g: 0.5, b: -0.5, a: 0}
+    - _FresnelOutlineColor: {r: 0, g: 0, b: 0, a: 1}
+    - _GlintColor: {r: 1, g: 1, b: 0.5, a: 1}
+    - _HiColor: {r: 1, g: 1, b: 1, a: 1}
+    - _MidtoneColor: {r: 0.6, g: 0.6, b: 0.6, a: 1}
+    - _RimColor: {r: 1, g: 0.3, b: 0.3, a: 1}
+    - _ShadowTint: {r: 0.09999997, g: 0.09999997, b: 0.19999996, a: 1}
+    - _SoftParticleFadeParams: {r: 0, g: 1, b: 0, a: 0}
+    - _SpecuColor: {r: 0.8, g: 0.45, b: 0.2, a: 1}
+    - _TintColor: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}
+    - _TranslucencyColor: {r: 0.7, g: 0.9, b: 0.3, a: 1}
+    - _WindDirection: {r: 1, g: 0, b: 0.5, a: 0}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1

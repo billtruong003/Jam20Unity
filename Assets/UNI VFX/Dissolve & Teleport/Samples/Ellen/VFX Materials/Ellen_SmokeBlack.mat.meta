@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: d3996a5658dd3da47a8cbe3bda5824db
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 273371
+  packageName: 'UNI VFX: Ultimate pack for Visual Effect Graph'
+  packageVersion: 1.0.1
+  assetPath: Assets/UNI VFX/Dissolve & Teleport/Samples/Ellen/VFX Materials/Ellen_SmokeBlack.mat
+  uploadId: 710133

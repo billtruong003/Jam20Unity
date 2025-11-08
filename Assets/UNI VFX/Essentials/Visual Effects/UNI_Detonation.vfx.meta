@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 389df33988a350343b7729cb8bf0a022
+VisualEffectImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 273371
+  packageName: 'UNI VFX: Ultimate pack for Visual Effect Graph'
+  packageVersion: 1.0.1
+  assetPath: Assets/UNI VFX/Essentials/Visual Effects/UNI_Detonation.vfx
+  uploadId: 710133

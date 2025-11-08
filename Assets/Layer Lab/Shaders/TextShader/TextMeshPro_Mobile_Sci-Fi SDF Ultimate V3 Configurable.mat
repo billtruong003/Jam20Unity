@@ -1,0 +1,108 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: TextMeshPro_Mobile_Sci-Fi SDF Ultimate V3 Configurable
+  m_Shader: {fileID: 4800000, guid: 4c752962b773647a4bd4c26227a68e39, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords:
+  - _EFFECTMODE_NONE
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _CausticsTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _FireGradient:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _IceCrystalTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NoiseTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _CausticsIntensity: 1
+    - _CausticsTiling: 4
+    - _ChromaticAberrationAmount: 0.002
+    - _ChromaticToggle: 0
+    - _ColorMask: 15
+    - _CullMode: 0
+    - _EffectMode: 0
+    - _FaceDilate: 0
+    - _FireGlowIntensity: 2
+    - _FireSpeed: 0.5
+    - _FireTurbulence: 0.05
+    - _FrostAmount: 0.25
+    - _GlitchSpeed: 10
+    - _GlitchStrength: 0.1
+    - _GlitchToggle: 0
+    - _GradientScale: 5
+    - _HoloGridSpeed: 2
+    - _HoloGridTiling: 15
+    - _HoloGridToggle: 0
+    - _IceRefraction: 0.015
+    - _MaskSoftnessX: 0
+    - _MaskSoftnessY: 0
+    - _OutlineSoftness: 0
+    - _OutlineWidth: 0
+    - _PerspectiveFilter: 0.875
+    - _ScaleRatioA: 1
+    - _ScaleRatioB: 1
+    - _ScaleRatioC: 1
+    - _ScaleX: 1
+    - _ScaleY: 1
+    - _ScanLinesDensity: 300
+    - _ScanLinesIntensity: 0.5
+    - _ScanLinesSpeed: -2
+    - _ScanLinesToggle: 0
+    - _ShaderFlags: 0
+    - _Sharpness: 0
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _TextureHeight: 512
+    - _TextureWidth: 512
+    - _VertexOffsetX: 0
+    - _VertexOffsetY: 0
+    - _WaterDistortion: 0.02
+    - _WaterSpeed: 0.5
+    - _WeightBold: 0.5
+    - _WeightNormal: 0
+    - _ZTest: 4
+    - _ZWrite: 0
+    m_Colors:
+    - _ClipRect: {r: -32767, g: -32767, b: 32767, a: 32767}
+    - _EffectTintColor: {r: 1, g: 1, b: 1, a: 1}
+    - _FaceColor: {r: 1, g: 1, b: 1, a: 1}
+    - _GlowColor: {r: 0, g: 1, b: 1, a: 0}
+    - _HoloGridColor: {r: 0, g: 1, b: 1, a: 0.5}
+    - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1

@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 57bebe12ca119fb48b63aa1aa50b3d11
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 273371
+  packageName: 'UNI VFX: Ultimate pack for Visual Effect Graph'
+  packageVersion: 1.0.1
+  assetPath: Assets/UNI VFX/Common/Scripts/UNI_EnableAfterDelay.cs
+  uploadId: 710133

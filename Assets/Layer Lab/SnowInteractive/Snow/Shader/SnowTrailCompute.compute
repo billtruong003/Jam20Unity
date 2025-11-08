@@ -1,0 +1,50 @@
+#pragma kernel ProcessSnowTrails
+
+struct DrawCommand
+{
+    float worldPosX;
+    float worldPosZ;
+    float radius;
+    float strength;
+};
+
+Texture2D<float4> _PreviousFrameRT;
+RWTexture2D<float4> Result;
+StructuredBuffer<DrawCommand> _DrawCommands;
+
+float _HealingRate;
+float _DeltaTime;
+int _DrawCommandCount;
+float4 _TrailAreaParams; // x: centerX, y: centerZ, z: size
+float2 _TextureSize;     // x: width, y: height
+
+float2 WorldToUV(float2 worldPos, float4 areaParams)
+{
+    float uvX = (worldPos.x - areaParams.x) / areaParams.z + 0.5;
+    float uvY = (worldPos.y - areaParams.y) / areaParams.z + 0.5;
+    return float2(uvX, uvY);
+}
+
+[numthreads(8,8,1)]
+void ProcessSnowTrails (uint3 id : SV_DispatchThreadID)
+{
+    float currentDepth = _PreviousFrameRT[id.xy].g;
+    currentDepth = max(0, currentDepth - _HealingRate * _DeltaTime);
+
+    float2 currentPixelUV = id.xy / _TextureSize;
+
+    for (int i = 0; i < _DrawCommandCount; i++)
+    {
+        DrawCommand command = _DrawCommands[i];
+        float2 brushCenterUV = WorldToUV(float2(command.worldPosX, command.worldPosZ), _TrailAreaParams);
+        float brushRadiusUV = command.radius / _TrailAreaParams.z;
+        
+        float dist = distance(currentPixelUV, brushCenterUV);
+        float brushValue = 1.0 - smoothstep(brushRadiusUV - 0.01, brushRadiusUV, dist);
+        brushValue *= command.strength;
+
+        currentDepth = max(currentDepth, brushValue);
+    }
+    
+    Result[id.xy] = float4(0, currentDepth, 0, 1);
+}

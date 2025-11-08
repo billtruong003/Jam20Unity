@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 515cd7ddfd85f28488ccbc4edfb2f24b
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 273371
+  packageName: 'UNI VFX: Ultimate pack for Visual Effect Graph'
+  packageVersion: 1.0.1
+  assetPath: Assets/UNI VFX/Essentials/Prefabs/Teleport Yellow VFX.prefab
+  uploadId: 710133

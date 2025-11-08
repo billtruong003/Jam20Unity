@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 4917c853c92ca214a940e3d08abc5dbb
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 4890085278179872738
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 273371
+  packageName: 'UNI VFX: Ultimate pack for Visual Effect Graph'
+  packageVersion: 1.0.1
+  assetPath: Assets/UNI VFX/Dissolve & Teleport/ScenesURP/DemoLightingSettings.lighting
+  uploadId: 710133

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 592b832f226d78b4ba6f2d0aabf8e3b5
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 273371
+  packageName: 'UNI VFX: Ultimate pack for Visual Effect Graph'
+  packageVersion: 1.0.1
+  assetPath: Assets/UNI VFX/Dissolve & Teleport/ScenesURP/DemoURP.unity
+  uploadId: 710133

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 53a06ae3282cd6e49856728c0f3eb8d9
+VisualEffectImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 273371
+  packageName: 'UNI VFX: Ultimate pack for Visual Effect Graph'
+  packageVersion: 1.0.1
+  assetPath: Assets/UNI VFX/Characters & Artifacts/Visual Effects/UNI_mist.vfx
+  uploadId: 710133

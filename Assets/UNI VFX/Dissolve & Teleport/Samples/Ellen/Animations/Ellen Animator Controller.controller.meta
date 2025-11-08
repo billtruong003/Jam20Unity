@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 821cfc4aaae0db14092fcafca01d0bbc
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 273371
+  packageName: 'UNI VFX: Ultimate pack for Visual Effect Graph'
+  packageVersion: 1.0.1
+  assetPath: Assets/UNI VFX/Dissolve & Teleport/Samples/Ellen/Animations/Ellen Animator
+    Controller.controller
+  uploadId: 710133

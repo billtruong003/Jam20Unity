@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 9d2905a11b2d1284db8f431adee0cec2
+VisualEffectImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 273371
+  packageName: 'UNI VFX: Ultimate pack for Visual Effect Graph'
+  packageVersion: 1.0.1
+  assetPath: Assets/UNI VFX/Characters & Artifacts/Visual Effects/For Simple Meshes/UNI_energize_simple.vfx
+  uploadId: 710133

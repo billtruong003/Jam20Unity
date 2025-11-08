@@ -1,0 +1,82 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: MinionsArt_URPWaterOptimized 1
+  m_Shader: {fileID: 4800000, guid: 040b5c2f599714e8595524d0ac231774, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BlingNoiseMap:
+        m_Texture: {fileID: 2800000, guid: 3b5e55b074dd19c4493e4ebc0029567c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NormalMapA:
+        m_Texture: {fileID: 2800000, guid: 8bb4a5f6203cd984287d2cffc82be54d, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NormalMapB:
+        m_Texture: {fileID: 2800000, guid: 66f9765a93404ff4eb9f67bbe62995b5, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SparkleMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SurfaceFoamDistortionMap:
+        m_Texture: {fileID: 2800000, guid: 3981904db3e5fbe44807074d2c69be3e, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SurfaceFoamTexture:
+        m_Texture: {fileID: 2800000, guid: 8dc654167076489488afc376d13c0ae8, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _BlingFresnelPower: 20
+    - _BlingIntensity: 5
+    - _BlingScale: 2
+    - _BlingSpeed: 1
+    - _BlingThreshold: 0.99
+    - _DepthMaxDistance: 40.8
+    - _FoamIntersectionDepth: 2
+    - _FoamIntersectionSoftness: 0.49
+    - _NormalTilingA: 1
+    - _NormalTilingB: 0.1
+    - _RefractionStrength: 0.0204
+    - _SparkleIntensity: 0.6
+    - _SparkleTiling: 100
+    - _SurfaceFoamCutoff: 0.4
+    - _SurfaceFoamDistortionStrength: 0.02
+    - _SurfaceFoamTiling: 0.004
+    - _WaveAmplitude: 0.087
+    - _WaveFrequency: 2
+    - _WaveSpeed: 1
+    m_Colors:
+    - _BlingColor: {r: 23.968624, g: 23.968624, b: 23.968624, a: 1}
+    - _DeepColor: {r: 0.28167036, g: 0, b: 0.008047774, a: 1}
+    - _FoamColor: {r: 1, g: 0, b: 0, a: 1}
+    - _NormalScrollA: {r: 0.01, g: 0.01, b: 0, a: 0}
+    - _NormalScrollB: {r: -0.012, g: 0.008, b: 0, a: 0}
+    - _ShallowColor: {r: 0.20754719, g: 0.0049416004, b: 0, a: 0.9411765}
+    - _SparkleColor: {r: 1, g: 1, b: 1, a: 1}
+    - _SparkleScroll: {r: 1, g: 1, b: 0, a: 0}
+    - _SurfaceFoamScroll: {r: 0.01, g: 0.01, b: 0, a: 0}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
