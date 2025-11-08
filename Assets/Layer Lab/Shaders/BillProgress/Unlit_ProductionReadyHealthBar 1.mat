@@ -29,9 +29,9 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _BorderThickness: 10
-    - _CornerRadius: 50
-    - _DepthGradient: 0.631
+    - _BorderThickness: 7.9
+    - _CornerRadius: 15
+    - _DepthGradient: 0.622
     - _FillAmount: 1
     - _WaveAmplitude1: 0.05
     - _WaveAmplitude2: 0.03
@@ -40,9 +40,9 @@ Material:
     - _WaveSpeed1: 1
     - _WaveSpeed2: 0.6
     m_Colors:
-    - _BackgroundColor: {r: 0, g: 0.015502834, b: 0.21698111, a: 1}
-    - _BorderColor: {r: 1, g: 1, b: 1, a: 1}
-    - _FullColor: {r: 0.18823531, g: 0.5382611, b: 1.4980392, a: 1}
-    - _LowColor: {r: 2.1361256, g: 0, b: 0, a: 1}
+    - _BackgroundColor: {r: 0.098039195, g: 0, b: 0.23584908, a: 1}
+    - _BorderColor: {r: 0, g: 0, b: 0, a: 1}
+    - _FullColor: {r: 0.30383477, g: 0.19607846, b: 1.4980392, a: 1}
+    - _LowColor: {r: 0.24245685, g: 0, b: 1.1299962, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

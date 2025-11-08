@@ -1,5 +1,4 @@
-// Assets/Scripts/GamePlay/UIManager.cs
-
+using EchoMage.Core;
 using EchoMage.Player;
 using UnityEngine;
 using TMPro;
@@ -9,78 +8,81 @@ namespace EchoMage.UI
     public sealed class UIManager : MonoBehaviour
     {
         [Header("Component References")]
+        // SỬA LỖI: Thay đổi kiểu tham chiếu sang script mới
         [SerializeField] private UIBillProgress healthBar;
         [SerializeField] private UIBillProgress despairBar;
         [SerializeField] private GameObject gameOverScreen;
         [SerializeField] private TextMeshProUGUI gameOverReasonText;
-        [SerializeField] private GameObject echoChoiceScreen;
 
         [Header("Dependencies")]
-        [SerializeField] private PlayerHealth playerHealth;
         [SerializeField] private DespairSystem despairSystem;
 
-        public DespairSystem GetDespairSystem => despairSystem;
+        private PlayerHealth _currentPlayerHealth;
 
         private void OnEnable()
         {
-            if (playerHealth != null)
-            {
-                playerHealth.OnHealthChanged += UpdateHealthBar;
-                playerHealth.OnDeath += HandlePlayerDeath;
-            }
             if (despairSystem != null)
             {
                 despairSystem.OnDespairChanged += UpdateDespairBar;
+            }
+
+            if (GameManager.Instance != null)
+            {
+                GameManager.Instance.OnPlayerSpawned += HandlePlayerSpawned;
             }
         }
 
         private void OnDisable()
         {
-            if (playerHealth != null)
-            {
-                playerHealth.OnHealthChanged -= UpdateHealthBar;
-                playerHealth.OnDeath -= HandlePlayerDeath;
-            }
             if (despairSystem != null)
             {
                 despairSystem.OnDespairChanged -= UpdateDespairBar;
+            }
+
+            if (_currentPlayerHealth != null)
+            {
+                _currentPlayerHealth.OnHealthChanged -= UpdateHealthBar;
+            }
+
+            if (GameManager.Instance != null)
+            {
+                GameManager.Instance.OnPlayerSpawned -= HandlePlayerSpawned;
             }
         }
 
         private void Start()
         {
-            // Khởi tạo trạng thái ban đầu cho UI
             gameOverScreen.SetActive(false);
-            echoChoiceScreen.SetActive(false);
-            // Cập nhật giá trị ban đầu nếu cần
-            if (playerHealth != null) playerHealth.SendMessage("InitializeHealth", SendMessageOptions.DontRequireReceiver);
-            if (despairSystem != null) despairSystem.SendMessage("InitializeDespair", SendMessageOptions.DontRequireReceiver);
+            if (despairSystem != null)
+            {
+                despairSystem.InitializeDespair();
+            }
         }
 
-        private void UpdateHealthBar(float current, float max)
+        private void HandlePlayerSpawned(GameObject newPlayer)
         {
-            healthBar?.SetProgress(current, max);
+            if (_currentPlayerHealth != null)
+            {
+                _currentPlayerHealth.OnHealthChanged -= UpdateHealthBar;
+            }
+
+            _currentPlayerHealth = newPlayer.GetComponent<PlayerHealth>();
+
+            if (_currentPlayerHealth != null)
+            {
+                _currentPlayerHealth.OnHealthChanged += UpdateHealthBar;
+                _currentPlayerHealth.InitializeHealth();
+            }
         }
 
-        private void UpdateDespairBar(float current, float max)
-        {
-            despairBar?.SetProgress(current, max);
-        }
+        private void UpdateHealthBar(float current, float max) => healthBar?.SetProgress(current, max);
 
-        private void HandlePlayerDeath()
-        {
-            ShowGameOverScreen("You have been defeated.");
-        }
+        private void UpdateDespairBar(float current, float max) => despairBar?.SetProgress(current, max);
 
         public void ShowGameOverScreen(string reason)
         {
             gameOverScreen.SetActive(true);
             gameOverReasonText.text = reason;
-        }
-
-        public void ShowEchoChoice(bool show)
-        {
-            echoChoiceScreen.SetActive(show);
         }
     }
 }

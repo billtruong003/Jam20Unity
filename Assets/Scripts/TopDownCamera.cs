@@ -4,20 +4,14 @@ namespace EchoMage.Core
 {
     public sealed class TopDownCameraController : MonoBehaviour
     {
-        [Header("Target Settings")]
-        [Tooltip("Mục tiêu mà camera sẽ đi theo, thường là người chơi.")]
-        [SerializeField] private Transform target;
+        private Transform target; // Không còn là [SerializeField]
 
         [Header("Movement Smoothing")]
-        [Tooltip("Thời gian để camera bắt kịp mục tiêu. Giá trị nhỏ hơn sẽ khiến camera phản ứng nhanh hơn.")]
         [SerializeField] private float smoothTime = 0.3f;
 
         [Header("Mouse Look-Ahead")]
-        [Tooltip("Mức độ ảnh hưởng của con trỏ chuột lên vị trí camera. 0 = không ảnh hưởng, 1 = camera nằm giữa người chơi và chuột.")]
         [Range(0f, 1f)]
         [SerializeField] private float mouseInfluence = 0.5f;
-
-        [Tooltip("Khoảng cách tối đa mà camera có thể dịch chuyển về phía chuột, tính từ vị trí của người chơi.")]
         [SerializeField] private float maxLookAheadDistance = 4f;
 
         private Vector3 _currentVelocity;
@@ -30,11 +24,20 @@ namespace EchoMage.Core
             InitializeGamePlane();
         }
 
+        private void OnEnable() => GameManager.Instance.OnPlayerSpawned += HandlePlayerSpawned;
+        private void OnDisable() => GameManager.Instance.OnPlayerSpawned -= HandlePlayerSpawned;
+
         private void LateUpdate()
         {
             HandleCameraFollowing();
         }
 
+        private void HandlePlayerSpawned(GameObject player)
+        {
+            target = player.transform;
+        }
+
+        // ... các phương thức còn lại giữ nguyên ...
         private void InitializeComponents()
         {
             _mainCamera = GetComponent<Camera>();
@@ -78,7 +81,7 @@ namespace EchoMage.Core
             lookAheadOffset = Vector3.ClampMagnitude(lookAheadOffset, maxLookAheadDistance);
 
             Vector3 goalPosition = playerPosition + lookAheadOffset;
-            goalPosition.y = transform.position.y; // Giữ nguyên độ cao của camera
+            goalPosition.y = transform.position.y;
 
             return goalPosition;
         }
@@ -92,7 +95,7 @@ namespace EchoMage.Core
                 return cameraRay.GetPoint(distance);
             }
 
-            return Vector3.zero; // Fallback an toàn
+            return Vector3.zero;
         }
     }
 }

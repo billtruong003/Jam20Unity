@@ -1,16 +1,16 @@
-// Assets/Scripts/GamePlay/EchoSystem.cs
-
 using EchoMage.Player;
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using System.Linq;
 
 namespace EchoMage.Echoes
 {
     [System.Serializable]
     public class EchoData
     {
+        public string EchoId;
         public Vector3 DeathPosition;
-        // Các chỉ số được lưu lại
         public float Damage;
         public float AttackCooldown;
         public int ProjectilesPerShot;
@@ -21,14 +21,23 @@ namespace EchoMage.Echoes
         public float ProjectileSpreadAngle;
     }
 
+    [System.Serializable]
+    public class EchoSaveData
+    {
+        public List<EchoData> Echoes = new List<EchoData>();
+    }
+
     public static class EchoSystem
     {
-        private static readonly string _savePath = Path.Combine(Application.persistentDataPath, "echo.json");
+        private static readonly string _savePath = Path.Combine(Application.persistentDataPath, "echo_collection.json");
 
-        public static void SaveEcho(PlayerStats stats, Vector3 position)
+        public static void AddEcho(PlayerStats stats, Vector3 position)
         {
-            var data = new EchoData
+            EchoSaveData saveData = LoadEchoSaveData();
+
+            var newEcho = new EchoData
             {
+                EchoId = System.Guid.NewGuid().ToString(),
                 DeathPosition = position,
                 Damage = stats.Damage,
                 AttackCooldown = stats.AttackCooldown,
@@ -40,25 +49,47 @@ namespace EchoMage.Echoes
                 ProjectileSpreadAngle = stats.ProjectileSpreadAngle
             };
 
-            string json = JsonUtility.ToJson(data);
-            File.WriteAllText(_savePath, json);
-            Debug.Log($"Echo saved at: {_savePath}");
+            saveData.Echoes.Add(newEcho);
+            SaveEchoData(saveData);
         }
 
-        public static EchoData LoadEcho()
+        public static List<EchoData> LoadAllEchoes()
         {
-            if (!File.Exists(_savePath)) return null;
+            return LoadEchoSaveData().Echoes;
+        }
+
+        public static void RemoveEcho(string echoId)
+        {
+            EchoSaveData saveData = LoadEchoSaveData();
+            EchoData echoToRemove = saveData.Echoes.FirstOrDefault(e => e.EchoId == echoId);
+
+            if (echoToRemove != null)
+            {
+                saveData.Echoes.Remove(echoToRemove);
+                SaveEchoData(saveData);
+            }
+        }
+
+        private static EchoSaveData LoadEchoSaveData()
+        {
+            if (!File.Exists(_savePath))
+            {
+                return new EchoSaveData();
+            }
 
             string json = File.ReadAllText(_savePath);
-            return JsonUtility.FromJson<EchoData>(json);
+            if (string.IsNullOrEmpty(json))
+            {
+                return new EchoSaveData();
+            }
+
+            return JsonUtility.FromJson<EchoSaveData>(json);
         }
 
-        public static void ClearEcho()
+        private static void SaveEchoData(EchoSaveData data)
         {
-            if (File.Exists(_savePath))
-            {
-                File.Delete(_savePath);
-            }
+            string json = JsonUtility.ToJson(data, true);
+            File.WriteAllText(_savePath, json);
         }
     }
 }

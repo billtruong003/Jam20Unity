@@ -1,8 +1,5 @@
-// Assets/Scripts/GamePlay/DespairSystem.cs
-
 using EchoMage.Core;
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace EchoMage.Player
@@ -17,36 +14,26 @@ namespace EchoMage.Player
         [SerializeField] private float despairReductionPerKill = 10f;
 
         private float _currentDespair;
-        private readonly HashSet<GameObject> _activeEnemies = new HashSet<GameObject>();
 
-        public void RegisterEnemy(GameObject enemy) => _activeEnemies.Add(enemy);
-        public void UnregisterEnemy(GameObject enemy)
-        {
-            _activeEnemies.Remove(enemy);
-            ReduceDespairOnKill();
-        }
+        private void Start() => InitializeDespair();
 
-        private void Start()
+        public void UpdateDespair(int activeEnemyCount, float deltaTime)
         {
-            InitializeDespair();
-        }
-
-        private void Update()
-        {
-            if (_activeEnemies.Count > 0)
+            if (activeEnemyCount > 0)
             {
-                IncreaseDespairOverTime(Time.deltaTime);
+                IncreaseDespairOverTime(activeEnemyCount, deltaTime);
             }
         }
 
-        private void IncreaseDespairOverTime(float deltaTime)
+        private void IncreaseDespairOverTime(int enemyCount, float deltaTime)
         {
-            _currentDespair += _activeEnemies.Count * despairPerEnemyPerSecond * deltaTime;
-            CheckForOverwhelm();
+            _currentDespair += enemyCount * despairPerEnemyPerSecond * deltaTime;
+            _currentDespair = Mathf.Min(_currentDespair, maxDespair);
             OnDespairChanged?.Invoke(_currentDespair, maxDespair);
+            CheckForOverwhelm();
         }
 
-        private void ReduceDespairOnKill()
+        public void ReduceDespairOnKill()
         {
             _currentDespair = Mathf.Max(0, _currentDespair - despairReductionPerKill);
             OnDespairChanged?.Invoke(_currentDespair, maxDespair);
@@ -56,8 +43,14 @@ namespace EchoMage.Player
         {
             if (_currentDespair >= maxDespair)
             {
-                _currentDespair = maxDespair;
-                GameManager.Instance.EndGame("Overwhelmed by the darkness.");
+                // SỬA LỖI: Thay vì kết thúc game, tìm người chơi hiện tại và buộc họ phải chết.
+                Transform playerTransform = GameManager.Instance.PlayerTransform;
+                if (playerTransform != null && playerTransform.TryGetComponent<PlayerHealth>(out var playerHealth))
+                {
+                    playerHealth.ForceKill("Overwhelmed by despair.");
+                    // Đặt lại Despair ngay sau khi giết người chơi để tránh gọi lại liên tục
+                    InitializeDespair();
+                }
             }
         }
 

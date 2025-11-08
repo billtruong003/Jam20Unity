@@ -13,15 +13,17 @@ Material:
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
   - _FAKELIGHT_ON
-  - _OUTLINEMODE_FRESNEL
+  - _NORMALMAP_ON
+  - _SURFACETYPE_OPAQUE
   m_InvalidKeywords:
   - _ALPHATEST_ON
   - _ZWRITE_ON
   m_LightmapFlags: 0
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
+  m_CustomRenderQueue: 2000
+  stringTagMap:
+    RenderType: Opaque
   disabledShaderPasses:
   - GRABPASS
   m_LockedProperties: 
@@ -101,7 +103,7 @@ Material:
     - _ForceFakeLight: 0
     - _FresnelOutlinePower: 5
     - _FresnelOutlineSharpness: 2
-    - _FresnelOutlineToggle: 1
+    - _FresnelOutlineToggle: 0
     - _FresnelOutlineWidth: 0.1
     - _GlintScale: 20
     - _GlintSpeed: 2

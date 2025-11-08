@@ -1,11 +1,10 @@
-// Assets/Scripts/GamePlay/GameManager.cs (Cập nhật)
-
 using EchoMage.Echoes;
 using EchoMage.Player;
 using EchoMage.UI;
 using EchoMage.World;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using System;
 
 namespace EchoMage.Core
 {
@@ -13,11 +12,12 @@ namespace EchoMage.Core
     {
         public static GameManager Instance { get; private set; }
 
-        [Header("Core References")]
-        public Transform PlayerTransform;
-        public PlayerStats PlayerStats;
-        public UIManager UIManager;
+        public event Action<GameObject> OnPlayerSpawned;
 
+        [Header("Core References")]
+        public PlayerSpawner PlayerSpawner;
+        public UIManager UIManager;
+        public DespairSystem DespairSystem;
 
         [Header("Gameplay State")]
         public float WorldThreatLevel = 1f;
@@ -25,7 +25,10 @@ namespace EchoMage.Core
         [Header("Echo System")]
         [SerializeField] private GameObject echoGravePrefab;
 
-        private bool _isGameOver = false;
+        private readonly HashSet<GameObject> _activeEnemies = new HashSet<GameObject>();
+
+        public PlayerStats PlayerStats { get; private set; }
+        public Transform PlayerTransform { get; private set; }
 
         private void Awake()
         {
@@ -37,36 +40,42 @@ namespace EchoMage.Core
             Instance = this;
         }
 
-        private void Start()
+        private void Update()
         {
-            SpawnEchoGraveIfNeeded();
+            DespairSystem.UpdateDespair(_activeEnemies.Count, Time.deltaTime);
         }
 
-        public void EndGame(string reason)
+        public void NotifyPlayerSpawned(GameObject playerInstance)
         {
-            if (_isGameOver) return;
-            _isGameOver = true;
-
-            EchoSystem.SaveEcho(PlayerStats, PlayerTransform.position);
-            UIManager.ShowGameOverScreen(reason);
-
-            // Tự động restart sau 5 giây
-            Invoke(nameof(RestartGame), 5f);
+            PlayerTransform = playerInstance.transform;
+            PlayerStats = playerInstance.GetComponent<PlayerStats>();
+            OnPlayerSpawned?.Invoke(playerInstance);
         }
 
-        private void SpawnEchoGraveIfNeeded()
+        public void HandlePlayerDeath(PlayerStats deadPlayerStats, Vector3 deathPosition)
         {
-            EchoData data = EchoSystem.LoadEcho();
-            if (data != null)
+            if (echoGravePrefab != null)
             {
-                GameObject graveInstance = Instantiate(echoGravePrefab, data.DeathPosition, Quaternion.identity);
-                graveInstance.GetComponent<EchoGrave>().Initialize(data);
+                CreateEchoGrave(deadPlayerStats, deathPosition);
             }
+            PlayerSpawner.RequestRespawn();
         }
 
-        private void RestartGame()
+        private void CreateEchoGrave(PlayerStats stats, Vector3 position)
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            GameObject graveInstance = Instantiate(echoGravePrefab, position, Quaternion.identity);
+            var echoData = new PlayerEchoData(stats, position);
+            graveInstance.GetComponent<EchoGrave>().Initialize(echoData);
+        }
+
+        public void RegisterEnemy(GameObject enemy) => _activeEnemies.Add(enemy);
+
+        public void UnregisterEnemy(GameObject enemy)
+        {
+            if (_activeEnemies.Remove(enemy))
+            {
+                DespairSystem.ReduceDespairOnKill();
+            }
         }
     }
 }

@@ -1,8 +1,7 @@
-// Assets/Scripts/Gameplay/EchoGrave.cs
-
 using EchoMage.AI;
 using EchoMage.Core;
 using EchoMage.Echoes;
+using EchoMage.Player;
 using UnityEngine;
 
 namespace EchoMage.World
@@ -11,48 +10,61 @@ namespace EchoMage.World
     {
         [SerializeField] private GameObject interactionPrompt;
         [SerializeField] private GameObject ghostCompanionPrefab;
-
+        [SerializeField] private int powerBoostLevels = 3;
+        [SerializeField] private LayerMask playerLayer;
         private bool _canInteract = false;
-        private EchoData _echoData;
+        [SerializeField] private PlayerEchoData _echoData;
 
-        public void Initialize(EchoData data)
+        public void Initialize(PlayerEchoData data)
         {
             _echoData = data;
         }
 
         private void Update()
         {
-            if (_canInteract && Input.GetKeyDown(KeyCode.E))
+            if (!_canInteract || _echoData == null) return;
+
+            if (Input.GetKeyDown(KeyCode.E))
             {
-                GameManager.Instance.UIManager.ShowEchoChoice(true);
-                // Tạm dừng game để người chơi lựa chọn
-                Time.timeScale = 0f;
+                ChooseCompanion();
+            }
+            else if (Input.GetKeyDown(KeyCode.Q))
+            {
+                ChoosePowerBoost();
             }
         }
 
-        public void ChooseCompanion()
+        private void ChooseCompanion()
         {
-            Time.timeScale = 1f;
             Instantiate(ghostCompanionPrefab, transform.position, Quaternion.identity)
                 .GetComponent<GhostCompanion>().Initialize(_echoData);
-
-            EchoSystem.ClearEcho();
-            Destroy(gameObject);
+            FinalizeChoice();
         }
 
-        public void ChoosePowerBoost()
+        private void ChoosePowerBoost()
         {
-            Time.timeScale = 1f;
-            // TODO: Implement logic for instant power boost
-            Debug.Log("Power Boost Chosen! (Not implemented yet)");
+            PlayerStats playerStats = GameManager.Instance.PlayerStats;
+            if (playerStats != null)
+            {
+                for (int i = 0; i < powerBoostLevels; i++)
+                {
+                    playerStats.Damage += _echoData.Damage * 0.1f;
+                    playerStats.AttackCooldown *= 0.95f;
+                }
+                playerStats.ApplyUpgrade();
+            }
+            FinalizeChoice();
+        }
 
-            EchoSystem.ClearEcho();
+        private void FinalizeChoice()
+        {
+            interactionPrompt.SetActive(false);
             Destroy(gameObject);
         }
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.CompareTag("Player"))
+            if ((playerLayer.value & (1 << other.gameObject.layer)) > 0)
             {
                 interactionPrompt.SetActive(true);
                 _canInteract = true;
@@ -61,7 +73,7 @@ namespace EchoMage.World
 
         private void OnTriggerExit(Collider other)
         {
-            if (other.CompareTag("Player"))
+            if ((playerLayer.value & (1 << other.gameObject.layer)) > 0)
             {
                 interactionPrompt.SetActive(false);
                 _canInteract = false;

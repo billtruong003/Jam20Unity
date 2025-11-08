@@ -1,5 +1,4 @@
-// Assets/Scripts/AI/GhostCompanion.cs
-
+using EchoMage.Core;
 using EchoMage.Echoes;
 using EchoMage.Player;
 using UnityEngine;
@@ -36,7 +35,8 @@ namespace EchoMage.AI
             _vatAnimator = GetComponent<VAT_Animator>();
         }
 
-        public void Initialize(EchoData data)
+        // SỬA LỖI: Thay đổi kiểu dữ liệu từ EchoData sang PlayerEchoData
+        public void Initialize(PlayerEchoData data)
         {
             _stats.Damage = data.Damage;
             _stats.AttackCooldown = data.AttackCooldown;
@@ -48,13 +48,17 @@ namespace EchoMage.AI
             _stats.ProjectileSpreadAngle = data.ProjectileSpreadAngle;
 
             _attackGate = new TimeGate(_stats.AttackCooldown);
-            _playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+
+            // Lấy tham chiếu đến người chơi một cách an toàn
+            if (GameManager.Instance != null)
+            {
+                _playerTransform = GameManager.Instance.PlayerTransform;
+            }
         }
 
         private void Update()
         {
             if (_playerTransform == null) return;
-
             FindTarget();
             UpdateState();
             ExecuteStateAction();
@@ -83,7 +87,7 @@ namespace EchoMage.AI
             {
                 FollowPlayer();
             }
-            else // Attacking
+            else
             {
                 AttackTarget();
             }
@@ -96,7 +100,10 @@ namespace EchoMage.AI
             {
                 Vector3 direction = (_playerTransform.position - transform.position).normalized;
                 transform.position += direction * moveSpeed * Time.deltaTime;
-                transform.rotation = Quaternion.LookRotation(direction);
+                if (direction != Vector3.zero)
+                {
+                    transform.rotation = Quaternion.LookRotation(direction);
+                }
                 _vatAnimator.CrossFade(moveClip, 0.2f);
             }
             else
@@ -109,19 +116,54 @@ namespace EchoMage.AI
         {
             if (_currentTarget == null) return;
 
-            Vector3 directionToTarget = (_currentTarget.position - transform.position).normalized;
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(directionToTarget), Time.deltaTime * 10f);
+            Vector3 directionToTarget = _currentTarget.position - transform.position;
+            directionToTarget.y = 0;
+            if (directionToTarget != Vector3.zero)
+            {
+                transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(directionToTarget), Time.deltaTime * 10f);
+            }
 
             if (_attackGate.TryPass())
             {
                 _vatAnimator.Play(attackClip);
-                FireProjectile();
+                FireProjectiles();
             }
         }
 
-        private void FireProjectile()
+        private void FireProjectiles()
         {
-            GameObject projectileObject = ObjectPoolManager.Instance.Spawn("PlayerProjectile", transform.position, transform.rotation);
+            Vector3 firePosition = transform.position;
+            Vector3 targetPosition = _currentTarget.position;
+
+            Vector3 baseDirection = targetPosition - firePosition;
+            baseDirection.y = 0;
+            baseDirection.Normalize();
+
+            if (baseDirection == Vector3.zero) return;
+
+            int count = _stats.ProjectilesPerShot;
+            if (count <= 1)
+            {
+                SpawnSingleProjectile(firePosition, Quaternion.LookRotation(baseDirection));
+                return;
+            }
+
+            float totalAngle = _stats.ProjectileSpreadAngle;
+            float angleStep = totalAngle / (count - 1);
+            float startAngle = -totalAngle / 2f;
+
+            for (int i = 0; i < count; i++)
+            {
+                float currentAngle = startAngle + (i * angleStep);
+                Quaternion rotationOffset = Quaternion.AngleAxis(currentAngle, Vector3.up);
+                Vector3 finalDirection = rotationOffset * baseDirection;
+                SpawnSingleProjectile(firePosition, Quaternion.LookRotation(finalDirection));
+            }
+        }
+
+        private void SpawnSingleProjectile(Vector3 position, Quaternion rotation)
+        {
+            GameObject projectileObject = ObjectPoolManager.Instance.Spawn("PlayerProjectile", position, rotation);
             if (projectileObject != null && projectileObject.TryGetComponent<Combat.Projectile>(out var projectile))
             {
                 projectile.Initialize(_stats);

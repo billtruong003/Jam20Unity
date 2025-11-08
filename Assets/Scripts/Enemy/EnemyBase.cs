@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.AI;
 using EchoMage.Interfaces;
 using Utilities.Timers;
-using EchoMage.Player;
 using EchoMage.Core;
 
 namespace EchoMage.Enemies
@@ -23,13 +22,10 @@ namespace EchoMage.Enemies
         private enum State { Spawning, Idle, Chasing, Attacking, Stunned, Dead }
         private State _currentState;
 
-        private DespairSystem _despairSystem;
-
         protected virtual void Awake()
         {
             NavAgent = GetComponent<NavMeshAgent>();
             VatAnimator = GetComponent<VAT_Animator>();
-            _despairSystem = GameManager.Instance.UIManager.GetDespairSystem;
         }
 
         public void Initialize(Transform target, float threatLevel)
@@ -52,14 +48,7 @@ namespace EchoMage.Enemies
 
             if (isPlayerInRange)
             {
-                if (_attackCooldownGate.IsReady)
-                {
-                    SwitchState(State.Attacking);
-                }
-                else
-                {
-                    SwitchState(State.Idle);
-                }
+                SwitchState(_attackCooldownGate.IsReady ? State.Attacking : State.Idle);
             }
             else
             {
@@ -72,7 +61,6 @@ namespace EchoMage.Enemies
         private void SwitchState(State newState)
         {
             if (_currentState == newState) return;
-
             _currentState = newState;
 
             switch (_currentState)
@@ -81,17 +69,14 @@ namespace EchoMage.Enemies
                     NavAgent.isStopped = true;
                     VatAnimator.CrossFade(_baseStats.IdleClipName, 0.2f);
                     break;
-
                 case State.Chasing:
                     NavAgent.isStopped = false;
                     VatAnimator.CrossFade(_baseStats.MoveClipName, 0.2f);
                     break;
-
                 case State.Attacking:
                     NavAgent.isStopped = true;
                     Attack();
                     break;
-
                 case State.Dead:
                     NavAgent.enabled = false;
                     GetComponent<Collider>().enabled = false;
@@ -112,7 +97,10 @@ namespace EchoMage.Enemies
                 case State.Attacking:
                     Vector3 lookDirection = PlayerTarget.position - transform.position;
                     lookDirection.y = 0;
-                    transform.rotation = Quaternion.LookRotation(lookDirection);
+                    if (lookDirection != Vector3.zero)
+                    {
+                        transform.rotation = Quaternion.LookRotation(lookDirection);
+                    }
                     break;
             }
         }
@@ -126,8 +114,8 @@ namespace EchoMage.Enemies
 
             if (_currentHealth <= 0)
             {
+                GameManager.Instance.UnregisterEnemy(gameObject);
                 SwitchState(State.Dead);
-                _despairSystem?.UnregisterEnemy(gameObject);
             }
         }
 
@@ -141,23 +129,21 @@ namespace EchoMage.Enemies
         public void OnObjectSpawn()
         {
             _currentState = State.Spawning;
-
             NavAgent.enabled = true;
             NavAgent.isStopped = true;
             GetComponent<Collider>().enabled = true;
-
-            _despairSystem?.RegisterEnemy(gameObject);
-
+            GameManager.Instance.RegisterEnemy(gameObject);
             SwitchState(State.Chasing);
         }
 
         public void OnObjectReturn()
         {
+            if (_currentState != State.Dead)
+            {
+                GameManager.Instance.UnregisterEnemy(gameObject);
+            }
             PlayerTarget = null;
             NavAgent.enabled = false;
-
-            // Đảm bảo hủy đăng ký trong mọi trường hợp, kể cả khi bị thu hồi mà không chết
-            _despairSystem?.UnregisterEnemy(gameObject);
         }
     }
 }

@@ -1,23 +1,18 @@
-// Assets/Scripts/Combat/OrbShooter.cs
-
 using EchoMage.Combat;
 using UnityEngine;
 using Utilities.Timers;
 
 namespace EchoMage.Player
 {
-    [AddComponentMenu("EchoMage/Combat/Orb Shooter")]
     public sealed class OrbShooter : MonoBehaviour
     {
         [Header("Dependencies")]
         [SerializeField] private PlayerStats playerStats;
 
         private const string PROJECTILE_ID = "PlayerProjectile";
-
         private readonly TimeGate _attackGate = new TimeGate(1f);
         private Camera _mainCamera;
         private Plane _gamePlane;
-        private bool _isShooting;
 
         private void Awake()
         {
@@ -25,84 +20,36 @@ namespace EchoMage.Player
             InitializeGamePlane();
         }
 
-        private void OnEnable()
-        {
-            if (playerStats != null)
-            {
-                playerStats.OnStatsChanged += HandleStatsChanged;
-            }
-        }
+        private void OnEnable() => playerStats.OnStatsChanged += HandleStatsChanged;
+        private void OnDisable() => playerStats.OnStatsChanged -= HandleStatsChanged;
+        private void Start() => HandleStatsChanged();
+        private void Update() => HandleShootingInput();
 
-        private void Start()
-        {
-            HandleStatsChanged();
-        }
+        private void HandleStatsChanged() => _attackGate.Interval = playerStats.AttackCooldown;
 
-        private void OnDisable()
+        private void HandleShootingInput()
         {
-            if (playerStats != null)
-            {
-                playerStats.OnStatsChanged -= HandleStatsChanged;
-            }
-        }
-
-        private void Update()
-        {
-            if (!IsConfigurationValid()) return;
-
-            HandleShootingState();
-            ProcessShootingAction();
-        }
-
-        private void HandleStatsChanged()
-        {
-            _attackGate.Interval = playerStats.AttackCooldown;
-        }
-
-        private void HandleShootingState()
-        {
-            if (Input.GetMouseButtonDown(0))
-            {
-                _isShooting = true;
-                FireProjectilesImmediately();
-            }
-            else if (Input.GetMouseButtonUp(0))
-            {
-                _isShooting = false;
-            }
-        }
-
-        private void ProcessShootingAction()
-        {
-            if (_isShooting && _attackGate.TryPass())
+            if (Input.GetMouseButton(0) && _attackGate.TryPass())
             {
                 FireProjectiles();
             }
         }
 
-        private void FireProjectilesImmediately()
-        {
-            _attackGate.Reset();
-            FireProjectiles();
-        }
-
         private void FireProjectiles()
         {
             Vector3 mousePosition = GetMousePositionOnGamePlane();
-            Vector3 baseDirection = mousePosition - transform.position;
+            Vector3 firePosition = transform.position;
 
-            // *** ĐIỂM THAY ĐỔI QUAN TRỌNG ***
-            // "Làm phẳng" vector hướng để đảm bảo nó chỉ nằm trên mặt phẳng XZ.
+            Vector3 baseDirection = mousePosition - firePosition;
             baseDirection.y = 0;
             baseDirection.Normalize();
 
-            if (baseDirection == Vector3.zero) return; // Tránh lỗi khi hướng là không xác định
+            if (baseDirection == Vector3.zero) return;
 
             int count = playerStats.ProjectilesPerShot;
-
             if (count <= 1)
             {
-                SpawnSingleProjectile(transform.position, Quaternion.LookRotation(baseDirection));
+                SpawnSingleProjectile(firePosition, Quaternion.LookRotation(baseDirection));
                 return;
             }
 
@@ -115,8 +62,7 @@ namespace EchoMage.Player
                 float currentAngle = startAngle + (i * angleStep);
                 Quaternion rotationOffset = Quaternion.AngleAxis(currentAngle, Vector3.up);
                 Vector3 finalDirection = rotationOffset * baseDirection;
-
-                SpawnSingleProjectile(transform.position, Quaternion.LookRotation(finalDirection));
+                SpawnSingleProjectile(firePosition, Quaternion.LookRotation(finalDirection));
             }
         }
 
@@ -129,20 +75,8 @@ namespace EchoMage.Player
             }
         }
 
-        private void InitializeDependencies()
-        {
-            _mainCamera = Camera.main;
-        }
-
-        private void InitializeGamePlane()
-        {
-            _gamePlane = new Plane(Vector3.up, Vector3.zero);
-        }
-
-        private bool IsConfigurationValid()
-        {
-            return playerStats != null && _mainCamera != null;
-        }
+        private void InitializeDependencies() => _mainCamera = Camera.main;
+        private void InitializeGamePlane() => _gamePlane = new Plane(Vector3.up, Vector3.zero);
 
         private Vector3 GetMousePositionOnGamePlane()
         {

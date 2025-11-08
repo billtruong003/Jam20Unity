@@ -13,7 +13,8 @@ Material:
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
   - _FAKELIGHT_ON
-  - _OUTLINEMODE_FRESNEL
+  - _NORMALMAP_ON
+  - _SURFACETYPE_OPAQUE
   m_InvalidKeywords:
   - _ALPHAPREMULTIPLY_ON
   - _GLOSSYREFLECTIONS_OFF
@@ -21,8 +22,9 @@ Material:
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
+  m_CustomRenderQueue: 2000
+  stringTagMap:
+    RenderType: Opaque
   disabledShaderPasses: []
   m_LockedProperties: 
   m_SavedProperties:
@@ -105,13 +107,13 @@ Material:
     - _DitherFadeStart: 2
     - _DitherFadeToggle: 0
     - _DitherScale: 50
-    - _DstBlend: 10
+    - _DstBlend: 0
     - _EmissionMode: 0
     - _FakeLightMode: 1
     - _ForceFakeLight: 0
     - _FresnelOutlinePower: 5
     - _FresnelOutlineSharpness: 2
-    - _FresnelOutlineToggle: 1
+    - _FresnelOutlineToggle: 0
     - _FresnelOutlineWidth: 0.1
     - _GlintScale: 20
     - _GlintSpeed: 2
@@ -146,7 +148,7 @@ Material:
     - _UVSec: 0
     - _WindAmplitude: 0.1
     - _WindFrequency: 2
-    - _ZWrite: 0
+    - _ZWrite: 1
     m_Colors:
     - _AddLightMidtoneColor: {r: 0.7, g: 0.7, b: 0.7, a: 1}
     - _AddLightShadowTint: {r: 0.19999996, g: 0.19999996, b: 0.29999998, a: 1}
