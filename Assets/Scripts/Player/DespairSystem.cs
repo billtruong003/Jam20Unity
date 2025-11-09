@@ -15,20 +15,22 @@ namespace EchoMage.Player
 
         private float _currentDespair;
 
-        private void Start() => InitializeDespair();
+        public void InitializeDespair()
+        {
+            _currentDespair = 0;
+            OnDespairChanged?.Invoke(_currentDespair, maxDespair);
+        }
 
         public void UpdateDespair(int activeEnemyCount, float deltaTime)
         {
-            if (activeEnemyCount > 0)
-            {
-                IncreaseDespairOverTime(activeEnemyCount, deltaTime);
-            }
+            if (activeEnemyCount <= 0) return;
+
+            IncreaseDespairOverTime(activeEnemyCount, deltaTime);
         }
 
         private void IncreaseDespairOverTime(int enemyCount, float deltaTime)
         {
-            _currentDespair += enemyCount * despairPerEnemyPerSecond * deltaTime;
-            _currentDespair = Mathf.Min(_currentDespair, maxDespair);
+            _currentDespair = Mathf.Min(_currentDespair + (enemyCount * despairPerEnemyPerSecond * deltaTime), maxDespair);
             OnDespairChanged?.Invoke(_currentDespair, maxDespair);
             CheckForOverwhelm();
         }
@@ -43,21 +45,8 @@ namespace EchoMage.Player
         {
             if (_currentDespair >= maxDespair)
             {
-                // SỬA LỖI: Thay vì kết thúc game, tìm người chơi hiện tại và buộc họ phải chết.
-                Transform playerTransform = GameManager.Instance.PlayerTransform;
-                if (playerTransform != null && playerTransform.TryGetComponent<PlayerHealth>(out var playerHealth))
-                {
-                    playerHealth.ForceKill("Overwhelmed by despair.");
-                    // Đặt lại Despair ngay sau khi giết người chơi để tránh gọi lại liên tục
-                    InitializeDespair();
-                }
+                GameManager.Instance.EndGame("Overwhelmed by despair. The echo fades into nothingness.");
             }
-        }
-
-        public void InitializeDespair()
-        {
-            _currentDespair = 0;
-            OnDespairChanged?.Invoke(_currentDespair, maxDespair);
         }
     }
 }

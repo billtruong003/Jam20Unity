@@ -3,6 +3,7 @@ using EchoMage.Interfaces;
 using EchoMage.Player;
 using Shmackle.Utils.CoroutinesTimer;
 using System.Collections;
+using Unity.Mathematics;
 
 namespace EchoMage.Combat
 {
@@ -12,6 +13,9 @@ namespace EchoMage.Combat
     public sealed class Projectile : MonoBehaviour, IPoolableObject
     {
         [SerializeField] private TrailRenderer trailRenderer;
+        [SerializeField] private LayerMask enemyLayer;
+        [SerializeField] private LayerMask projLayer;
+        private const string PROJECTILE_HIT_ID = "PlayerProjectileHit";
         private float _damage;
         private float _speed;
         private int _maxPierceCount;
@@ -59,21 +63,36 @@ namespace EchoMage.Combat
             transform.Translate(Vector3.forward * _speed * Time.deltaTime);
         }
 
+        int layer;
         private void OnTriggerEnter(Collider other)
         {
             if (other.CompareTag("Player") || other.CompareTag("IgnoreProjectile")) return;
 
-            if (other.TryGetComponent<IDamageable>(out var damageable))
+            layer = other.gameObject.layer;
+            // If the object's layer is included in the projLayer mask (friendly/projectile layer)
+            if ((projLayer.value & (1 << layer)) != 0)
             {
-                damageable.TakeDamage(_damage);
-                HandlePierce();
-            }
-            else
-            {
+                ObjectPoolManager.Instance.Spawn(PROJECTILE_HIT_ID, transform.position, Quaternion.identity);
                 ReturnToPool();
+                return;
             }
-        }
 
+            // If the object's layer is included in the enemyLayer mask
+            if ((enemyLayer.value & (1 << layer)) != 0)
+            {
+                if (other.TryGetComponent<IDamageable>(out var damageable))
+                {
+                    damageable.TakeDamage(_damage);
+                    ObjectPoolManager.Instance.Spawn(PROJECTILE_HIT_ID, transform.position, Quaternion.identity);
+                    HandlePierce();
+                }
+                // Không return → rơi xuống default để destroy
+            }
+
+            // DEFAULT: Hit walls/environment/other → Destroy luôn
+            ObjectPoolManager.Instance.Spawn(PROJECTILE_HIT_ID, transform.position, Quaternion.identity);
+            ReturnToPool();
+        }
         private void HandlePierce()
         {
             _currentPierce--;

@@ -1,4 +1,5 @@
 using UnityEngine;
+using EchoMage.Loot; // Thêm namespace
 
 namespace EchoMage.Enemies
 {
@@ -13,6 +14,9 @@ namespace EchoMage.Enemies
         [Header("Attack Behavior")]
         public float AttackRange = 1.5f;
         public float AttackCooldown = 2f;
+
+        [Header("Loot")] // Thêm mục mới
+        public LootTableData LootTable;
 
         [Header("VAT Animation Clips")]
         [Tooltip("Tên của animation clip di chuyển trong VAT_AnimationData")]

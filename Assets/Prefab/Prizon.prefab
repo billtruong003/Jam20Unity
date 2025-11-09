@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1768989206715222011}
   - component: {fileID: 242833711368660090}
   - component: {fileID: 3232914692165564855}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Prizon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -109,7 +109,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -177,7 +177,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3731262387443116624}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: GameObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}

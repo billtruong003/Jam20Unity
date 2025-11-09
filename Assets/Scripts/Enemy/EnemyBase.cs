@@ -3,6 +3,7 @@ using UnityEngine.AI;
 using EchoMage.Interfaces;
 using Utilities.Timers;
 using EchoMage.Core;
+using EchoMage.Loot; // Thêm namespace
 
 namespace EchoMage.Enemies
 {
@@ -78,11 +79,32 @@ namespace EchoMage.Enemies
                     Attack();
                     break;
                 case State.Dead:
-                    NavAgent.enabled = false;
-                    GetComponent<Collider>().enabled = false;
-                    VatAnimator.CrossFade(_baseStats.DeathClipName, 0.1f);
-                    Invoke(nameof(ReturnToPool), 1.5f);
+                    HandleDeath(); // Thay thế logic cũ bằng một hàm riêng
                     break;
+            }
+        }
+
+        private void HandleDeath()
+        {
+            GameManager.Instance.UnregisterEnemy(gameObject);
+            HandleLootDrop(); // Gọi hàm rơi đồ
+            NavAgent.enabled = false;
+            GetComponent<Collider>().enabled = false;
+            VatAnimator.CrossFade(_baseStats.DeathClipName, 0.1f);
+            Invoke(nameof(ReturnToPool), 1.5f);
+        }
+
+        private void HandleLootDrop()
+        {
+            if (_baseStats.LootTable == null) return;
+
+            foreach (var drop in _baseStats.LootTable.PotentialDrops)
+            {
+                if (Random.value <= drop.DropChance)
+                {
+                    Instantiate(drop.ItemPrefab, transform.position, Quaternion.identity);
+                    return;
+                }
             }
         }
 
@@ -114,7 +136,6 @@ namespace EchoMage.Enemies
 
             if (_currentHealth <= 0)
             {
-                GameManager.Instance.UnregisterEnemy(gameObject);
                 SwitchState(State.Dead);
             }
         }

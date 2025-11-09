@@ -1,3 +1,4 @@
+using System; // Thêm để sử dụng Action
 using System.Collections;
 using System.Collections.Generic;
 using EchoMage.Enemies;
@@ -8,32 +9,51 @@ namespace EchoMage.Spawning
 {
     public class EnemySpawner : MonoBehaviour
     {
+        public event Action<int> OnEndlessCycleStarted;
+
+        [Header("Wave Configuration")]
         [SerializeField] private List<WaveData> _waves;
         [SerializeField] private Transform[] _spawnPoints;
 
-        // Giả sử có 1 class để lấy thông tin global
-        // [SerializeField] private PlayerReference _player; 
-        // [SerializeField] private WorldState _worldState;
+        [Header("Endless Mode Scaling")]
+        [Tooltip("Mỗi khi hoàn thành wave cuối, chỉ số của quái sẽ nhân với giá trị này.")]
+        [SerializeField] private float _statMultiplierPerCycle = 1.2f;
 
         private int _currentWaveIndex = 0;
+        private int _endlessCycleCount = 1;
         private Coroutine _spawnCoroutine;
 
         private void Start()
         {
-            if (_spawnPoints.Length == 0)
+            if (!AreSpawnPointsValid())
             {
-                Debug.LogError("No spawn points assigned to the spawner.", this);
                 this.enabled = false;
                 return;
             }
+            StartCoroutine(InitialSpawnRoutine());
+        }
+
+        private IEnumerator InitialSpawnRoutine()
+        {
+            yield return null;
             if (GameManager.Instance != null && GameManager.Instance.PlayerTransform != null)
             {
-                StartNextWave();
+                ResetAndRestartWaves();
             }
             else
             {
-                Debug.LogError("Spawner không thể bắt đầu vì GameManager hoặc Player chưa được khởi tạo.", this);
+                Debug.LogError("Spawner could not start because GameManager or Player was not initialized.", this);
             }
+        }
+
+        public void ResetAndRestartWaves()
+        {
+            if (_spawnCoroutine != null)
+            {
+                StopCoroutine(_spawnCoroutine);
+            }
+            _currentWaveIndex = 0;
+            _endlessCycleCount = 1;
             StartNextWave();
         }
 
@@ -41,25 +61,24 @@ namespace EchoMage.Spawning
         {
             if (_currentWaveIndex >= _waves.Count)
             {
-                // Đã hoàn thành tất cả các wave
-                Debug.Log("All waves completed!");
-                return;
+                // Logic kích hoạt Endless Mode
+                _endlessCycleCount++;
+                _currentWaveIndex = _waves.Count - 1; // Quay lại wave cuối cùng
+                OnEndlessCycleStarted?.Invoke(_endlessCycleCount);
             }
 
-            if (_spawnCoroutine != null)
-            {
-                StopCoroutine(_spawnCoroutine);
-            }
             _spawnCoroutine = StartCoroutine(SpawnWave(_waves[_currentWaveIndex]));
         }
 
         private IEnumerator SpawnWave(WaveData wave)
         {
+            float currentThreatMultiplier = Mathf.Pow(_statMultiplierPerCycle, _endlessCycleCount - 1);
+
             foreach (var entry in wave.WaveEntries)
             {
                 for (int i = 0; i < entry.Count; i++)
                 {
-                    SpawnEnemy(entry.EnemyPrefab);
+                    SpawnEnemy(entry.EnemyPrefab, currentThreatMultiplier);
                     yield return new WaitForSeconds(entry.SpawnInterval);
                 }
             }
@@ -70,19 +89,23 @@ namespace EchoMage.Spawning
             StartNextWave();
         }
 
-        private void SpawnEnemy(GameObject enemyPrefab)
+        private void SpawnEnemy(GameObject enemyPrefab, float threatMultiplier)
         {
-            Transform spawnPoint = _spawnPoints[Random.Range(0, _spawnPoints.Length)];
-
+            Transform spawnPoint = _spawnPoints[UnityEngine.Random.Range(0, _spawnPoints.Length)];
             GameObject enemyInstance = ObjectPoolManager.Instance.Spawn(enemyPrefab, spawnPoint.position, spawnPoint.rotation);
 
-            var enemyBase = enemyInstance.GetComponent<EnemyBase>();
-            if (enemyBase != null)
+            if (enemyInstance.TryGetComponent<EnemyBase>(out var enemyBase))
             {
-                // Đây là dòng code quan trọng nhất:
-                // Lấy mục tiêu và threat level từ GameManager và truyền vào cho kẻ địch.
-                enemyBase.Initialize(GameManager.Instance.PlayerTransform, GameManager.Instance.WorldThreatLevel);
+                // Truyền vào hệ số nhân của endless mode
+                enemyBase.Initialize(GameManager.Instance.PlayerTransform, threatMultiplier);
             }
+        }
+
+        private bool AreSpawnPointsValid()
+        {
+            if (_spawnPoints.Length > 0) return true;
+            Debug.LogError("No spawn points assigned to the spawner.", this);
+            return false;
         }
     }
 }

@@ -11,9 +11,9 @@ Material:
   m_Shader: {fileID: 4800000, guid: 4c752962b773647a4bd4c26227a68e39, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords:
-  - _EFFECTMODE_NONE
+  m_ValidKeywords:
+  - _EFFECTMODE_WATER
+  m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -52,7 +52,7 @@ Material:
     - _ChromaticToggle: 0
     - _ColorMask: 15
     - _CullMode: 0
-    - _EffectMode: 0
+    - _EffectMode: 3
     - _FaceDilate: 0
     - _FireGlowIntensity: 2
     - _FireSpeed: 0.5

@@ -12,38 +12,33 @@ namespace EchoMage.Enemies.Types
         [Tooltip("Bán kính của vùng tấn công.")]
         [SerializeField] private float _attackRadius = 1.2f;
 
-        [Tooltip("Vị trí của trung tâm vùng tấn công, tính từ vị trí của kẻ địch theo hướng tấn công.")]
-        [SerializeField] private float _attackOffset = 1.0f;
+        [Tooltip("Vị trí của trung tâm vùng tấn công, tính từ vị trí của kẻ địch.")]
+        [SerializeField] private Vector3 _attackOffset = new Vector3(0, 0, 1.0f);
 
-        private static readonly Collider[] _hitColliders = new Collider[1]; // Tối ưu hóa: Tránh cấp phát bộ nhớ mỗi lần gọi
+        private static readonly Collider[] _hitColliders = new Collider[1];
+        private const string ATTACK_HIT_FX = "MeleeEnemyHit";
 
         protected override void Attack()
         {
             if (PlayerTarget == null) return;
 
-            // Xác định trung tâm của vùng tấn công phía trước mặt kẻ địch
-            Vector3 attackCenter = transform.position + transform.forward * _attackOffset;
+            Vector3 attackCenter = transform.TransformPoint(_attackOffset);
 
             int hits = Physics.OverlapSphereNonAlloc(attackCenter, _attackRadius, _hitColliders, _playerLayerMask);
 
-            if (hits > 0)
+            if (hits > 0 && _hitColliders[0].TryGetComponent<IDamageable>(out var playerDamageable))
             {
-                // Vì chỉ có một người chơi, chúng ta chỉ cần xử lý collider đầu tiên
-                if (_hitColliders[0].TryGetComponent<IDamageable>(out var playerDamageable))
-                {
-                    playerDamageable.TakeDamage(_baseStats.Damage * _threatMultiplier);
-                }
+                playerDamageable.TakeDamage(_baseStats.Damage * _threatMultiplier);
+                ObjectPoolManager.Instance.Spawn("MeleeEnemyHit", _hitColliders[0].transform.position, Quaternion.identity);
             }
 
-            // Đặt lại cooldown ngay sau khi thực hiện logic tấn công
             _attackCooldownGate.StartCooldown();
         }
 
-        // Tùy chọn: Vẽ Gizmo trong Editor để dễ dàng hình dung vùng tấn công
         private void OnDrawGizmosSelected()
         {
             Gizmos.color = Color.red;
-            Vector3 attackCenter = transform.position + transform.forward * _attackOffset;
+            Vector3 attackCenter = transform.TransformPoint(_attackOffset);
             Gizmos.DrawWireSphere(attackCenter, _attackRadius);
         }
     }

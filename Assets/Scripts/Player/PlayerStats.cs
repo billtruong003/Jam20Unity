@@ -1,9 +1,23 @@
 using UnityEngine;
 using Sirenix.OdinInspector;
-using System; // Cần thêm để sử dụng Action
+using System;
+using EchoMage.Loot; // Thêm namespace
 
 namespace EchoMage.Player
 {
+    public enum StatTarget
+    {
+        MaxHP,
+        Damage,
+        AttackCooldown,
+        ProjectilesPerShot,
+        ProjectileSpeed,
+        PierceCount,
+        ProjectileScale,
+        ProjectileLifetime,
+        ProjectileSpreadAngle
+    }
+
     public sealed class PlayerStats : SerializedMonoBehaviour
     {
         public event Action OnStatsChanged;
@@ -48,14 +62,56 @@ namespace EchoMage.Player
         [Range(0, 360)]
         public float ProjectileSpreadAngle = 15f;
 
-        // Hàm này sẽ được gọi mỗi khi có nâng cấp
-        public void ApplyUpgrade()
+        public void ApplyUpgrade(StatUpgradeData upgradeData)
         {
-            // ... logic thay đổi chỉ số ở đây
-            // ví dụ: Damage += 5;
+            if (upgradeData == null) return;
 
-            // Sau khi thay đổi, thông báo cho các hệ thống khác
+            float value = upgradeData.Value;
+            switch (upgradeData.StatToUpgrade)
+            {
+                case StatTarget.MaxHP:
+                    ApplyStatChange(ref MaxHP, value, upgradeData.UpgradeType);
+                    break;
+                case StatTarget.Damage:
+                    ApplyStatChange(ref Damage, value, upgradeData.UpgradeType);
+                    break;
+                case StatTarget.AttackCooldown:
+                    // Attack cooldown is inverted, lower is better. Multiplicative < 1 means faster.
+                    ApplyStatChange(ref AttackCooldown, value, upgradeData.UpgradeType);
+                    break;
+                case StatTarget.ProjectilesPerShot:
+                    ProjectilesPerShot += (int)value;
+                    break;
+                case StatTarget.ProjectileSpeed:
+                    ApplyStatChange(ref ProjectileSpeed, value, upgradeData.UpgradeType);
+                    break;
+                case StatTarget.PierceCount:
+                    PierceCount += (int)value;
+                    break;
+                case StatTarget.ProjectileScale:
+                    ApplyStatChange(ref ProjectileScale, value, upgradeData.UpgradeType);
+                    break;
+                case StatTarget.ProjectileLifetime:
+                    ApplyStatChange(ref ProjectileLifetime, value, upgradeData.UpgradeType);
+                    break;
+                case StatTarget.ProjectileSpreadAngle:
+                    ApplyStatChange(ref ProjectileSpreadAngle, value, upgradeData.UpgradeType);
+                    break;
+            }
+
             InvokeStatsChanged();
+        }
+
+        private void ApplyStatChange(ref float stat, float value, StatUpgradeType type)
+        {
+            if (type == StatUpgradeType.Additive)
+            {
+                stat += value;
+            }
+            else if (type == StatUpgradeType.Multiplicative)
+            {
+                stat *= value;
+            }
         }
 
         private void InvokeStatsChanged()

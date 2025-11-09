@@ -147,7 +147,7 @@ MonoBehaviour:
   _playerLayerMask:
     serializedVersion: 2
     m_Bits: 8
-  _attackRadius: 1.2
+  _attackRadius: 3
   _attackOffset: 1
 --- !u!65 &7408729232941079305
 BoxCollider:

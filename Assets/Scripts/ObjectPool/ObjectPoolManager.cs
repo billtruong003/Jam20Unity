@@ -155,7 +155,7 @@ public class ObjectPoolManager : SerializedMonoBehaviour
     private Queue<GameObject> GetOrCreateObjectQueue(int prefabId)
     {
         if (!_poolDictionary.TryGetValue(prefabId, out Queue<GameObject> objectQueue))
-        {
+        {   
             objectQueue = new Queue<GameObject>();
             _poolDictionary[prefabId] = objectQueue;
         }

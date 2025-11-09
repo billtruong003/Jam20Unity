@@ -15,7 +15,7 @@ MonoBehaviour:
   MaxHealth: 100
   Damage: 10
   MoveSpeed: 3.5
-  AttackRange: 1.5
+  AttackRange: 3
   AttackCooldown: 2
   MoveClipName: Move
   AttackClipName: Attack

@@ -3,6 +3,8 @@ using EchoMage.Core;
 using EchoMage.Echoes;
 using EchoMage.Player;
 using UnityEngine;
+using System.Collections;
+using EchoMage.Loot;
 
 namespace EchoMage.World
 {
@@ -11,22 +13,32 @@ namespace EchoMage.World
         [SerializeField] private GameObject interactionPrompt;
         [SerializeField] private GameObject ghostCompanionPrefab;
         [SerializeField] private int powerBoostLevels = 3;
-        [SerializeField] private LayerMask playerLayer;
+        [SerializeField] private float summonDelay = 1.5f;
+
+        private PlayerEchoData _echoData;
         private bool _canInteract = false;
-        [SerializeField] private PlayerEchoData _echoData;
+        private bool _isUsedThisLife = false;
+
+        private void OnEnable() => GameManager.Instance.RegisterGrave(this);
+        private void OnDisable() => GameManager.Instance.UnregisterGrave(this);
 
         public void Initialize(PlayerEchoData data)
         {
             _echoData = data;
         }
 
+        public void ResetForNewLife()
+        {
+            _isUsedThisLife = false;
+        }
+
         private void Update()
         {
             if (!_canInteract || _echoData == null) return;
 
-            if (Input.GetKeyDown(KeyCode.E))
+            if (Input.GetKeyDown(KeyCode.E) && !_isUsedThisLife)
             {
-                ChooseCompanion();
+                StartCoroutine(SummonCompanionRoutine());
             }
             else if (Input.GetKeyDown(KeyCode.Q))
             {
@@ -34,13 +46,23 @@ namespace EchoMage.World
             }
         }
 
-        private void ChooseCompanion()
+        private IEnumerator SummonCompanionRoutine()
         {
+            _isUsedThisLife = true;
+            interactionPrompt.SetActive(false);
+            _canInteract = false;
+
+            // Thêm hiệu ứng triệu hồi tại đây nếu muốn
+
+            yield return new WaitForSeconds(summonDelay);
+
             Instantiate(ghostCompanionPrefab, transform.position, Quaternion.identity)
                 .GetComponent<GhostCompanion>().Initialize(_echoData);
-            FinalizeChoice();
+
+            // Sau khi triệu hồi, không hủy mộ nhưng không cho tương tác lại
         }
 
+        StatUpgradeData statUpgradeData = new();
         private void ChoosePowerBoost()
         {
             PlayerStats playerStats = GameManager.Instance.PlayerStats;
@@ -51,7 +73,8 @@ namespace EchoMage.World
                     playerStats.Damage += _echoData.Damage * 0.1f;
                     playerStats.AttackCooldown *= 0.95f;
                 }
-                playerStats.ApplyUpgrade();
+
+                playerStats.ApplyUpgrade(null);
             }
             FinalizeChoice();
         }
@@ -59,21 +82,24 @@ namespace EchoMage.World
         private void FinalizeChoice()
         {
             interactionPrompt.SetActive(false);
-            Destroy(gameObject);
+            Destroy(gameObject); // Chỉ hủy mộ khi hấp thụ
         }
 
         private void OnTriggerEnter(Collider other)
         {
-            if ((playerLayer.value & (1 << other.gameObject.layer)) > 0)
+            if (other.CompareTag("Player"))
             {
-                interactionPrompt.SetActive(true);
+                if (!_isUsedThisLife)
+                {
+                    interactionPrompt.SetActive(true);
+                }
                 _canInteract = true;
             }
         }
 
         private void OnTriggerExit(Collider other)
         {
-            if ((playerLayer.value & (1 << other.gameObject.layer)) > 0)
+            if (other.CompareTag("Player"))
             {
                 interactionPrompt.SetActive(false);
                 _canInteract = false;
