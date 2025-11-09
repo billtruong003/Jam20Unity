@@ -1,3 +1,4 @@
+using BillUtils.ObjectPooler;
 using EchoMage.Core;
 using EchoMage.Echoes;
 using EchoMage.Player;

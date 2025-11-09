@@ -1,5 +1,6 @@
 using UnityEngine;
 using EchoMage.Combat;
+using BillUtils.ObjectPooler;
 
 namespace EchoMage.Enemies
 {

@@ -1,6 +1,7 @@
 // Filename: ReturnToPoolAfterTime.cs
 using UnityEngine;
 using System.Collections;
+using BillUtils.ObjectPooler;
 
 namespace YourProject.ObjectPooling
 {
@@ -44,7 +45,7 @@ namespace YourProject.ObjectPooling
         private IEnumerator ReturnAfterDelay()
         {
             yield return new WaitForSeconds(lifeTime);
-            ObjectPoolManager.Instance.ReturnToPool(gameObject);
+            ObjectPoolManager.Instance.Despawn(gameObject);
         }
     }
 }

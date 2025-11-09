@@ -4,6 +4,7 @@ using EchoMage.Interfaces;
 using Utilities.Timers;
 using EchoMage.Core;
 using EchoMage.Loot; // Thêm namespace
+using BillUtils.ObjectPooler;
 
 namespace EchoMage.Enemies
 {
@@ -144,7 +145,7 @@ namespace EchoMage.Enemies
 
         private void ReturnToPool()
         {
-            ObjectPoolManager.Instance.ReturnToPool(gameObject);
+            ObjectPoolManager.Instance.Despawn(gameObject);
         }
 
         public void OnObjectSpawn()

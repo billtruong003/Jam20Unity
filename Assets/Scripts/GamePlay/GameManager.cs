@@ -6,6 +6,7 @@ using UnityEngine;
 using System;
 using System.Linq;
 using EchoMage.Spawning;
+using BillUtils.ObjectPooler;
 
 namespace EchoMage.Core
 {
@@ -119,7 +120,7 @@ namespace EchoMage.Core
         {
             foreach (var enemy in _activeEnemies.ToList())
             {
-                ObjectPoolManager.Instance.ReturnToPool(enemy);
+                ObjectPoolManager.Instance.Despawn(enemy);
             }
             _activeEnemies.Clear();
         }

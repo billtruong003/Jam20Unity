@@ -1,6 +1,8 @@
 // Filename: ReturnToPoolAfterFx.cs
 using UnityEngine;
 using System.Collections;
+using EchoMage.Core;
+using BillUtils.ObjectPooler;
 
 namespace YourProject.ObjectPooling
 {
@@ -24,7 +26,7 @@ namespace YourProject.ObjectPooling
         {
             // Đợi cho đến khi Particle System thực sự dừng hoàn toàn (bao gồm cả các hạt con)
             yield return new WaitUntil(() => !_particleSystemComponent.IsAlive(true));
-            ObjectPoolManager.Instance.ReturnToPool(gameObject);
+            ObjectPoolManager.Instance.Despawn(gameObject);
         }
     }
 }

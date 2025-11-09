@@ -1,6 +1,7 @@
 using UnityEngine;
 using EchoMage.Interfaces;
 using Unity.Mathematics;
+using BillUtils.ObjectPooler;
 
 namespace EchoMage.Combat
 {
@@ -69,7 +70,7 @@ namespace EchoMage.Combat
 
         private void ReturnToPool()
         {
-            ObjectPoolManager.Instance.ReturnToPool(gameObject);
+            ObjectPoolManager.Instance.Despawn(gameObject);
         }
 
         public void OnObjectSpawn()

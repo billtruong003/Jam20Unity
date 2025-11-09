@@ -1,6 +1,7 @@
 using UnityEngine;
 using EchoMage.Player;
 using EchoMage.Core;
+using BillUtils.ObjectPooler;
 
 namespace EchoMage.Loot
 {

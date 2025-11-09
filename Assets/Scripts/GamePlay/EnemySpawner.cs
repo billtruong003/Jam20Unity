@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using EchoMage.Enemies;
 using UnityEngine;
 using EchoMage.Core;
+using BillUtils.ObjectPooler;
 
 namespace EchoMage.Spawning
 {

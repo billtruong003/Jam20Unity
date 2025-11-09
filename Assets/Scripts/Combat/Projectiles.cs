@@ -4,6 +4,7 @@ using EchoMage.Player;
 using Shmackle.Utils.CoroutinesTimer;
 using System.Collections;
 using Unity.Mathematics;
+using BillUtils.ObjectPooler;
 
 namespace EchoMage.Combat
 {
@@ -111,7 +112,7 @@ namespace EchoMage.Combat
         private void ReturnToPool()
         {
             TrailControl(false);
-            ObjectPoolManager.Instance.ReturnToPool(gameObject);
+            ObjectPoolManager.Instance.Despawn(gameObject);
         }
 
         private void TrailControl(bool trailState)
