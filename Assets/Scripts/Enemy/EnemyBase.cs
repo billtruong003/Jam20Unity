@@ -3,7 +3,6 @@ using UnityEngine.AI;
 using EchoMage.Interfaces;
 using Utilities.Timers;
 using EchoMage.Core;
-using EchoMage.Loot; // Thêm namespace
 using BillUtils.ObjectPooler;
 
 namespace EchoMage.Enemies
@@ -80,7 +79,7 @@ namespace EchoMage.Enemies
                     Attack();
                     break;
                 case State.Dead:
-                    HandleDeath(); // Thay thế logic cũ bằng một hàm riêng
+                    HandleDeath();
                     break;
             }
         }
@@ -88,7 +87,8 @@ namespace EchoMage.Enemies
         private void HandleDeath()
         {
             GameManager.Instance.UnregisterEnemy(gameObject);
-            HandleLootDrop(); // Gọi hàm rơi đồ
+            GameSessionManager.Instance.AddScore(_baseStats.ScoreValue); // <-- DÒNG MỚI
+            HandleLootDrop();
             NavAgent.enabled = false;
             GetComponent<Collider>().enabled = false;
             VatAnimator.CrossFade(_baseStats.DeathClipName, 0.1f);
@@ -103,7 +103,7 @@ namespace EchoMage.Enemies
             {
                 if (Random.value <= drop.DropChance)
                 {
-                    Instantiate(drop.ItemPrefab, transform.position, Quaternion.identity);
+                    ObjectPoolManager.Instance.Spawn(drop.ItemPrefab, transform.position, Quaternion.identity);
                     return;
                 }
             }

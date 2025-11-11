@@ -9,6 +9,7 @@ namespace EchoMage.Player
     {
         [Header("Dependencies")]
         [SerializeField] private PlayerStats playerStats;
+        [SerializeField] private PlayerFXController playerFXController;
 
         private const string PROJECTILE_ID = "PlayerProjectile";
         private readonly TimeGate _attackGate = new TimeGate(1f);
@@ -70,9 +71,11 @@ namespace EchoMage.Player
         private void SpawnSingleProjectile(Vector3 position, Quaternion rotation)
         {
             GameObject projectileObject = ObjectPoolManager.Instance.Spawn(PROJECTILE_ID, position, rotation);
+
             if (projectileObject != null && projectileObject.TryGetComponent<Projectile>(out var projectile))
             {
                 projectile.Initialize(playerStats);
+                playerFXController.PlaySFX("Shoot", this.transform, 1);
             }
         }
 

@@ -1,7 +1,8 @@
 using UnityEngine;
 using Sirenix.OdinInspector;
 using System;
-using EchoMage.Loot; // Thêm namespace
+using EchoMage.Loot; // Namespace của StatUpgradeData
+using EchoMage.Loot.Effects; // Namespace của StatUpgradeEffect
 
 namespace EchoMage.Player
 {
@@ -22,6 +23,7 @@ namespace EchoMage.Player
     {
         public event Action OnStatsChanged;
 
+        #region Stats Fields
         [Title("Health Stats")]
         [OnValueChanged("InvokeStatsChanged")]
         [MinValue(1)]
@@ -61,41 +63,75 @@ namespace EchoMage.Player
         [Tooltip("Tổng góc bắn (độ) khi có nhiều hơn 1 viên đạn. 0 = bắn song song.")]
         [Range(0, 360)]
         public float ProjectileSpreadAngle = 15f;
+        #endregion
 
+        #region Public API for Upgrades
+
+        /// <summary>
+        /// Áp dụng nâng cấp từ hệ thống PickupEffect mới.
+        /// </summary>
+        public void ApplyUpgrade(StatUpgradeEffect upgradeEffect)
+        {
+            if (upgradeEffect == null) return;
+            ApplyUpgradeInternal(upgradeEffect.StatToUpgrade, upgradeEffect.UpgradeType, upgradeEffect.Value);
+        }
+
+        /// <summary>
+        /// (Tương thích ngược) Áp dụng nâng cấp từ hệ thống StatUpgradeData cũ.
+        /// </summary>
         public void ApplyUpgrade(StatUpgradeData upgradeData)
         {
             if (upgradeData == null) return;
+            ApplyUpgradeInternal(upgradeData.StatToUpgrade, upgradeData.UpgradeType, upgradeData.Value);
+        }
 
-            float value = upgradeData.Value;
-            switch (upgradeData.StatToUpgrade)
+        /// <summary>
+        /// Một phương thức công khai để buộc phát sự kiện OnStatsChanged.
+        /// Hữu ích cho các hệ thống thay đổi chỉ số trực tiếp (như EchoGrave).
+        /// </summary>
+        public void ForceStatsUpdate()
+        {
+            InvokeStatsChanged();
+        }
+
+        #endregion
+
+        #region Internal Logic
+
+        /// <summary>
+        /// Phương thức lõi chứa logic nâng cấp, tránh lặp lại code.
+        /// </summary>
+        private void ApplyUpgradeInternal(StatTarget statToUpgrade, StatUpgradeType upgradeType, float value)
+        {
+            switch (statToUpgrade)
             {
                 case StatTarget.MaxHP:
-                    ApplyStatChange(ref MaxHP, value, upgradeData.UpgradeType);
+                    ApplyStatChange(ref MaxHP, value, upgradeType);
+                    if (TryGetComponent<PlayerHealth>(out var health)) health.Heal(value);
                     break;
                 case StatTarget.Damage:
-                    ApplyStatChange(ref Damage, value, upgradeData.UpgradeType);
+                    ApplyStatChange(ref Damage, value, upgradeType);
                     break;
                 case StatTarget.AttackCooldown:
-                    // Attack cooldown is inverted, lower is better. Multiplicative < 1 means faster.
-                    ApplyStatChange(ref AttackCooldown, value, upgradeData.UpgradeType);
+                    ApplyStatChange(ref AttackCooldown, value, upgradeType);
                     break;
                 case StatTarget.ProjectilesPerShot:
                     ProjectilesPerShot += (int)value;
                     break;
                 case StatTarget.ProjectileSpeed:
-                    ApplyStatChange(ref ProjectileSpeed, value, upgradeData.UpgradeType);
+                    ApplyStatChange(ref ProjectileSpeed, value, upgradeType);
                     break;
                 case StatTarget.PierceCount:
                     PierceCount += (int)value;
                     break;
                 case StatTarget.ProjectileScale:
-                    ApplyStatChange(ref ProjectileScale, value, upgradeData.UpgradeType);
+                    ApplyStatChange(ref ProjectileScale, value, upgradeType);
                     break;
                 case StatTarget.ProjectileLifetime:
-                    ApplyStatChange(ref ProjectileLifetime, value, upgradeData.UpgradeType);
+                    ApplyStatChange(ref ProjectileLifetime, value, upgradeType);
                     break;
                 case StatTarget.ProjectileSpreadAngle:
-                    ApplyStatChange(ref ProjectileSpreadAngle, value, upgradeData.UpgradeType);
+                    ApplyStatChange(ref ProjectileSpreadAngle, value, upgradeType);
                     break;
             }
 
@@ -118,5 +154,6 @@ namespace EchoMage.Player
         {
             OnStatsChanged?.Invoke();
         }
+        #endregion
     }
 }

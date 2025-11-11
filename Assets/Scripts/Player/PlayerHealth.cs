@@ -37,6 +37,14 @@ namespace EchoMage.Player
             }
         }
 
+        public void Heal(float amount)
+        {
+            if (_isDead || amount <= 0) return;
+
+            _currentHealth = Mathf.Min(_currentHealth + amount, _playerStats.MaxHP);
+            OnHealthChanged?.Invoke(_currentHealth, _playerStats.MaxHP);
+        }
+
         // SỬA LỖI: Thêm phương thức để các hệ thống khác (như Despair) có thể buộc người chơi phải chết
         public void ForceKill(string reason)
         {

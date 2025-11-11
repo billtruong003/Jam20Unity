@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4877f19b6c3b0444abeaa811e637487, type: 3}
+  m_Name: WaveData 1
+  m_EditorClassIdentifier: Assembly-CSharp::EchoMage.Spawning.WaveData
+  WaveEntries:
+  - EnemyPrefab: {fileID: 352644603449048884, guid: 4e4d2c770b925e24a8c3e7b4f1c26a91, type: 3}
+    Count: 100
+    SpawnInterval: 0.35
+  - EnemyPrefab: {fileID: 2676339102802527219, guid: 8141831a48a62e54fa0a40ecc7e06320, type: 3}
+    Count: 100
+    SpawnInterval: 0.35
+  - EnemyPrefab: {fileID: 8267057542796580665, guid: 317fb726c98587a4b9ceb575a9a5ff5d, type: 3}
+    Count: 100
+    SpawnInterval: 0.35
+  - EnemyPrefab: {fileID: 5664533543751710800, guid: e0f38395b91a3d8419c836688d86583a, type: 3}
+    Count: 100
+    SpawnInterval: 0.35
+  TimeToNextWave: 5

@@ -15,9 +15,9 @@ Material:
   - _EMISSION
   - _SPECULAR_COLOR
   m_InvalidKeywords: []
-  m_LightmapFlags: 6
+  m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
+  m_DoubleSidedGI: 1
   m_CustomRenderQueue: -1
   stringTagMap:
     RenderType: Opaque
@@ -149,7 +149,7 @@ Material:
     - _CosmicScale2: 1.5
     - _CosmicScrollSpeed1: 0.05
     - _CosmicScrollSpeed2: 0.02
-    - _Cull: 2
+    - _Cull: 0
     - _CullMode: 2
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
@@ -276,7 +276,7 @@ Material:
     - _DissolveDirection: {r: 0, g: 1, b: 0, a: 0}
     - _DissolveEdgeColor: {r: 1, g: 0.5, b: 0, a: 1}
     - _DitherEdgeColor: {r: 0.5, g: 0.8, b: 1, a: 1}
-    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _EmissionColor: {r: 0.003921569, g: 0, b: 0.007843138, a: 1}
     - _EpicColor1: {r: 1, g: 0.5, b: 0, a: 1}
     - _EpicColor2: {r: 1, g: 1, b: 0, a: 1}
     - _FakeLightColor: {r: 0.8, g: 0.8, b: 0.8, a: 1}

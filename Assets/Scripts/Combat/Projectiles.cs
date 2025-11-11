@@ -5,6 +5,7 @@ using Shmackle.Utils.CoroutinesTimer;
 using System.Collections;
 using Unity.Mathematics;
 using BillUtils.ObjectPooler;
+using EchoMage.Core;
 
 namespace EchoMage.Combat
 {
@@ -16,6 +17,7 @@ namespace EchoMage.Combat
         [SerializeField] private TrailRenderer trailRenderer;
         [SerializeField] private LayerMask enemyLayer;
         [SerializeField] private LayerMask projLayer;
+        [SerializeField] private AudioClip audioClip;
         private const string PROJECTILE_HIT_ID = "PlayerProjectileHit";
         private float _damage;
         private float _speed;
@@ -46,6 +48,11 @@ namespace EchoMage.Combat
         public void OnObjectSpawn()
         {
             _currentPierce = _maxPierceCount;
+            if (_lifetimeCoroutine != null)
+            {
+                StopCoroutine(_lifetimeCoroutine);
+                _lifetimeCoroutine = null;
+            }
             _lifetimeCoroutine = StartCoroutine(ReturnToPoolAfterTime(_lifetime));
             TrailControl(true);
         }
@@ -74,6 +81,7 @@ namespace EchoMage.Combat
             if ((projLayer.value & (1 << layer)) != 0)
             {
                 ObjectPoolManager.Instance.Spawn(PROJECTILE_HIT_ID, transform.position, Quaternion.identity);
+                SoundManager.Instance.PlaySfx(audioClip, this.transform.position);
                 ReturnToPool();
                 return;
             }
@@ -84,6 +92,7 @@ namespace EchoMage.Combat
                 if (other.TryGetComponent<IDamageable>(out var damageable))
                 {
                     damageable.TakeDamage(_damage);
+                    SoundManager.Instance.PlaySfx(audioClip, this.transform.position);
                     ObjectPoolManager.Instance.Spawn(PROJECTILE_HIT_ID, transform.position, Quaternion.identity);
                     HandlePierce();
                 }

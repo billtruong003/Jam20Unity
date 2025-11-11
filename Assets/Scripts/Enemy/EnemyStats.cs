@@ -16,6 +16,7 @@ namespace EchoMage.Enemies
         public float AttackCooldown = 2f;
 
         [Header("Loot")] // Thêm mục mới
+        public int ScoreValue = 10;
         public LootTableData LootTable;
 
         [Header("VAT Animation Clips")]

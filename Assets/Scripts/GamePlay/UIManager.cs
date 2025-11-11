@@ -20,6 +20,13 @@ namespace EchoMage.UI
         [SerializeField] private GameObject gameOverScreen;
         [SerializeField] private GameObject continueScreen;
         [SerializeField] private TextMeshProUGUI gameOverReasonText;
+        [SerializeField] private GamePlayUI gamePlayUI;
+
+        [Header("Text Elements")]
+        [SerializeField] private TextMeshProUGUI finalScoreText;
+        [SerializeField] private TextMeshProUGUI currentScore;
+        [SerializeField] private TextMeshProUGUI highestScoreText;
+
 
         [Header("Gameplay Notifications")]
         [SerializeField] private TextMeshProUGUI cycleNotificationText; // Text thông báo cycle mới
@@ -43,6 +50,9 @@ namespace EchoMage.UI
                     GameManager.Instance.EnemySpawner.OnEndlessCycleStarted += HandleNewCycle;
                 }
             }
+            if (GameSessionManager.Instance == null) return;
+            GameSessionManager.Instance.OnScoreUpdated += UpdateScoreDisplay;
+            GameSessionManager.Instance.OnHighestScoreUpdated += UpdateHighestScoreDisplay;
         }
 
         private void OnDisable()
@@ -57,6 +67,19 @@ namespace EchoMage.UI
                     GameManager.Instance.EnemySpawner.OnEndlessCycleStarted -= HandleNewCycle;
                 }
             }
+            if (GameSessionManager.Instance == null) return;
+            GameSessionManager.Instance.OnScoreUpdated -= UpdateScoreDisplay;
+            GameSessionManager.Instance.OnHighestScoreUpdated -= UpdateHighestScoreDisplay;
+        }
+
+        private void UpdateScoreDisplay(int score)
+        {
+            gamePlayUI.SetCurrentScore(score);
+        }
+
+        private void UpdateHighestScoreDisplay(int highestScore)
+        {
+            gamePlayUI.SetHighestScore(highestScore);
         }
 
         private void Start()
@@ -116,11 +139,14 @@ namespace EchoMage.UI
         {
             gameOverScreen.SetActive(true);
             gameOverReasonText.text = reason;
+
         }
 
         public void ShowContinueScreen()
         {
             continueScreen.SetActive(true);
+            highestScoreText.text = "Highest Score: " + GameSessionManager.Instance.HighestScore.ToString();
+            currentScore.text = "Current Score: " + GameSessionManager.Instance.CurrentScore.ToString();
         }
 
         public void HideContinueScreen()

@@ -3,10 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using EchoMage.Core;
 using BillUtils.ObjectPooler;
+using Utilities.Timers;
 
 namespace EchoMage.Core
 {
-    [RequireComponent(typeof(AudioSource))]
     public class SoundManager : MonoBehaviour
     {
         public static SoundManager Instance { get; private set; }
@@ -50,7 +50,6 @@ namespace EchoMage.Core
             }
 
             Instance = this;
-            DontDestroyOnLoad(gameObject);
 
             InitializeAudioSources();
             PrewarmSFXPool();

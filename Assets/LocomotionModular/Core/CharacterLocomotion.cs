@@ -19,8 +19,11 @@ namespace ModularTopDown.Locomotion
 
         [Header("Physics & Feel Improvements")]
         [SerializeField] private float movementSmoothTime = 0.1f;
+        [SerializeField] private float speedSmoothTime = 0.05f; // Smooth riêng cho speed
+
         [SerializeField] private float slopeSlideSpeed = 8f;
         [SerializeField] private float coyoteTime = 0.15f;
+
 
         [Header("Ground Check Settings")]
         [SerializeField] private LayerMask groundLayer;
@@ -34,6 +37,8 @@ namespace ModularTopDown.Locomotion
         private Vector3 groundNormal;
         private int jumpsLeft;
         private int currentMaxJumps;
+        private float currentSpeed; // Speed cứng, không jitter
+        private float speedDampVelocity;
 
         public Vector3 PlayerVelocity => playerVelocity;
 
@@ -120,19 +125,33 @@ namespace ModularTopDown.Locomotion
 
         public void HandleGroundedMovement(Vector2 moveInput, bool isRunning)
         {
-            float targetMaxSpeed = isRunning ? runSpeed : walkSpeed;
-            Vector3 targetMoveVector = CalculateWorldSpaceMoveDirection(moveInput) * targetMaxSpeed;
+            // TÍNH TARGET SPEED TRƯỚC - ĐÂY LÀ SPEED CỨNG
+            float targetSpeed = moveInput.magnitude * (isRunning ? runSpeed : walkSpeed);
+            currentSpeed = Mathf.SmoothDamp(currentSpeed, targetSpeed, ref speedDampVelocity, speedSmoothTime);
 
+            // TÍNH MOVE DIRECTION RIÊNG
+            Vector3 moveDirection = CalculateWorldSpaceMoveDirection(moveInput);
+            Vector3 targetMoveVector = moveDirection * currentSpeed;
+
+            // Smooth velocity như cũ
             Vector3 horizontalVelocity = new Vector3(playerVelocity.x, 0, playerVelocity.z);
             horizontalVelocity = Vector3.SmoothDamp(horizontalVelocity, targetMoveVector, ref moveDampVelocity, movementSmoothTime);
             playerVelocity.x = horizontalVelocity.x;
             playerVelocity.z = horizontalVelocity.z;
 
+            // Apply slope slide NHƯNG KHÔNG LÀM SPEED JITTER
             Vector3 finalMove = HandleSlopeSlide(playerVelocity);
-            float currentPhysicalSpeed = new Vector3(playerVelocity.x, 0, playerVelocity.z).magnitude;
 
-            characterAnimator.UpdateMoveSpeed(currentPhysicalSpeed / runSpeed);
-            HandleRotation(targetMoveVector);
+            // DÙNG currentSpeed cho animator - KHÔNG DÙNG physical speed!
+            if (moveInput.magnitude > 0 || moveInput.magnitude < 0)
+            {
+                characterAnimator.UpdateMoveSpeed(currentSpeed / runSpeed);
+            }
+            else
+            {
+                characterAnimator.UpdateMoveSpeed(0);
+            }
+            HandleRotation(moveDirection);
             controller.Move(finalMove * Time.deltaTime);
         }
 
@@ -143,8 +162,9 @@ namespace ModularTopDown.Locomotion
             float slopeAngle = Vector3.Angle(Vector3.up, groundNormal);
             if (slopeAngle > controller.slopeLimit)
             {
-                Vector3 slideDirection = Vector3.ProjectOnPlane(Vector3.down, groundNormal).normalized * slopeSlideSpeed;
-                return new Vector3(slideDirection.x, currentVelocity.y, slideDirection.z);
+                // Chỉ override horizontal velocity khi slide, giữ nguyên speed tracking
+                Vector3 slideDirection = Vector3.ProjectOnPlane(Vector3.down, groundNormal).normalized;
+                return new Vector3(slideDirection.x * slopeSlideSpeed, currentVelocity.y, slideDirection.z * slopeSlideSpeed);
             }
             return currentVelocity;
         }

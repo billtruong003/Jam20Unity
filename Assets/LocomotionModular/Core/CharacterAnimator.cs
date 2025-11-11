@@ -19,7 +19,8 @@ namespace ModularTopDown.Locomotion
 
         public void UpdateMoveSpeed(float normalizedSpeed)
         {
-            animator.SetFloat(MoveSpeed, normalizedSpeed, 0.1f, Time.deltaTime);
+            animator.SetFloat(MoveSpeed, normalizedSpeed);
+            // animator.SetFloat(MoveSpeed, normalizedSpeed, 0.1f, Time.deltaTime);
         }
 
         public void SetGrounded(bool isGrounded)

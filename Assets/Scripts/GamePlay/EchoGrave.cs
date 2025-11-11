@@ -5,6 +5,7 @@ using EchoMage.Player;
 using UnityEngine;
 using System.Collections;
 using EchoMage.Loot;
+using EchoMage.Loot.Effects;
 
 namespace EchoMage.World
 {
@@ -70,11 +71,13 @@ namespace EchoMage.World
             {
                 for (int i = 0; i < powerBoostLevels; i++)
                 {
+                    // Thay đổi chỉ số trực tiếp
                     playerStats.Damage += _echoData.Damage * 0.1f;
                     playerStats.AttackCooldown *= 0.95f;
                 }
 
-                playerStats.ApplyUpgrade(null);
+                // Gọi phương thức mới, rõ ràng hơn để cập nhật các hệ thống khác (UI, OrbShooter,...)
+                playerStats.ForceStatsUpdate();
             }
             FinalizeChoice();
         }

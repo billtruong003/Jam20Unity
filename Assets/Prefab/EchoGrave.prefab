@@ -13,10 +13,10 @@ GameObject:
   - component: {fileID: 518013618799749265}
   m_Layer: 0
   m_Name: EchoGrave
-  m_TagString: Untagged
+  m_TagString: IgnoreProjectile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &3160138385202165993
 Transform:
@@ -88,7 +88,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!224 &7712739088774070662
 RectTransform:
@@ -626,6 +626,10 @@ PrefabInstance:
     - target: {fileID: 2371980837499936075, guid: 809d33ff399c7c0429a8f8edcae564f4, type: 3}
       propertyPath: m_Name
       value: Crushing Pull Purple
+      objectReference: {fileID: 0}
+    - target: {fileID: 2371980837499936075, guid: 809d33ff399c7c0429a8f8edcae564f4, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -105,7 +105,6 @@ namespace BillUtils.ObjectPooler
             else
             {
                 Instance = this;
-                DontDestroyOnLoad(gameObject);
             }
 
         }
@@ -420,7 +419,6 @@ namespace BillUtils.ObjectPooler
 
         #region Editor Helpers
 
-#if UNITY_EDITOR
         private PoolableItem AddNewPoolItem()
         {
             return new PoolableItem { Id = "New_Pool_" + _initialPools.Count };
@@ -431,7 +429,6 @@ namespace BillUtils.ObjectPooler
 
         [Button("Refresh Pools", ButtonSizes.Medium), PropertyOrder(103)]
         private void Editor_Refresh() => RegisterAndPreloadPools();
-#endif
 
         #endregion
     }
