@@ -17,7 +17,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &4301748353269476
 Transform:
@@ -29,8 +29,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 3080134987603750135}
   - {fileID: 6479980587291562528}
@@ -60,18 +60,18 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
+  m_StaticShadowCaster: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
+  m_RayTracingMode: 1
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
   m_ForceMeshLod: -1
   m_MeshLodSelectionBias: 0
-  m_RenderingLayerMask: 4294967295
+  m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 9dcf01808385e3b4db349ed62dbce099, type: 2}
@@ -85,10 +85,10 @@ MeshRenderer:
   m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
+  m_ImportantGI: 1
+  m_StitchLightmapSeams: 1
   m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
+  m_MinimumChartSize: 2
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
@@ -134,7 +134,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 1
   m_IsActive: 1
 --- !u!4 &3625111015703487833
 Transform:
@@ -4970,7 +4970,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 1
   m_IsActive: 1
 --- !u!4 &6903934472716731232
 Transform:
@@ -5097,7 +5097,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 1
   m_IsActive: 1
 --- !u!4 &5875742862088516209
 Transform:
@@ -5225,7 +5225,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &4113041350692133809
 Transform:
@@ -5236,7 +5236,7 @@ Transform:
   m_GameObject: {fileID: 3866435045972556780}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0.13052624, z: 0, w: 0.9914449}
-  m_LocalPosition: {x: 22.62, y: 2.14, z: 13.06}
+  m_LocalPosition: {x: 22.62, y: 0.6, z: 13.06}
   m_LocalScale: {x: 5, y: 5, z: 5}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -5261,11 +5261,11 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
+  m_StaticShadowCaster: 1
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
+  m_RayTracingMode: 1
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
@@ -5286,10 +5286,10 @@ MeshRenderer:
   m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
+  m_ImportantGI: 1
   m_StitchLightmapSeams: 1
   m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
+  m_MinimumChartSize: 2
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
@@ -5336,7 +5336,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 1
   m_IsActive: 1
 --- !u!4 &8382041313095693442
 Transform:
@@ -10172,7 +10172,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 1
   m_IsActive: 1
 --- !u!4 &7628592086122474620
 Transform:
@@ -15062,6 +15062,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mid Wall 03 One Side (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 1598774015915612, guid: c4aa4855b08d16949b130f799a51f6e7, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 4644003380736714, guid: c4aa4855b08d16949b130f799a51f6e7, type: 3}
       propertyPath: m_LocalScale.z
       value: 1.4927
@@ -15106,6 +15110,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 23590713130636912, guid: c4aa4855b08d16949b130f799a51f6e7, type: 3}
+      propertyPath: m_ImportantGI
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 23590713130636912, guid: c4aa4855b08d16949b130f799a51f6e7, type: 3}
+      propertyPath: m_RayTracingMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 23590713130636912, guid: c4aa4855b08d16949b130f799a51f6e7, type: 3}
+      propertyPath: m_MinimumChartSize
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 23590713130636912, guid: c4aa4855b08d16949b130f799a51f6e7, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 23590713130636912, guid: c4aa4855b08d16949b130f799a51f6e7, type: 3}
+      propertyPath: m_StaticShadowCaster
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 23590713130636912, guid: c4aa4855b08d16949b130f799a51f6e7, type: 3}
+      propertyPath: m_StitchLightmapSeams
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 33475798436682046, guid: c4aa4855b08d16949b130f799a51f6e7, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -15131,6 +15159,10 @@ PrefabInstance:
     - target: {fileID: 1598774015915612, guid: c4aa4855b08d16949b130f799a51f6e7, type: 3}
       propertyPath: m_Name
       value: Mid Wall 03 One Side
+      objectReference: {fileID: 0}
+    - target: {fileID: 1598774015915612, guid: c4aa4855b08d16949b130f799a51f6e7, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 4644003380736714, guid: c4aa4855b08d16949b130f799a51f6e7, type: 3}
       propertyPath: m_LocalScale.z
@@ -15175,6 +15207,30 @@ PrefabInstance:
     - target: {fileID: 4644003380736714, guid: c4aa4855b08d16949b130f799a51f6e7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 23590713130636912, guid: c4aa4855b08d16949b130f799a51f6e7, type: 3}
+      propertyPath: m_ImportantGI
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 23590713130636912, guid: c4aa4855b08d16949b130f799a51f6e7, type: 3}
+      propertyPath: m_RayTracingMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 23590713130636912, guid: c4aa4855b08d16949b130f799a51f6e7, type: 3}
+      propertyPath: m_MinimumChartSize
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 23590713130636912, guid: c4aa4855b08d16949b130f799a51f6e7, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 23590713130636912, guid: c4aa4855b08d16949b130f799a51f6e7, type: 3}
+      propertyPath: m_StaticShadowCaster
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 23590713130636912, guid: c4aa4855b08d16949b130f799a51f6e7, type: 3}
+      propertyPath: m_StitchLightmapSeams
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 33475798436682046, guid: c4aa4855b08d16949b130f799a51f6e7, type: 3}
       propertyPath: m_Mesh
@@ -15257,6 +15313,26 @@ PrefabInstance:
     - target: {fileID: 875309984078369407, guid: 2b8f90470d038b54a9e4b9dd7b198703, type: 3}
       propertyPath: m_Name
       value: SM_Prop_Torch_01 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 875309984078369407, guid: 2b8f90470d038b54a9e4b9dd7b198703, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1667815905598878634, guid: 2b8f90470d038b54a9e4b9dd7b198703, type: 3}
+      propertyPath: m_ImportantGI
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1667815905598878634, guid: 2b8f90470d038b54a9e4b9dd7b198703, type: 3}
+      propertyPath: m_RayTracingMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1667815905598878634, guid: 2b8f90470d038b54a9e4b9dd7b198703, type: 3}
+      propertyPath: m_MinimumChartSize
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1667815905598878634, guid: 2b8f90470d038b54a9e4b9dd7b198703, type: 3}
+      propertyPath: m_StaticShadowCaster
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1667815905598878634, guid: 2b8f90470d038b54a9e4b9dd7b198703, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -15347,6 +15423,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Prop_Torch_01
       objectReference: {fileID: 0}
+    - target: {fileID: 875309984078369407, guid: 2b8f90470d038b54a9e4b9dd7b198703, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1667815905598878634, guid: 2b8f90470d038b54a9e4b9dd7b198703, type: 3}
+      propertyPath: m_ImportantGI
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1667815905598878634, guid: 2b8f90470d038b54a9e4b9dd7b198703, type: 3}
+      propertyPath: m_RayTracingMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1667815905598878634, guid: 2b8f90470d038b54a9e4b9dd7b198703, type: 3}
+      propertyPath: m_MinimumChartSize
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1667815905598878634, guid: 2b8f90470d038b54a9e4b9dd7b198703, type: 3}
+      propertyPath: m_StaticShadowCaster
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1667815905598878634, guid: 2b8f90470d038b54a9e4b9dd7b198703, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -15379,6 +15475,10 @@ PrefabInstance:
     - target: {fileID: 1598774015915612, guid: c4aa4855b08d16949b130f799a51f6e7, type: 3}
       propertyPath: m_Name
       value: Mid Wall 03 One Side (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1598774015915612, guid: c4aa4855b08d16949b130f799a51f6e7, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 4644003380736714, guid: c4aa4855b08d16949b130f799a51f6e7, type: 3}
       propertyPath: m_LocalScale.z
@@ -15424,6 +15524,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 23590713130636912, guid: c4aa4855b08d16949b130f799a51f6e7, type: 3}
+      propertyPath: m_ImportantGI
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 23590713130636912, guid: c4aa4855b08d16949b130f799a51f6e7, type: 3}
+      propertyPath: m_RayTracingMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 23590713130636912, guid: c4aa4855b08d16949b130f799a51f6e7, type: 3}
+      propertyPath: m_MinimumChartSize
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 23590713130636912, guid: c4aa4855b08d16949b130f799a51f6e7, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 23590713130636912, guid: c4aa4855b08d16949b130f799a51f6e7, type: 3}
+      propertyPath: m_StaticShadowCaster
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 23590713130636912, guid: c4aa4855b08d16949b130f799a51f6e7, type: 3}
+      propertyPath: m_StitchLightmapSeams
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 33475798436682046, guid: c4aa4855b08d16949b130f799a51f6e7, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -15449,6 +15573,14 @@ PrefabInstance:
     - target: {fileID: 1143461972462378, guid: a74148f0ce995254a95c8f77c52ebff7, type: 3}
       propertyPath: m_Name
       value: Wall Torch 01
+      objectReference: {fileID: 0}
+    - target: {fileID: 1143461972462378, guid: a74148f0ce995254a95c8f77c52ebff7, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 1499679888015644, guid: a74148f0ce995254a95c8f77c52ebff7, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4461026845735168, guid: a74148f0ce995254a95c8f77c52ebff7, type: 3}
       propertyPath: m_LocalPosition.x
@@ -15489,6 +15621,30 @@ PrefabInstance:
     - target: {fileID: 4461026845735168, guid: a74148f0ce995254a95c8f77c52ebff7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 23827417670672578, guid: a74148f0ce995254a95c8f77c52ebff7, type: 3}
+      propertyPath: m_ImportantGI
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 23827417670672578, guid: a74148f0ce995254a95c8f77c52ebff7, type: 3}
+      propertyPath: m_RayTracingMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 23827417670672578, guid: a74148f0ce995254a95c8f77c52ebff7, type: 3}
+      propertyPath: m_MinimumChartSize
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 23827417670672578, guid: a74148f0ce995254a95c8f77c52ebff7, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 23827417670672578, guid: a74148f0ce995254a95c8f77c52ebff7, type: 3}
+      propertyPath: m_StaticShadowCaster
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 23827417670672578, guid: a74148f0ce995254a95c8f77c52ebff7, type: 3}
+      propertyPath: m_StitchLightmapSeams
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 108835642960497722, guid: a74148f0ce995254a95c8f77c52ebff7, type: 3}
       propertyPath: m_Color.b

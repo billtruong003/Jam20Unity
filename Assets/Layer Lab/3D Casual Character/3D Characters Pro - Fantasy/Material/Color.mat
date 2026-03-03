@@ -32,7 +32,7 @@ Material:
     RenderType: Opaque
   disabledShaderPasses:
   - MOTIONVECTORS
-  m_LockedProperties: 
+  m_LockedProperties: _AmbientColor
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -289,8 +289,8 @@ Material:
     - _AR_OffsetU: 0
     - _AR_OffsetV: 0.3
     - _ATDistance: 1
-    - _AddLightMidtoneThreshold: 0.8
-    - _AddLightRampSmoothness: 0.001
+    - _AddLightMidtoneThreshold: 1
+    - _AddLightRampSmoothness: 0.417
     - _AddLightShadowThreshold: 0.4
     - _AddPrecomputedVelocity: 0
     - _Add_Antipodean_RimLight: 0
@@ -488,7 +488,7 @@ Material:
     - _LinkDetailsWithBase: 1
     - _MatCap: 0
     - _MaterialID: 1
-    - _MaxBrightness: 1
+    - _MaxBrightness: 2
     - _MaxDissolveDistance: 1
     - _Metallic: 0
     - _MidtoneThreshold: 0.4
