@@ -37,11 +37,20 @@ namespace EchoMage.World
         {
             if (!_canInteract || _echoData == null) return;
 
-            if (Input.GetKeyDown(KeyCode.E) && !_isUsedThisLife)
+            // [FIX] Dùng SettingsManager cho keybind thay vì hardcode
+            bool interactPressed = SettingsManager.Instance != null
+                ? SettingsManager.Instance.GetActionDown("Interact")
+                : Input.GetKeyDown(KeyCode.E);
+
+            bool absorbPressed = SettingsManager.Instance != null
+                ? SettingsManager.Instance.GetActionDown("AbsorbPower")
+                : Input.GetKeyDown(KeyCode.Q);
+
+            if (interactPressed && !_isUsedThisLife)
             {
                 StartCoroutine(SummonCompanionRoutine());
             }
-            else if (Input.GetKeyDown(KeyCode.Q))
+            else if (absorbPressed)
             {
                 ChoosePowerBoost();
             }
@@ -53,14 +62,10 @@ namespace EchoMage.World
             interactionPrompt.SetActive(false);
             _canInteract = false;
 
-            // Thêm hiệu ứng triệu hồi tại đây nếu muốn
-
             yield return new WaitForSeconds(summonDelay);
 
             Instantiate(ghostCompanionPrefab, transform.position, Quaternion.identity)
                 .GetComponent<GhostCompanion>().Initialize(_echoData);
-
-            // Sau khi triệu hồi, không hủy mộ nhưng không cho tương tác lại
         }
 
         StatUpgradeData statUpgradeData = new();
@@ -71,12 +76,10 @@ namespace EchoMage.World
             {
                 for (int i = 0; i < powerBoostLevels; i++)
                 {
-                    // Thay đổi chỉ số trực tiếp
                     playerStats.Damage += _echoData.Damage * 0.1f;
                     playerStats.AttackCooldown *= 0.95f;
                 }
 
-                // Gọi phương thức mới, rõ ràng hơn để cập nhật các hệ thống khác (UI, OrbShooter,...)
                 playerStats.ForceStatsUpdate();
             }
             FinalizeChoice();
@@ -85,7 +88,7 @@ namespace EchoMage.World
         private void FinalizeChoice()
         {
             interactionPrompt.SetActive(false);
-            Destroy(gameObject); // Chỉ hủy mộ khi hấp thụ
+            Destroy(gameObject);
         }
 
         private void OnTriggerEnter(Collider other)

@@ -87,12 +87,30 @@ namespace EchoMage.Enemies
         private void HandleDeath()
         {
             GameManager.Instance.UnregisterEnemy(gameObject);
-            GameSessionManager.Instance.AddScore(_baseStats.ScoreValue); // <-- DÒNG MỚI
+            GameSessionManager.Instance.AddScore(_baseStats.ScoreValue);
             HandleLootDrop();
             NavAgent.enabled = false;
             GetComponent<Collider>().enabled = false;
             VatAnimator.CrossFade(_baseStats.DeathClipName, 0.1f);
             Invoke(nameof(ReturnToPool), 1.5f);
+        }
+
+        /// <summary>
+        /// [MỚI] Buộc enemy chết ngay lập tức (dùng cho hiệu ứng nổ khi Boss chết).
+        /// Không drop loot, không có animation chết dài.
+        /// </summary>
+        public void ForceKill()
+        {
+            if (_currentState == State.Dead) return;
+            _currentState = State.Dead;
+
+            GameManager.Instance.UnregisterEnemy(gameObject);
+            GameSessionManager.Instance.AddScore(_baseStats.ScoreValue);
+            NavAgent.enabled = false;
+            GetComponent<Collider>().enabled = false;
+
+            // Trả về pool ngay (không cần đợi animation)
+            ReturnToPool();
         }
 
         private void HandleLootDrop()
@@ -148,7 +166,8 @@ namespace EchoMage.Enemies
             ObjectPoolManager.Instance.Despawn(gameObject);
         }
 
-        public void OnObjectSpawn()
+        // [FIX] Đổi thành virtual để các class con có thể override đúng cách
+        public virtual void OnObjectSpawn()
         {
             _currentState = State.Spawning;
             NavAgent.enabled = true;
@@ -158,7 +177,8 @@ namespace EchoMage.Enemies
             SwitchState(State.Chasing);
         }
 
-        public void OnObjectReturn()
+        // [FIX] Đổi thành virtual để SpeedEnemy override đúng thay vì dùng 'new'
+        public virtual void OnObjectReturn()
         {
             if (_currentState != State.Dead)
             {

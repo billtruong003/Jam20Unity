@@ -33,7 +33,6 @@ namespace EchoMage.Combat
             public int PierceCount;
             public float Lifetime;
             public float Scale;
-            // You could add more here later, like a "DamageType" enum or "StatusEffect"
         }
 
         public void Initialize(PlayerStats stats)
@@ -77,16 +76,17 @@ namespace EchoMage.Combat
             if (other.CompareTag("Player") || other.CompareTag("IgnoreProjectile")) return;
 
             layer = other.gameObject.layer;
-            // If the object's layer is included in the projLayer mask (friendly/projectile layer)
+
+            // [FIX] Kiểm tra projectile layer - va chạm với đạn khác
             if ((projLayer.value & (1 << layer)) != 0)
             {
                 ObjectPoolManager.Instance.Spawn(PROJECTILE_HIT_ID, transform.position, Quaternion.identity);
                 SoundManager.Instance.PlaySfx(audioClip, this.transform.position);
                 ReturnToPool();
-                return;
+                return; // OK - đã return
             }
 
-            // If the object's layer is included in the enemyLayer mask
+            // [FIX] Kiểm tra enemy layer - GÂY SÁT THƯƠNG
             if ((enemyLayer.value & (1 << layer)) != 0)
             {
                 if (other.TryGetComponent<IDamageable>(out var damageable))
@@ -96,13 +96,16 @@ namespace EchoMage.Combat
                     ObjectPoolManager.Instance.Spawn(PROJECTILE_HIT_ID, transform.position, Quaternion.identity);
                     HandlePierce();
                 }
-                // Không return → rơi xuống default để destroy
+                // [BUG FIX] PHẢI return ở đây! Code cũ thiếu return nên rơi xuống
+                // default block bên dưới, khiến đạn LUÔN bị hủy ngay cả khi còn pierce.
+                return;
             }
 
-            // DEFAULT: Hit walls/environment/other → Destroy luôn
+            // DEFAULT: Va chạm với tường/môi trường → Hủy luôn
             ObjectPoolManager.Instance.Spawn(PROJECTILE_HIT_ID, transform.position, Quaternion.identity);
             ReturnToPool();
         }
+
         private void HandlePierce()
         {
             _currentPierce--;

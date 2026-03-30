@@ -1,8 +1,9 @@
 using EchoMage.Core;
+using EchoMage.Enemies;
 using EchoMage.Player;
 using UnityEngine;
 using TMPro;
-using System.Collections; // Thêm để sử dụng Coroutine
+using System.Collections;
 
 namespace EchoMage.UI
 {
@@ -16,6 +17,13 @@ namespace EchoMage.UI
         [SerializeField] private UIBillProgress despairBar;
         [SerializeField] private TextMeshProUGUI despairText;
 
+        [Header("Boss UI")]
+        [Tooltip("Panel chứa thanh máu Boss (ẩn khi không có Boss).")]
+        [SerializeField] private GameObject bossHealthPanel;
+        [SerializeField] private UIBillProgress bossHealthBar;
+        [SerializeField] private TextMeshProUGUI bossNameText;
+        [SerializeField] private TextMeshProUGUI bossHealthText;
+
         [Header("State Screens")]
         [SerializeField] private GameObject gameOverScreen;
         [SerializeField] private GameObject continueScreen;
@@ -27,16 +35,22 @@ namespace EchoMage.UI
         [SerializeField] private TextMeshProUGUI currentScore;
         [SerializeField] private TextMeshProUGUI highestScoreText;
 
+        [Header("Game Over Score Display")]
+        [SerializeField] private TextMeshProUGUI gameOverScoreText;
+        [SerializeField] private TextMeshProUGUI gameOverHighScoreText;
+        [SerializeField] private TextMeshProUGUI newHighScoreLabel;
 
         [Header("Gameplay Notifications")]
-        [SerializeField] private TextMeshProUGUI cycleNotificationText; // Text thông báo cycle mới
+        [SerializeField] private TextMeshProUGUI cycleNotificationText;
+        [SerializeField] private TextMeshProUGUI bossNotificationText;
 
         [Header("Dependencies")]
         [SerializeField] private DespairSystem despairSystem;
 
         private PlayerHealth _currentPlayerHealth;
+        private BossEnemy _currentBoss;
         private Coroutine _notificationCoroutine;
-
+        private Coroutine _bossNotificationCoroutine;
 
         private void OnEnable()
         {
@@ -44,7 +58,6 @@ namespace EchoMage.UI
             if (GameManager.Instance != null)
             {
                 GameManager.Instance.OnPlayerSpawned += HandlePlayerSpawned;
-                // Lắng nghe sự kiện từ Spawner
                 if (GameManager.Instance.EnemySpawner != null)
                 {
                     GameManager.Instance.EnemySpawner.OnEndlessCycleStarted += HandleNewCycle;
@@ -59,6 +72,7 @@ namespace EchoMage.UI
         {
             if (despairSystem != null) despairSystem.OnDespairChanged -= UpdateDespairUI;
             if (_currentPlayerHealth != null) _currentPlayerHealth.OnHealthChanged -= UpdateHealthUI;
+            UnsubscribeBoss();
             if (GameManager.Instance != null)
             {
                 GameManager.Instance.OnPlayerSpawned -= HandlePlayerSpawned;
@@ -87,32 +101,19 @@ namespace EchoMage.UI
             gameOverScreen.SetActive(false);
             continueScreen.SetActive(false);
             cycleNotificationText.gameObject.SetActive(false);
+
+            if (bossHealthPanel != null) bossHealthPanel.SetActive(false);
+            if (bossNotificationText != null) bossNotificationText.gameObject.SetActive(false);
+            if (newHighScoreLabel != null) newHighScoreLabel.gameObject.SetActive(false);
+
             if (despairSystem != null)
             {
                 despairSystem.InitializeDespair();
             }
         }
 
-        private void HandleNewCycle(int cycleCount)
-        {
-            if (_notificationCoroutine != null)
-            {
-                StopCoroutine(_notificationCoroutine);
-            }
-            _notificationCoroutine = StartCoroutine(ShowCycleNotification(cycleCount));
-        }
+        #region Player Health
 
-        private IEnumerator ShowCycleNotification(int cycleCount)
-        {
-            cycleNotificationText.text = $"Endless Cycle {cycleCount}";
-            cycleNotificationText.gameObject.SetActive(true);
-
-            yield return new WaitForSeconds(3.0f); // Hiển thị trong 3 giây
-
-            cycleNotificationText.gameObject.SetActive(false);
-        }
-
-        // ... các hàm còn lại không thay đổi ...
         private void HandlePlayerSpawned(GameObject newPlayer)
         {
             if (_currentPlayerHealth != null) _currentPlayerHealth.OnHealthChanged -= UpdateHealthUI;
@@ -129,17 +130,135 @@ namespace EchoMage.UI
             if (healthText != null) healthText.text = $"{Mathf.CeilToInt(current)} / {Mathf.CeilToInt(max)}";
         }
 
+        #endregion
+
+        #region Despair
+
         private void UpdateDespairUI(float current, float max)
         {
             despairBar?.SetProgress(current, max);
             if (despairText != null) despairText.text = $"{Mathf.FloorToInt(current)} / {Mathf.FloorToInt(max)}";
         }
 
+        #endregion
+
+        #region Boss Health Bar
+
+        /// <summary>
+        /// Hiển thị thanh máu Boss trên HUD gameplay.
+        /// </summary>
+        public void ShowBossHealthBar(GameObject bossInstance)
+        {
+            if (bossInstance == null || bossHealthPanel == null) return;
+
+            UnsubscribeBoss();
+
+            if (bossInstance.TryGetComponent<BossEnemy>(out _currentBoss))
+            {
+                _currentBoss.OnBossHealthChanged += UpdateBossHealthUI;
+                bossHealthPanel.SetActive(true);
+
+                if (bossNameText != null)
+                    bossNameText.text = "BOSS";
+
+                // Hiển thị notification
+                ShowBossNotification("A BOSS HAS APPEARED!");
+            }
+        }
+
+        /// <summary>
+        /// Ẩn thanh máu Boss.
+        /// </summary>
+        public void HideBossHealthBar()
+        {
+            UnsubscribeBoss();
+
+            if (bossHealthPanel != null)
+                bossHealthPanel.SetActive(false);
+
+            ShowBossNotification("BOSS DEFEATED!");
+        }
+
+        private void UpdateBossHealthUI(float current, float max)
+        {
+            bossHealthBar?.SetProgress(current, max);
+            if (bossHealthText != null)
+                bossHealthText.text = $"{Mathf.CeilToInt(current)} / {Mathf.CeilToInt(max)}";
+        }
+
+        private void UnsubscribeBoss()
+        {
+            if (_currentBoss != null)
+            {
+                _currentBoss.OnBossHealthChanged -= UpdateBossHealthUI;
+                _currentBoss = null;
+            }
+        }
+
+        private void ShowBossNotification(string message)
+        {
+            if (bossNotificationText == null) return;
+
+            if (_bossNotificationCoroutine != null)
+                StopCoroutine(_bossNotificationCoroutine);
+
+            _bossNotificationCoroutine = StartCoroutine(ShowBossNotificationRoutine(message));
+        }
+
+        private IEnumerator ShowBossNotificationRoutine(string message)
+        {
+            bossNotificationText.text = message;
+            bossNotificationText.gameObject.SetActive(true);
+            yield return new WaitForSeconds(3f);
+            bossNotificationText.gameObject.SetActive(false);
+        }
+
+        #endregion
+
+        #region Cycle Notifications
+
+        private void HandleNewCycle(int cycleCount)
+        {
+            if (_notificationCoroutine != null)
+            {
+                StopCoroutine(_notificationCoroutine);
+            }
+            _notificationCoroutine = StartCoroutine(ShowCycleNotification(cycleCount));
+        }
+
+        private IEnumerator ShowCycleNotification(int cycleCount)
+        {
+            cycleNotificationText.text = $"Endless Cycle {cycleCount}";
+            cycleNotificationText.gameObject.SetActive(true);
+            yield return new WaitForSeconds(3.0f);
+            cycleNotificationText.gameObject.SetActive(false);
+        }
+
+        #endregion
+
+        #region Game State Screens
+
         public void ShowGameOverScreen(string reason)
         {
             gameOverScreen.SetActive(true);
             gameOverReasonText.text = reason;
 
+            // [MỚI] Hiển thị điểm chi tiết
+            if (GameSessionManager.Instance != null)
+            {
+                int finalScore = GameSessionManager.Instance.CurrentScore;
+                int highScore = GameSessionManager.Instance.HighestScore;
+
+                if (gameOverScoreText != null)
+                    gameOverScoreText.text = $"Score: {finalScore}";
+
+                if (gameOverHighScoreText != null)
+                    gameOverHighScoreText.text = $"Best: {highScore}";
+
+                // Hiển thị "NEW HIGH SCORE!" nếu đạt điểm cao mới
+                if (newHighScoreLabel != null)
+                    newHighScoreLabel.gameObject.SetActive(finalScore >= highScore && finalScore > 0);
+            }
         }
 
         public void ShowContinueScreen()
@@ -153,5 +272,7 @@ namespace EchoMage.UI
         {
             continueScreen.SetActive(false);
         }
+
+        #endregion
     }
 }

@@ -1,0 +1,265 @@
+using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
+using System.Collections;
+using System.Collections.Generic;
+
+namespace EchoMage.Core
+{
+    /// <summary>
+    /// UI Controller cho Settings panel.
+    /// Gắn vào Settings Panel GameObject.
+    /// </summary>
+    public class SettingsUI : MonoBehaviour
+    {
+        [Header("Audio Controls")]
+        [SerializeField] private Slider musicVolumeSlider;
+        [SerializeField] private TextMeshProUGUI musicVolumeText;
+        [SerializeField] private Slider sfxVolumeSlider;
+        [SerializeField] private TextMeshProUGUI sfxVolumeText;
+
+        [Header("Keybind Section")]
+        [SerializeField] private Transform keybindListParent;
+        [SerializeField] private GameObject keybindEntryPrefab;
+
+        [Header("Buttons")]
+        [SerializeField] private Button resetDefaultsButton;
+        [SerializeField] private Button backButton;
+
+        private bool _isWaitingForKey = false;
+        private string _pendingActionName;
+        private TextMeshProUGUI _pendingButtonText;
+
+        private Dictionary<string, TextMeshProUGUI> _keybindDisplays = new Dictionary<string, TextMeshProUGUI>();
+
+        private void OnEnable()
+        {
+            InitializeUI();
+        }
+
+        private void InitializeUI()
+        {
+            if (SettingsManager.Instance == null) return;
+
+            // Setup Audio Sliders
+            if (musicVolumeSlider != null)
+            {
+                musicVolumeSlider.value = SettingsManager.Instance.MusicVolume;
+                musicVolumeSlider.onValueChanged.RemoveAllListeners();
+                musicVolumeSlider.onValueChanged.AddListener(OnMusicVolumeChanged);
+                UpdateMusicVolumeText(SettingsManager.Instance.MusicVolume);
+            }
+
+            if (sfxVolumeSlider != null)
+            {
+                sfxVolumeSlider.value = SettingsManager.Instance.SFXVolume;
+                sfxVolumeSlider.onValueChanged.RemoveAllListeners();
+                sfxVolumeSlider.onValueChanged.AddListener(OnSFXVolumeChanged);
+                UpdateSFXVolumeText(SettingsManager.Instance.SFXVolume);
+            }
+
+            // Setup Keybind List
+            PopulateKeybindList();
+
+            // Setup Buttons
+            if (resetDefaultsButton != null)
+            {
+                resetDefaultsButton.onClick.RemoveAllListeners();
+                resetDefaultsButton.onClick.AddListener(OnResetDefaults);
+            }
+
+            if (backButton != null)
+            {
+                backButton.onClick.RemoveAllListeners();
+                backButton.onClick.AddListener(OnBackPressed);
+            }
+        }
+
+        private void Update()
+        {
+            // Lắng nghe phím khi đang chờ rebind
+            if (_isWaitingForKey)
+            {
+                foreach (KeyCode key in System.Enum.GetValues(typeof(KeyCode)))
+                {
+                    if (Input.GetKeyDown(key))
+                    {
+                        // Bỏ qua một số phím đặc biệt
+                        if (key == KeyCode.Escape)
+                        {
+                            CancelRebind();
+                            return;
+                        }
+
+                        CompleteRebind(key);
+                        return;
+                    }
+                }
+            }
+        }
+
+        #region Audio
+
+        private void OnMusicVolumeChanged(float value)
+        {
+            SettingsManager.Instance.SetMusicVolume(value);
+            UpdateMusicVolumeText(value);
+        }
+
+        private void OnSFXVolumeChanged(float value)
+        {
+            SettingsManager.Instance.SetSFXVolume(value);
+            UpdateSFXVolumeText(value);
+        }
+
+        private void UpdateMusicVolumeText(float value)
+        {
+            if (musicVolumeText != null)
+                musicVolumeText.text = $"{Mathf.RoundToInt(value * 100)}%";
+        }
+
+        private void UpdateSFXVolumeText(float value)
+        {
+            if (sfxVolumeText != null)
+                sfxVolumeText.text = $"{Mathf.RoundToInt(value * 100)}%";
+        }
+
+        #endregion
+
+        #region Keybinds
+
+        private void PopulateKeybindList()
+        {
+            if (keybindListParent == null || keybindEntryPrefab == null) return;
+
+            // Xóa entries cũ
+            foreach (Transform child in keybindListParent)
+            {
+                Destroy(child.gameObject);
+            }
+            _keybindDisplays.Clear();
+
+            var keybinds = SettingsManager.Instance.GetAllKeybinds();
+            foreach (var kvp in keybinds)
+            {
+                GameObject entry = Instantiate(keybindEntryPrefab, keybindListParent);
+
+                // Giả sử prefab có: TextMeshProUGUI cho tên action, Button để rebind
+                TextMeshProUGUI actionLabel = entry.transform.Find("ActionLabel")?.GetComponent<TextMeshProUGUI>();
+                Button rebindButton = entry.transform.Find("RebindButton")?.GetComponent<Button>();
+                TextMeshProUGUI keyLabel = rebindButton?.GetComponentInChildren<TextMeshProUGUI>();
+
+                if (actionLabel != null) actionLabel.text = kvp.Key;
+                if (keyLabel != null)
+                {
+                    keyLabel.text = GetKeyDisplayName(kvp.Value);
+                    _keybindDisplays[kvp.Key] = keyLabel;
+                }
+
+                if (rebindButton != null)
+                {
+                    string actionName = kvp.Key;
+                    rebindButton.onClick.AddListener(() => StartRebind(actionName, keyLabel));
+                }
+            }
+        }
+
+        private void StartRebind(string actionName, TextMeshProUGUI buttonText)
+        {
+            if (_isWaitingForKey) return;
+
+            _isWaitingForKey = true;
+            _pendingActionName = actionName;
+            _pendingButtonText = buttonText;
+
+            if (_pendingButtonText != null)
+                _pendingButtonText.text = "Press a key...";
+        }
+
+        private void CompleteRebind(KeyCode newKey)
+        {
+            SettingsManager.Instance.SetKeybind(_pendingActionName, newKey);
+
+            if (_pendingButtonText != null)
+                _pendingButtonText.text = GetKeyDisplayName(newKey);
+
+            // Cập nhật tất cả display (vì có thể xảy ra hoán đổi)
+            RefreshAllKeybindDisplays();
+
+            _isWaitingForKey = false;
+            _pendingActionName = null;
+            _pendingButtonText = null;
+        }
+
+        private void CancelRebind()
+        {
+            if (_pendingButtonText != null)
+            {
+                KeyCode currentKey = SettingsManager.Instance.GetKeybind(_pendingActionName);
+                _pendingButtonText.text = GetKeyDisplayName(currentKey);
+            }
+
+            _isWaitingForKey = false;
+            _pendingActionName = null;
+            _pendingButtonText = null;
+        }
+
+        private void RefreshAllKeybindDisplays()
+        {
+            var keybinds = SettingsManager.Instance.GetAllKeybinds();
+            foreach (var kvp in keybinds)
+            {
+                if (_keybindDisplays.TryGetValue(kvp.Key, out var display) && display != null)
+                {
+                    display.text = GetKeyDisplayName(kvp.Value);
+                }
+            }
+        }
+
+        private string GetKeyDisplayName(KeyCode key)
+        {
+            return key switch
+            {
+                KeyCode.Mouse0 => "LMB",
+                KeyCode.Mouse1 => "RMB",
+                KeyCode.Mouse2 => "MMB",
+                KeyCode.LeftShift => "L-Shift",
+                KeyCode.RightShift => "R-Shift",
+                KeyCode.LeftControl => "L-Ctrl",
+                KeyCode.RightControl => "R-Ctrl",
+                KeyCode.LeftAlt => "L-Alt",
+                KeyCode.RightAlt => "R-Alt",
+                KeyCode.Space => "Space",
+                KeyCode.Return => "Enter",
+                _ => key.ToString()
+            };
+        }
+
+        #endregion
+
+        #region Buttons
+
+        private void OnResetDefaults()
+        {
+            SettingsManager.Instance.ResetAllSettings();
+
+            // Refresh UI
+            if (musicVolumeSlider != null) musicVolumeSlider.value = 1f;
+            if (sfxVolumeSlider != null) sfxVolumeSlider.value = 1f;
+            UpdateMusicVolumeText(1f);
+            UpdateSFXVolumeText(1f);
+
+            RefreshAllKeybindDisplays();
+        }
+
+        private void OnBackPressed()
+        {
+            if (PauseManager.Instance != null)
+            {
+                PauseManager.Instance.CloseSettings();
+            }
+        }
+
+        #endregion
+    }
+}

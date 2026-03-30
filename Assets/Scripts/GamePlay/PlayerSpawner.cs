@@ -33,7 +33,10 @@ namespace EchoMage.Player
 
         private IEnumerator RespawnCoroutine()
         {
-            yield return new WaitForSeconds(respawnDelay);
+            // [FIX] Dùng WaitForSecondsRealtime thay vì WaitForSeconds
+            // vì khi player chết, Time.timeScale có thể = 0 (HandlePlayerDeath set timeScale = 0)
+            // WaitForSeconds sẽ KHÔNG chạy khi timeScale = 0, gây bug player không respawn
+            yield return new WaitForSecondsRealtime(respawnDelay);
             SpawnPlayer();
         }
 

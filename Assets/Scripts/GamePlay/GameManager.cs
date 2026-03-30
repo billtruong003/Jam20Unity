@@ -48,6 +48,32 @@ namespace EchoMage.Core
             Instance = this;
         }
 
+        private void Start()
+        {
+            // Bắt đầu nhạc gameplay
+            // MusicManager tự phát nhạc qua AudioSource riêng — KHÔNG dùng SoundManager
+            if (MusicManager.Instance != null)
+            {
+                MusicManager.Instance.PlayGameplayMusic();
+            }
+
+            // Lắng nghe events từ EnemySpawner cho Boss
+            if (EnemySpawner != null)
+            {
+                EnemySpawner.OnBossSpawned += HandleBossSpawned;
+                EnemySpawner.OnBossKilled += HandleBossKilled;
+            }
+        }
+
+        private void OnDestroy()
+        {
+            if (EnemySpawner != null)
+            {
+                EnemySpawner.OnBossSpawned -= HandleBossSpawned;
+                EnemySpawner.OnBossKilled -= HandleBossKilled;
+            }
+        }
+
         private void Update()
         {
             if (_isGameOver || PlayerTransform == null) return;
@@ -62,6 +88,11 @@ namespace EchoMage.Core
             PlayerStats = playerInstance.GetComponent<PlayerStats>();
             ResetAllGravesForNewLife();
             OnPlayerSpawned?.Invoke(playerInstance);
+
+            if (PauseManager.Instance != null)
+            {
+                PauseManager.Instance.SetGameOverState(false);
+            }
         }
 
         public void HandlePlayerDeath(PlayerStats deadPlayerStats, Vector3 deathPosition)
@@ -71,6 +102,8 @@ namespace EchoMage.Core
 
             Time.timeScale = 0f;
             CleanupAllEnemies();
+
+            GameSessionManager.Instance.HandlePlayerDeath(DeathCause.HealthDepletion);
             UIManager.ShowContinueScreen();
         }
 
@@ -80,6 +113,12 @@ namespace EchoMage.Core
             UIManager.HideContinueScreen();
             EnemySpawner.ResetAndRestartWaves();
             PlayerSpawner.RequestRespawn();
+
+            // Quay lại nhạc gameplay
+            if (MusicManager.Instance != null)
+            {
+                MusicManager.Instance.PlayGameplayMusic();
+            }
         }
 
         private void CreateEchoGrave(PlayerStats stats, Vector3 position)
@@ -100,6 +139,18 @@ namespace EchoMage.Core
 
             _isGameOver = true;
             Time.timeScale = 0f;
+
+            if (PauseManager.Instance != null)
+            {
+                PauseManager.Instance.SetGameOverState(true);
+            }
+
+            if (MusicManager.Instance != null)
+            {
+                MusicManager.Instance.PlayGameOverMusic();
+            }
+
+            GameSessionManager.Instance.HandlePlayerDeath(DeathCause.Despair);
             UIManager.ShowGameOverScreen(reason);
         }
 
@@ -107,12 +158,14 @@ namespace EchoMage.Core
 
         public void UnregisterEnemy(GameObject enemy)
         {
-            // === ĐÂY LÀ PHẦN SỬA LỖI ===
-            // Phương thức Remove của HashSet trả về true nếu phần tử tồn tại và đã được xóa thành công.
-            // Đây chính là điều kiện hoàn hảo để xác định một "kill" hợp lệ.
             if (_activeEnemies.Remove(enemy))
             {
                 DespairSystem.ReduceDespairOnKill();
+
+                if (EnemySpawner != null)
+                {
+                    EnemySpawner.NotifyEnemyRemoved();
+                }
             }
         }
 
@@ -142,5 +195,30 @@ namespace EchoMage.Core
                 grave.ResetForNewLife();
             }
         }
+
+        #region Boss Events
+
+        private void HandleBossSpawned()
+        {
+            if (MusicManager.Instance != null)
+            {
+                MusicManager.Instance.PlayBossMusic();
+            }
+
+            UIManager.ShowBossHealthBar(EnemySpawner.CurrentBossInstance);
+        }
+
+        private void HandleBossKilled()
+        {
+            // [FIX] Typo cũ: ResumGameplayMusic → ResumeGameplayMusic
+            if (MusicManager.Instance != null)
+            {
+                MusicManager.Instance.ResumeGameplayMusic();
+            }
+
+            UIManager.HideBossHealthBar();
+        }
+
+        #endregion
     }
 }

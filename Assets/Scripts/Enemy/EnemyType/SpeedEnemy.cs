@@ -30,14 +30,12 @@ namespace EchoMage.Enemies
         private IEnumerator DashAttackRoutine()
         {
             _isDashing = true;
-            NavAgent.enabled = false; // Tắt NavMeshAgent để điều khiển thủ công
+            NavAgent.enabled = false;
 
-            // Giai đoạn chuẩn bị (Telegraph)
-            // Có thể thêm hiệu ứng hình ảnh/âm thanh ở đây để cảnh báo người chơi
             yield return new WaitForSeconds(_telegraphDuration);
 
             Vector3 startPosition = transform.position;
-            Vector3 targetPosition = PlayerTarget.position; // Chốt vị trí của người chơi tại thời điểm lao tới
+            Vector3 targetPosition = PlayerTarget.position;
             float distanceToTarget = Vector3.Distance(startPosition, targetPosition);
             float dashDuration = distanceToTarget / _dashSpeed;
             float elapsedTime = 0f;
@@ -47,14 +45,12 @@ namespace EchoMage.Enemies
                 float interpolationRatio = elapsedTime / dashDuration;
                 transform.position = Vector3.Lerp(startPosition, targetPosition, interpolationRatio);
 
-                // Kiểm tra va chạm với người chơi trong khi đang lao
                 if (Physics.CheckSphere(transform.position, 1.0f, _playerLayerMask))
                 {
                     if (PlayerTarget.TryGetComponent<IDamageable>(out var playerDamageable))
                     {
                         playerDamageable.TakeDamage(_baseStats.Damage * _threatMultiplier);
                     }
-                    // Đã gây sát thương, kết thúc cú lao
                     break;
                 }
 
@@ -62,12 +58,13 @@ namespace EchoMage.Enemies
                 yield return null;
             }
 
-            NavAgent.enabled = true; // Bật lại NavMeshAgent
+            NavAgent.enabled = true;
             _isDashing = false;
         }
 
-        // Đảm bảo coroutine được dừng khi object bị trả về pool
-        public new void OnObjectReturn()
+        // [BUG FIX] Sử dụng 'override' thay vì 'new' để polymorphism hoạt động đúng
+        // Khi ObjectPool gọi qua interface IPoolableObject, method đúng sẽ được gọi
+        public override void OnObjectReturn()
         {
             base.OnObjectReturn();
             if (_dashCoroutine != null)
