@@ -69,10 +69,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EchoMage.Loot.UpgradePickup
   effect: {fileID: 11400000, guid: 510d241745e8cab4db4166262f07f229, type: 2}
-  pickupEffectPrefab: {fileID: 6279176673861849782}
+  pickupEffectPrefab: {fileID: 3758703766934008911, guid: 514425abd9c3d8c49800872ccd66c761, type: 3}
   pickupSound: {fileID: 8300000, guid: 16c3c05b7bdbe684c97a291e8be14ab9, type: 3}
   attractionRadius: 5
   attractionSpeed: 8
+  lifetime: 15
+  blinkWarningTime: 3
+  blinkRate: 6
 --- !u!1 &7181112979077910248
 GameObject:
   m_ObjectHideFlags: 0
@@ -263,6 +266,10 @@ PrefabInstance:
       value: LevelupNovaRed
       objectReference: {fileID: 0}
     - target: {fileID: 3758703766934008911, guid: 514425abd9c3d8c49800872ccd66c761, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3758703766934008911, guid: 514425abd9c3d8c49800872ccd66c761, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -271,11 +278,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 514425abd9c3d8c49800872ccd66c761, type: 3}
---- !u!1 &6279176673861849782 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3758703766934008911, guid: 514425abd9c3d8c49800872ccd66c761, type: 3}
-  m_PrefabInstance: {fileID: 7137506960918865657}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7085058250193894861 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 98703379960929076, guid: 514425abd9c3d8c49800872ccd66c761, type: 3}

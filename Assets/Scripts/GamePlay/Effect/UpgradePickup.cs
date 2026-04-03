@@ -1,12 +1,13 @@
 using UnityEngine;
 using EchoMage.Core;
 using BillUtils.ObjectPooler;
-using EchoMage.Loot.Effects; // Namespace mới của chúng ta
+using EchoMage.Loot.Effects;
+using System.Collections;
 
 namespace EchoMage.Loot
 {
     [RequireComponent(typeof(Collider))]
-    public class Pickup : MonoBehaviour, IPoolableObject // Giữ lại IPoolableObject để tối ưu
+    public class Pickup : MonoBehaviour, IPoolableObject
     {
         [Tooltip("Hiệu ứng sẽ được áp dụng khi nhặt vật phẩm này.")]
         [SerializeField] private PickupEffect effect;
@@ -19,18 +20,66 @@ namespace EchoMage.Loot
         [SerializeField] private float attractionRadius = 5f;
         [SerializeField] private float attractionSpeed = 8f;
 
+        [Header("Lifetime")]
+        [Tooltip("Thời gian tồn tại (giây) trước khi tự despawn. 0 = vô hạn.")]
+        [SerializeField] private float lifetime = 15f;
+
+        [Tooltip("Bắt đầu nhấp nháy bao nhiêu giây trước khi biến mất.")]
+        [SerializeField] private float blinkWarningTime = 3f;
+
+        [Tooltip("Tốc độ nhấp nháy (lần/giây).")]
+        [SerializeField] private float blinkRate = 6f;
+
         private Transform _playerTransform;
         private bool _isAttracted = false;
         private bool _isAlive = true;
+        private float _spawnTime;
+        private Renderer _renderer;
+        private bool _isBlinking = false;
 
-        private void OnEnable()
+        private void Awake()
         {
-            FindPlayerReference();
+            _renderer = GetComponentInChildren<Renderer>();
         }
 
         private void Update()
         {
-            if (!_isAlive || _playerTransform == null) return;
+            if (!_isAlive) return;
+
+            // [FIX] Xử lý lifetime — auto despawn
+            if (lifetime > 0f)
+            {
+                float age = Time.time - _spawnTime;
+                float timeLeft = lifetime - age;
+
+                // Bắt đầu blink khi gần hết hạn
+                if (timeLeft <= blinkWarningTime && !_isBlinking)
+                {
+                    _isBlinking = true;
+                }
+
+                // Hết hạn → despawn
+                if (timeLeft <= 0f)
+                {
+                    ReturnToPool();
+                    return;
+                }
+            }
+
+            // Blink effect
+            if (_isBlinking && _renderer != null)
+            {
+                bool visible = Mathf.Sin(Time.time * blinkRate * Mathf.PI * 2f) > 0f;
+                _renderer.enabled = visible;
+            }
+
+            // [FIX] Không chạy attraction logic khi player đã chết
+            if (_playerTransform == null)
+            {
+                // Thử tìm lại player (có thể đã respawn)
+                FindPlayerReference();
+                return; // Không chạy attraction — tiết kiệm performance
+            }
 
             if (!_isAttracted)
             {
@@ -88,6 +137,10 @@ namespace EchoMage.Loot
         private void ReturnToPool()
         {
             _isAlive = false;
+
+            // [FIX] Đảm bảo renderer bật lại trước khi về pool
+            if (_renderer != null) _renderer.enabled = true;
+
             ObjectPoolManager.Instance.Despawn(gameObject);
         }
 
@@ -95,12 +148,21 @@ namespace EchoMage.Loot
         {
             _isAlive = true;
             _isAttracted = false;
+            _isBlinking = false;
+            _spawnTime = Time.time;
+
+            // Reset renderer
+            if (_renderer != null) _renderer.enabled = true;
+
             FindPlayerReference();
         }
 
         public void OnObjectReturn()
         {
             _playerTransform = null;
+            _isBlinking = false;
+
+            if (_renderer != null) _renderer.enabled = true;
         }
     }
 }

@@ -18,6 +18,9 @@ namespace EchoMage.Enemies
 
         protected float _currentHealth;
         protected float _threatMultiplier = 1f;
+        // [MỚI] Separate multipliers cho damage và speed
+        protected float _damageMultiplier = 1f;
+        protected float _speedMultiplier = 1f;
         protected TimeGate _attackCooldownGate;
 
         private enum State { Spawning, Idle, Chasing, Attacking, Stunned, Dead }
@@ -29,15 +32,30 @@ namespace EchoMage.Enemies
             VatAnimator = GetComponent<VAT_Animator>();
         }
 
-        public void Initialize(Transform target, float threatLevel)
+        /// <summary>
+        /// [MỚI] Initialize với separate multipliers từ DifficultyManager.
+        /// HP, Damage, Speed đều scale độc lập theo curve riêng.
+        /// </summary>
+        public void InitializeWithDifficulty(Transform target, float healthMult, float damageMult, float speedMult)
         {
             PlayerTarget = target;
-            _threatMultiplier = threatLevel;
+            _threatMultiplier = healthMult;
+            _damageMultiplier = damageMult;
+            _speedMultiplier = speedMult;
 
-            _currentHealth = _baseStats.MaxHealth * _threatMultiplier;
-            NavAgent.speed = _baseStats.MoveSpeed;
+            _currentHealth = _baseStats.MaxHealth * healthMult;
+            NavAgent.speed = _baseStats.MoveSpeed * speedMult;
 
             _attackCooldownGate = new TimeGate(_baseStats.AttackCooldown);
+        }
+
+        /// <summary>
+        /// [Backward compat] Initialize cũ — dùng chung 1 multiplier cho tất cả.
+        /// BossEnemy và code cũ vẫn dùng được.
+        /// </summary>
+        public void Initialize(Transform target, float threatLevel)
+        {
+            InitializeWithDifficulty(target, threatLevel, threatLevel, 1f);
         }
 
         private void Update()
@@ -95,10 +113,6 @@ namespace EchoMage.Enemies
             Invoke(nameof(ReturnToPool), 1.5f);
         }
 
-        /// <summary>
-        /// [MỚI] Buộc enemy chết ngay lập tức (dùng cho hiệu ứng nổ khi Boss chết).
-        /// Không drop loot, không có animation chết dài.
-        /// </summary>
         public void ForceKill()
         {
             if (_currentState == State.Dead) return;
@@ -108,8 +122,6 @@ namespace EchoMage.Enemies
             GameSessionManager.Instance.AddScore(_baseStats.ScoreValue);
             NavAgent.enabled = false;
             GetComponent<Collider>().enabled = false;
-
-            // Trả về pool ngay (không cần đợi animation)
             ReturnToPool();
         }
 
@@ -159,6 +171,15 @@ namespace EchoMage.Enemies
             }
         }
 
+        /// <summary>
+        /// Lấy damage thực tế đã nhân difficulty multiplier.
+        /// Các subclass (MeleeEnemy, SpeedEnemy) dùng cái này thay vì _baseStats.Damage trực tiếp.
+        /// </summary>
+        protected float GetScaledDamage()
+        {
+            return _baseStats.Damage * _damageMultiplier;
+        }
+
         protected abstract void Attack();
 
         private void ReturnToPool()
@@ -166,7 +187,6 @@ namespace EchoMage.Enemies
             ObjectPoolManager.Instance.Despawn(gameObject);
         }
 
-        // [FIX] Đổi thành virtual để các class con có thể override đúng cách
         public virtual void OnObjectSpawn()
         {
             _currentState = State.Spawning;
@@ -177,7 +197,6 @@ namespace EchoMage.Enemies
             SwitchState(State.Chasing);
         }
 
-        // [FIX] Đổi thành virtual để SpeedEnemy override đúng thay vì dùng 'new'
         public virtual void OnObjectReturn()
         {
             if (_currentState != State.Dead)

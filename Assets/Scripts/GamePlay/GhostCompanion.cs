@@ -36,7 +36,6 @@ namespace EchoMage.AI
             _vatAnimator = GetComponent<VAT_Animator>();
         }
 
-        // SỬA LỖI: Thay đổi kiểu dữ liệu từ EchoData sang PlayerEchoData
         public void Initialize(PlayerEchoData data)
         {
             _stats.Damage = data.Damage;
@@ -50,11 +49,40 @@ namespace EchoMage.AI
 
             _attackGate = new TimeGate(_stats.AttackCooldown);
 
-            // Lấy tham chiếu đến người chơi một cách an toàn
             if (GameManager.Instance != null)
             {
                 _playerTransform = GameManager.Instance.PlayerTransform;
+
+                // [MỚI] Đăng ký với GameManager để được cleanup khi player chết
+                GameManager.Instance.RegisterGhost(this);
+
+                // [MỚI] Lắng nghe event player chết để tự hủy
+                GameManager.Instance.OnPlayerDied += HandlePlayerDied;
             }
+        }
+
+        private void OnDestroy()
+        {
+            // [MỚI] Hủy đăng ký khi bị destroy (tránh memory leak)
+            if (GameManager.Instance != null)
+            {
+                GameManager.Instance.UnregisterGhost(this);
+                GameManager.Instance.OnPlayerDied -= HandlePlayerDied;
+            }
+        }
+
+        /// <summary>
+        /// [MỚI] Khi player chết → ghost tự hủy.
+        /// </summary>
+        private void HandlePlayerDied()
+        {
+            // Hủy subscription trước để tránh gọi lại
+            if (GameManager.Instance != null)
+            {
+                GameManager.Instance.OnPlayerDied -= HandlePlayerDied;
+            }
+
+            Destroy(gameObject);
         }
 
         private void Update()

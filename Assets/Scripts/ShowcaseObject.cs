@@ -16,7 +16,7 @@ public class ShowcaseObject : MonoBehaviour
     }
 
     [Header("Core Dependencies")]
-    [Tooltip("The camera used for interaction.")]
+    [Tooltip("Camera dùng cho tương tác. Nếu để trống sẽ tự tìm Camera.main.")]
     [SerializeField] private Camera interactionCamera;
 
     [Header("Idle Behavior")]
@@ -36,6 +36,7 @@ public class ShowcaseObject : MonoBehaviour
 
     private Vector3 initialPosition;
     private bool isBeingInteractedWith = false;
+    private bool _hasCamera = false;
 
     // --- Gizmo & Debugging Data ---
     private Vector3 lastPlaneHitPoint;
@@ -45,15 +46,66 @@ public class ShowcaseObject : MonoBehaviour
 
     private void Awake()
     {
-        ValidateDependencies();
         initialPosition = transform.position;
+        ResolveCamera();
+    }
+
+    /// <summary>
+    /// [FIX] Tự tìm camera nếu không được gán trong Inspector.
+    /// Không disable component — idle behavior vẫn hoạt động bình thường dù không có camera.
+    /// Chỉ disable phần tương tác chuột.
+    /// </summary>
+    private void ResolveCamera()
+    {
+        if (interactionCamera != null)
+        {
+            _hasCamera = true;
+            return;
+        }
+
+        // Tự tìm Camera.main
+        interactionCamera = Camera.main;
+
+        if (interactionCamera != null)
+        {
+            _hasCamera = true;
+            return;
+        }
+
+        // Vẫn không tìm thấy → log warning nhưng KHÔNG disable component
+        // Idle behavior (rotate, float) vẫn chạy bình thường
+        Debug.LogWarning(
+            $"[ShowcaseObject] '{gameObject.name}': Không tìm thấy Camera. " +
+            "Idle behavior vẫn hoạt động, nhưng tương tác chuột bị tắt. " +
+            "Gán camera vào Inspector hoặc đảm bảo có Camera với tag 'MainCamera' trong scene.",
+            this
+        );
+        _hasCamera = false;
     }
 
     private void Update()
     {
-        HandleInput();
+        // [FIX] Thử tìm lại camera nếu chưa có (camera có thể spawn sau)
+        if (!_hasCamera)
+        {
+            if (interactionCamera == null)
+            {
+                interactionCamera = Camera.main;
+            }
 
-        if (isBeingInteractedWith)
+            if (interactionCamera != null)
+            {
+                _hasCamera = true;
+            }
+        }
+
+        // Chỉ xử lý input khi có camera
+        if (_hasCamera)
+        {
+            HandleInput();
+        }
+
+        if (isBeingInteractedWith && _hasCamera)
         {
             HandleManualRotation();
             shouldDrawGizmos = true;
@@ -62,15 +114,6 @@ public class ShowcaseObject : MonoBehaviour
         {
             ApplyIdleBehavior();
             shouldDrawGizmos = false;
-        }
-    }
-
-    private void ValidateDependencies()
-    {
-        if (interactionCamera == null)
-        {
-            Debug.LogError("ShowcaseObject Error: Interaction Camera has not been assigned. Disabling component.", this);
-            enabled = false;
         }
     }
 
@@ -130,7 +173,6 @@ public class ShowcaseObject : MonoBehaviour
 
     private void ApplyIdleBehavior()
     {
-        // ... (The rest of the idle behavior code remains unchanged)
         switch (idleBehavior)
         {
             case IdleBehavior.AutoRotate:
@@ -173,20 +215,17 @@ public class ShowcaseObject : MonoBehaviour
             return;
         }
 
-        // --- Draw the initial hit information ---
         Gizmos.color = Color.red;
-        Gizmos.DrawSphere(initialHit.point, 0.05f); // Initial click point on the object surface
+        Gizmos.DrawSphere(initialHit.point, 0.05f);
 
         Gizmos.color = Color.blue;
-        Gizmos.DrawLine(initialHit.point, initialHit.point + initialHit.normal * 0.5f); // Surface normal at hit point
+        Gizmos.DrawLine(initialHit.point, initialHit.point + initialHit.normal * 0.5f);
 
-        // --- Draw the interaction plane and the current mouse position on it ---
         if (TryGetPlaneHitPoint(out Vector3 currentPointOnPlane))
         {
             Gizmos.color = Color.green;
-            Gizmos.DrawSphere(currentPointOnPlane, 0.04f); // Current mouse drag point on the plane
+            Gizmos.DrawSphere(currentPointOnPlane, 0.04f);
 
-            // Draw the plane itself as a wireframe square
             Vector3 planeCenter = initialHit.point;
             Vector3 planeUp = Vector3.Cross(interactionPlane.normal, interactionCamera.transform.right).normalized;
             Vector3 planeRight = interactionCamera.transform.right;
@@ -203,13 +242,11 @@ public class ShowcaseObject : MonoBehaviour
             Gizmos.DrawLine(p3, p4);
             Gizmos.DrawLine(p4, p1);
 
-            // Add labels for clarity
             Handles.color = Color.white;
             Handles.Label(initialHit.point + initialHit.normal * 0.1f, "Initial Hit Point");
             Handles.Label(currentPointOnPlane, "Current Drag Point");
         }
 
-        // --- Draw the main ray from the camera ---
         Ray ray = interactionCamera.ScreenPointToRay(Input.mousePosition);
         Gizmos.color = Color.yellow;
         Gizmos.DrawLine(ray.origin, ray.origin + ray.direction * 100f);

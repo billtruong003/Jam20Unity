@@ -7,13 +7,8 @@ namespace EchoMage.Enemies
     public class SpeedEnemy : EnemyBase
     {
         [Header("Dash Attack Specifics")]
-        [Tooltip("Tốc độ của cú lao tới.")]
         [SerializeField] private float _dashSpeed = 25f;
-
-        [Tooltip("Khoảng thời gian kẻ địch chuẩn bị trước khi lao.")]
         [SerializeField] private float _telegraphDuration = 0.5f;
-
-        [Tooltip("Layer của người chơi để kiểm tra va chạm khi đang lao.")]
         [SerializeField] private LayerMask _playerLayerMask;
 
         private bool _isDashing = false;
@@ -22,7 +17,6 @@ namespace EchoMage.Enemies
         protected override void Attack()
         {
             if (_isDashing || PlayerTarget == null) return;
-
             _dashCoroutine = StartCoroutine(DashAttackRoutine());
             _attackCooldownGate.StartCooldown();
         }
@@ -49,7 +43,8 @@ namespace EchoMage.Enemies
                 {
                     if (PlayerTarget.TryGetComponent<IDamageable>(out var playerDamageable))
                     {
-                        playerDamageable.TakeDamage(_baseStats.Damage * _threatMultiplier);
+                        // [FIX] Dùng GetScaledDamage() — damage scale theo DifficultyManager curve
+                        playerDamageable.TakeDamage(GetScaledDamage());
                     }
                     break;
                 }
@@ -62,8 +57,6 @@ namespace EchoMage.Enemies
             _isDashing = false;
         }
 
-        // [BUG FIX] Sử dụng 'override' thay vì 'new' để polymorphism hoạt động đúng
-        // Khi ObjectPool gọi qua interface IPoolableObject, method đúng sẽ được gọi
         public override void OnObjectReturn()
         {
             base.OnObjectReturn();

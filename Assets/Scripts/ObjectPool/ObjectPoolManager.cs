@@ -182,6 +182,7 @@ namespace BillUtils.ObjectPooler
 
                 GameObject obj = CreatePooledObject(item.Prefab, parent);
                 queue.Enqueue(obj);
+                obj.SetActive(false);
             }
         }
 

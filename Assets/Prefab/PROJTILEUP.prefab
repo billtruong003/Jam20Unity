@@ -69,10 +69,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EchoMage.Loot.UpgradePickup
   effect: {fileID: 11400000, guid: 91d828f3c352524408e3c5064d54f130, type: 2}
-  pickupEffectPrefab: {fileID: 9158238854277659849}
+  pickupEffectPrefab: {fileID: 1091416279739030, guid: fde1a3f6ce1c3f54d9ad340f91e02ea4, type: 3}
   pickupSound: {fileID: 8300000, guid: 16c3c05b7bdbe684c97a291e8be14ab9, type: 3}
   attractionRadius: 5
   attractionSpeed: 8
+  lifetime: 15
+  blinkWarningTime: 3
+  blinkRate: 6
 --- !u!1 &3576401141538686185
 GameObject:
   m_ObjectHideFlags: 0
@@ -199,6 +202,10 @@ PrefabInstance:
       value: MagicNovaExplosionPink
       objectReference: {fileID: 0}
     - target: {fileID: 1091416279739030, guid: fde1a3f6ce1c3f54d9ad340f91e02ea4, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1091416279739030, guid: fde1a3f6ce1c3f54d9ad340f91e02ea4, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -290,10 +297,5 @@ PrefabInstance:
 --- !u!4 &9156946118336579985 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4355091068461006, guid: fde1a3f6ce1c3f54d9ad340f91e02ea4, type: 3}
-  m_PrefabInstance: {fileID: 9159047394174801503}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &9158238854277659849 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1091416279739030, guid: fde1a3f6ce1c3f54d9ad340f91e02ea4, type: 3}
   m_PrefabInstance: {fileID: 9159047394174801503}
   m_PrefabAsset: {fileID: 0}

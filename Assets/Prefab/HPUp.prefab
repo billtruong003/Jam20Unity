@@ -178,10 +178,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EchoMage.Loot.UpgradePickup
   effect: {fileID: 11400000, guid: e38de7da5ba7b2a44b03c7b4dc70abea, type: 2}
-  pickupEffectPrefab: {fileID: 5091419921099424604}
+  pickupEffectPrefab: {fileID: 1260984136241199202, guid: 5fb8e716d5079f641b7f1e0ef3a9cd5c, type: 3}
   pickupSound: {fileID: 8300000, guid: 16c3c05b7bdbe684c97a291e8be14ab9, type: 3}
   attractionRadius: 5
   attractionSpeed: 8
+  lifetime: 15
+  blinkWarningTime: 3
+  blinkRate: 6
 --- !u!1001 &6329722506176740158
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -193,6 +196,10 @@ PrefabInstance:
     - target: {fileID: 1260984136241199202, guid: 5fb8e716d5079f641b7f1e0ef3a9cd5c, type: 3}
       propertyPath: m_Name
       value: LevelupCylinderRed
+      objectReference: {fileID: 0}
+    - target: {fileID: 1260984136241199202, guid: 5fb8e716d5079f641b7f1e0ef3a9cd5c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1260984136241199202, guid: 5fb8e716d5079f641b7f1e0ef3a9cd5c, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -267,11 +274,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5fb8e716d5079f641b7f1e0ef3a9cd5c, type: 3}
---- !u!1 &5091419921099424604 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1260984136241199202, guid: 5fb8e716d5079f641b7f1e0ef3a9cd5c, type: 3}
-  m_PrefabInstance: {fileID: 6329722506176740158}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5675284294611049725 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1807379320299104195, guid: 5fb8e716d5079f641b7f1e0ef3a9cd5c, type: 3}

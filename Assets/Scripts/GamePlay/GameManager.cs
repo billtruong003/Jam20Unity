@@ -1,6 +1,7 @@
 using EchoMage.Player;
 using EchoMage.UI;
 using EchoMage.World;
+using EchoMage.AI;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
@@ -15,6 +16,10 @@ namespace EchoMage.Core
         public static GameManager Instance { get; private set; }
 
         public event Action<GameObject> OnPlayerSpawned;
+        /// <summary>
+        /// Event broadcast khi player chết — GhostCompanion và các hệ thống khác lắng nghe để tự cleanup.
+        /// </summary>
+        public event Action OnPlayerDied;
 
         [Header("Player Ref")]
         public AfterImageController AfterImageController;
@@ -32,8 +37,14 @@ namespace EchoMage.Core
         [Header("Echo System")]
         [SerializeField] private GameObject echoGravePrefab;
 
+        [Header("Cleanup Tags")]
+        [Tooltip("Các tag sẽ bị dọn khi player chết (loot drops, projectiles, v.v.)")]
+        [SerializeField] private string[] cleanupTags = { "Pickup", "PlayerProjectile" };
+
         private readonly HashSet<GameObject> _activeEnemies = new HashSet<GameObject>();
         private readonly List<EchoGrave> _activeGraves = new List<EchoGrave>();
+        // [MỚI] Track tất cả GhostCompanion đang sống
+        private readonly List<GhostCompanion> _activeGhosts = new List<GhostCompanion>();
 
         public PlayerStats PlayerStats { get; private set; }
         public Transform PlayerTransform { get; private set; }
@@ -50,14 +61,11 @@ namespace EchoMage.Core
 
         private void Start()
         {
-            // Bắt đầu nhạc gameplay
-            // MusicManager tự phát nhạc qua AudioSource riêng — KHÔNG dùng SoundManager
             if (MusicManager.Instance != null)
             {
                 MusicManager.Instance.PlayGameplayMusic();
             }
 
-            // Lắng nghe events từ EnemySpawner cho Boss
             if (EnemySpawner != null)
             {
                 EnemySpawner.OnBossSpawned += HandleBossSpawned;
@@ -77,7 +85,6 @@ namespace EchoMage.Core
         private void Update()
         {
             if (_isGameOver || PlayerTransform == null) return;
-
             DespairSystem.UpdateDespair(_activeEnemies.Count, Time.deltaTime);
         }
 
@@ -101,7 +108,14 @@ namespace EchoMage.Core
             CreateEchoGrave(deadPlayerStats, deathPosition);
 
             Time.timeScale = 0f;
+
+            // [FIX] Broadcast event trước khi cleanup — GhostCompanion nghe để tự hủy
+            OnPlayerDied?.Invoke();
+
+            // [FIX] Dọn DẸP TOÀN BỘ: quái + ghost + loot + projectiles
             CleanupAllEnemies();
+            CleanupAllGhosts();
+            CleanupTaggedObjects();
 
             GameSessionManager.Instance.HandlePlayerDeath(DeathCause.HealthDepletion);
             UIManager.ShowContinueScreen();
@@ -114,7 +128,6 @@ namespace EchoMage.Core
             EnemySpawner.ResetAndRestartWaves();
             PlayerSpawner.RequestRespawn();
 
-            // Quay lại nhạc gameplay
             if (MusicManager.Instance != null)
             {
                 MusicManager.Instance.PlayGameplayMusic();
@@ -140,19 +153,19 @@ namespace EchoMage.Core
             _isGameOver = true;
             Time.timeScale = 0f;
 
+            OnPlayerDied?.Invoke();
+
             if (PauseManager.Instance != null)
-            {
                 PauseManager.Instance.SetGameOverState(true);
-            }
 
             if (MusicManager.Instance != null)
-            {
                 MusicManager.Instance.PlayGameOverMusic();
-            }
 
             GameSessionManager.Instance.HandlePlayerDeath(DeathCause.Despair);
             UIManager.ShowGameOverScreen(reason);
         }
+
+        #region Enemy Tracking
 
         public void RegisterEnemy(GameObject enemy) => _activeEnemies.Add(enemy);
 
@@ -161,11 +174,8 @@ namespace EchoMage.Core
             if (_activeEnemies.Remove(enemy))
             {
                 DespairSystem.ReduceDespairOnKill();
-
                 if (EnemySpawner != null)
-                {
                     EnemySpawner.NotifyEnemyRemoved();
-                }
             }
         }
 
@@ -177,6 +187,46 @@ namespace EchoMage.Core
             }
             _activeEnemies.Clear();
         }
+
+        #endregion
+
+        #region Ghost Companion Tracking
+
+        /// <summary>
+        /// [MỚI] GhostCompanion gọi khi được triệu hồi.
+        /// </summary>
+        public void RegisterGhost(GhostCompanion ghost)
+        {
+            if (!_activeGhosts.Contains(ghost))
+                _activeGhosts.Add(ghost);
+        }
+
+        /// <summary>
+        /// [MỚI] GhostCompanion gọi khi bị hủy.
+        /// </summary>
+        public void UnregisterGhost(GhostCompanion ghost)
+        {
+            _activeGhosts.Remove(ghost);
+        }
+
+        /// <summary>
+        /// [MỚI] Hủy tất cả GhostCompanion khi player chết.
+        /// </summary>
+        private void CleanupAllGhosts()
+        {
+            foreach (var ghost in _activeGhosts.ToList())
+            {
+                if (ghost != null && ghost.gameObject != null)
+                {
+                    Destroy(ghost.gameObject);
+                }
+            }
+            _activeGhosts.Clear();
+        }
+
+        #endregion
+
+        #region Grave Tracking
 
         public void RegisterGrave(EchoGrave grave)
         {
@@ -196,25 +246,53 @@ namespace EchoMage.Core
             }
         }
 
+        #endregion
+
+        #region Loot / Projectile Cleanup
+
+        /// <summary>
+        /// [MỚI] Dọn tất cả object có tag trong cleanupTags (loot drops, projectiles bay dở).
+        /// Dùng ObjectPool.Despawn nếu có IPoolableObject, nếu không thì Destroy.
+        /// </summary>
+        private void CleanupTaggedObjects()
+        {
+            foreach (string tag in cleanupTags)
+            {
+                GameObject[] objects = GameObject.FindGameObjectsWithTag(tag);
+                foreach (var obj in objects)
+                {
+                    if (obj == null) continue;
+
+                    // Thử despawn qua pool trước (hiệu quả hơn Destroy)
+                    try
+                    {
+                        ObjectPoolManager.Instance.Despawn(obj);
+                    }
+                    catch
+                    {
+                        // Không thuộc pool → Destroy thường
+                        Destroy(obj);
+                    }
+                }
+            }
+        }
+
+        #endregion
+
         #region Boss Events
 
         private void HandleBossSpawned()
         {
             if (MusicManager.Instance != null)
-            {
                 MusicManager.Instance.PlayBossMusic();
-            }
 
             UIManager.ShowBossHealthBar(EnemySpawner.CurrentBossInstance);
         }
 
         private void HandleBossKilled()
         {
-            // [FIX] Typo cũ: ResumGameplayMusic → ResumeGameplayMusic
             if (MusicManager.Instance != null)
-            {
                 MusicManager.Instance.ResumeGameplayMusic();
-            }
 
             UIManager.HideBossHealthBar();
         }

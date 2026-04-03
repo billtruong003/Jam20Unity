@@ -69,10 +69,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EchoMage.Loot.UpgradePickup
   effect: {fileID: 11400000, guid: 1bcd8de9c3475dc42930a716e0e4414b, type: 2}
-  pickupEffectPrefab: {fileID: 4849643107848970760}
+  pickupEffectPrefab: {fileID: 105942, guid: ff672eaca96d32c419d7a1f1b0346e8d, type: 3}
   pickupSound: {fileID: 8300000, guid: 16c3c05b7bdbe684c97a291e8be14ab9, type: 3}
   attractionRadius: 5
   attractionSpeed: 8
+  lifetime: 15
+  blinkWarningTime: 3
+  blinkRate: 6
 --- !u!1001 &2323563285726522679
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -176,6 +179,10 @@ PrefabInstance:
       value: HealOnce
       objectReference: {fileID: 0}
     - target: {fileID: 105942, guid: ff672eaca96d32c419d7a1f1b0346e8d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 105942, guid: ff672eaca96d32c419d7a1f1b0346e8d, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -232,11 +239,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ff672eaca96d32c419d7a1f1b0346e8d, type: 3}
---- !u!1 &4849643107848970760 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 105942, guid: ff672eaca96d32c419d7a1f1b0346e8d, type: 3}
-  m_PrefabInstance: {fileID: 4849643107849076702}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4849643107849178882 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 422108, guid: ff672eaca96d32c419d7a1f1b0346e8d, type: 3}
