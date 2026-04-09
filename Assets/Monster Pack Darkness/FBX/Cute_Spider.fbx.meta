@@ -1,60 +1,164 @@
 fileFormatVersion: 2
 guid: 95c1760a86218364b83e33ccfc0518b1
 ModelImporter:
-  serializedVersion: 23
-  fileIDToRecycleName:
-    100000: center
-    100002: //RootNode
-    100004: Cute_Spider
-    100006: head
-    100008: leg_l1
-    100010: leg_l2
-    100012: leg_l3
-    100014: leg_l4
-    100016: leg_l5
-    100018: leg_l6
-    100020: leg_l6 1
-    100022: leg_l7
-    100024: leg_l8
-    100026: leg_l9
-    100028: leg_r1
-    100030: leg_r2
-    100032: leg_r3
-    100034: leg_r4
-    100036: leg_r5
-    100038: leg_r7
-    100040: leg_r8
-    100042: leg_r9
-    100044: root
-    100046: leg_r6
-    400000: center
-    400002: //RootNode
-    400004: Cute_Spider
-    400006: head
-    400008: leg_l1
-    400010: leg_l2
-    400012: leg_l3
-    400014: leg_l4
-    400016: leg_l5
-    400018: leg_l6
-    400020: leg_l6 1
-    400022: leg_l7
-    400024: leg_l8
-    400026: leg_l9
-    400028: leg_r1
-    400030: leg_r2
-    400032: leg_r3
-    400034: leg_r4
-    400036: leg_r5
-    400038: leg_r7
-    400040: leg_r8
-    400042: leg_r9
-    400044: root
-    400046: leg_r6
-    2100000: M_Cute_Spider_B
-    4300000: Cute_Spider
-    9500000: //RootNode
-    13700000: Cute_Spider
+  serializedVersion: 24200
+  internalIDToNameTable:
+  - first:
+      1: 100000
+    second: center
+  - first:
+      1: 100002
+    second: //RootNode
+  - first:
+      1: 100004
+    second: Cute_Spider
+  - first:
+      1: 100006
+    second: head
+  - first:
+      1: 100008
+    second: leg_l1
+  - first:
+      1: 100010
+    second: leg_l2
+  - first:
+      1: 100012
+    second: leg_l3
+  - first:
+      1: 100014
+    second: leg_l4
+  - first:
+      1: 100016
+    second: leg_l5
+  - first:
+      1: 100018
+    second: leg_l6
+  - first:
+      1: 100020
+    second: leg_l6 1
+  - first:
+      1: 100022
+    second: leg_l7
+  - first:
+      1: 100024
+    second: leg_l8
+  - first:
+      1: 100026
+    second: leg_l9
+  - first:
+      1: 100028
+    second: leg_r1
+  - first:
+      1: 100030
+    second: leg_r2
+  - first:
+      1: 100032
+    second: leg_r3
+  - first:
+      1: 100034
+    second: leg_r4
+  - first:
+      1: 100036
+    second: leg_r5
+  - first:
+      1: 100038
+    second: leg_r7
+  - first:
+      1: 100040
+    second: leg_r8
+  - first:
+      1: 100042
+    second: leg_r9
+  - first:
+      1: 100044
+    second: root
+  - first:
+      1: 100046
+    second: leg_r6
+  - first:
+      4: 400000
+    second: center
+  - first:
+      4: 400002
+    second: //RootNode
+  - first:
+      4: 400004
+    second: Cute_Spider
+  - first:
+      4: 400006
+    second: head
+  - first:
+      4: 400008
+    second: leg_l1
+  - first:
+      4: 400010
+    second: leg_l2
+  - first:
+      4: 400012
+    second: leg_l3
+  - first:
+      4: 400014
+    second: leg_l4
+  - first:
+      4: 400016
+    second: leg_l5
+  - first:
+      4: 400018
+    second: leg_l6
+  - first:
+      4: 400020
+    second: leg_l6 1
+  - first:
+      4: 400022
+    second: leg_l7
+  - first:
+      4: 400024
+    second: leg_l8
+  - first:
+      4: 400026
+    second: leg_l9
+  - first:
+      4: 400028
+    second: leg_r1
+  - first:
+      4: 400030
+    second: leg_r2
+  - first:
+      4: 400032
+    second: leg_r3
+  - first:
+      4: 400034
+    second: leg_r4
+  - first:
+      4: 400036
+    second: leg_r5
+  - first:
+      4: 400038
+    second: leg_r7
+  - first:
+      4: 400040
+    second: leg_r8
+  - first:
+      4: 400042
+    second: leg_r9
+  - first:
+      4: 400044
+    second: root
+  - first:
+      4: 400046
+    second: leg_r6
+  - first:
+      21: 2100000
+    second: M_Cute_Spider_B
+  - first:
+      43: 4300000
+    second: Cute_Spider
+  - first:
+      95: 9500000
+    second: //RootNode
+  - first:
+      137: 13700000
+    second: Cute_Spider
   externalObjects:
   - first:
       type: UnityEngine:Material
@@ -62,7 +166,7 @@ ModelImporter:
       name: M_Cute_Spider_B
     second: {fileID: 2100000, guid: f42c5e7b8072dca47b9fc42d8362c269, type: 2}
   materials:
-    importMaterials: 1
+    materialImportMode: 1
     materialName: 0
     materialSearch: 2
     materialLocation: 0
@@ -71,9 +175,8 @@ ModelImporter:
     bakeSimulation: 0
     resampleCurves: 1
     optimizeGameObjects: 0
+    removeConstantScaleCurves: 0
     motionNodeName: 
-    rigImportErrors: 
-    rigImportWarnings: 
     animationImportErrors: 
     animationImportWarnings: 
     animationRetargetingWarnings: 
@@ -88,32 +191,46 @@ ModelImporter:
     extraExposedTransformPaths: []
     extraUserProperties: []
     clipAnimations: []
-    isReadable: 1
+    isReadable: 0
   meshes:
     lODScreenPercentages: []
     globalScale: 1
-    meshCompression: 0
+    meshCompression: 2
     addColliders: 0
     useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importPhysicalCameras: 1
     importVisibility: 1
     importBlendShapes: 1
     importCameras: 1
     importLights: 1
+    nodeNameCollisionStrategy: 0
+    fileIdsGeneration: 1
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
-    optimizeMeshForGPU: 1
     keepQuads: 0
     weldVertices: 1
+    bakeAxisConversion: 0
     preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    optimizeBones: 1
+    generateMeshLods: 0
+    meshLodGenerationFlags: 0
+    maximumMeshLod: -1
+    meshOptimizationFlags: -1
     indexFormat: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 0
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
     useFileScale: 1
-    previousCalculatedGlobalScale: 0.01
-    hasPreviousCalculatedGlobalScale: 1
+    strictVertexDataChecks: 0
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
@@ -122,10 +239,10 @@ ModelImporter:
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
+  referencedClips: []
   importAnimation: 1
-  copyAvatar: 0
   humanDescription:
-    serializedVersion: 2
+    serializedVersion: 3
     human: []
     skeleton: []
     armTwist: 0.5
@@ -135,13 +252,19 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
+    globalScale: 1
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 2
   humanoidOversampling: 1
+  avatarSetup: 1
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 0
+  importBlendShapeDeformPercent: 0
+  remapMaterialsIfMaterialImportModeIsNone: 1
   additionalBone: 0
   userData: 
   assetBundleName: 

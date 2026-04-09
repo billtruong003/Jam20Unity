@@ -1,7 +1,14 @@
 fileFormatVersion: 2
 guid: 3956c18b4bc2fe946b24ae101119f67e
+AssetOrigin:
+  serializedVersion: 1
+  productId: 313691
+  packageName: POLYGON - Kaiju Pack - Art by Synty
+  packageVersion: 1.1.0
+  assetPath: Assets/Synty/PolygonGeneric/Models/SM_Gen_Bld_Background_01.fbx
+  uploadId: 883986
 ModelImporter:
-  serializedVersion: 22200
+  serializedVersion: 24200
   internalIDToNameTable: []
   externalObjects: {}
   materials:
@@ -16,8 +23,6 @@ ModelImporter:
     optimizeGameObjects: 0
     removeConstantScaleCurves: 0
     motionNodeName: 
-    rigImportErrors: 
-    rigImportWarnings: 
     animationImportErrors: 
     animationImportWarnings: 
     animationRetargetingWarnings: 
@@ -36,7 +41,7 @@ ModelImporter:
   meshes:
     lODScreenPercentages: []
     globalScale: 1
-    meshCompression: 0
+    meshCompression: 2
     addColliders: 0
     useSRGBMaterialColor: 1
     sortHierarchyByName: 1
@@ -58,6 +63,9 @@ ModelImporter:
     maxBonesPerVertex: 4
     minBoneWeight: 0.001
     optimizeBones: 1
+    generateMeshLods: 0
+    meshLodGenerationFlags: 0
+    maximumMeshLod: -1
     meshOptimizationFlags: -1
     indexFormat: 0
     secondaryUVAngleDistortion: 8
@@ -107,10 +115,3 @@ ModelImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 313691
-  packageName: POLYGON - Kaiju Pack - Art by Synty
-  packageVersion: 1.1.0
-  assetPath: Assets/Synty/PolygonGeneric/Models/SM_Gen_Bld_Background_01.fbx
-  uploadId: 883986
