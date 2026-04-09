@@ -55,6 +55,28 @@ namespace EchoMage.Core
             PrewarmSFXPool();
         }
 
+        /// <summary>
+        /// [MỚI] Khi scene play load xong, đồng bộ SFX settings từ MusicManager.
+        /// MusicManager sống xuyên scene (DontDestroyOnLoad) nên nó giữ settings gốc.
+        /// SoundManager chỉ tồn tại trong play scene → cần sync mỗi lần scene load.
+        /// </summary>
+        private void Start()
+        {
+            SyncSfxSettingsFromMusicManager();
+        }
+
+        private void SyncSfxSettingsFromMusicManager()
+        {
+            if (MusicManager.Instance == null) return;
+
+            // Lấy volume và trạng thái on/off từ MusicManager
+            float sfxVolume = MusicManager.Instance.GetSfxVolume();
+            bool sfxEnabled = MusicManager.Instance.IsSfxEnabled();
+
+            // Nếu SFX đang tắt → volume = 0, ngược lại dùng volume đã lưu
+            _masterSFXVolume = sfxEnabled ? sfxVolume : 0f;
+        }
+
         private void OnDestroy()
         {
             if (Instance == this) Instance = null;

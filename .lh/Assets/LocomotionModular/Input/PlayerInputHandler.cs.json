@@ -1,0 +1,26 @@
+{
+    "sourceFile": "Assets/LocomotionModular/Input/PlayerInputHandler.cs",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 2,
+            "patches": [
+                {
+                    "date": 1775661695250,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1775661707246,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -21,9 +21,11 @@\n             MoveInput = new Vector2(Input.GetAxisRaw(\"Horizontal\"), Input.GetAxisRaw(\"Vertical\"));\r\n             IsRunning = Input.GetKey(KeyCode.LeftShift);\r\n \r\n             // if (Input.GetButtonDown(\"Jump\")) { JumpInput = true; jumpInputConsumed = false; }\r\n-            if (Input.OnMous)) { DashInput = true; dashInputConsumed = false; }\r\n+            if (Input.private void OnMouseDown() {\r\n+                \r\n+            })) { DashInput = true; dashInputConsumed = false; }\r\n         }\r\n \r\n         public void ConsumeJumpInput() => jumpInputConsumed = true;\r\n         public void ConsumeDashInput() => dashInputConsumed = true;\r\n"
+                },
+                {
+                    "date": 1775661714919,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -21,9 +21,9 @@\n             MoveInput = new Vector2(Input.GetAxisRaw(\"Horizontal\"), Input.GetAxisRaw(\"Vertical\"));\r\n             IsRunning = Input.GetKey(KeyCode.LeftShift);\r\n \r\n             // if (Input.GetButtonDown(\"Jump\")) { JumpInput = true; jumpInputConsumed = false; }\r\n-            if (Input.OnMous)) { DashInput = true; dashInputConsumed = false; }\r\n+            if (Input.OnMouseButtonDown(1)) { DashInput = true; dashInputConsumed = false; }\r\n         }\r\n \r\n         public void ConsumeJumpInput() => jumpInputConsumed = true;\r\n         public void ConsumeDashInput() => dashInputConsumed = true;\r\n"
+                }
+            ],
+            "date": 1775661695250,
+            "name": "Commit-0",
+            "content": "// File: Assets/ModularTopDown/Locomotion/Input/PlayerInputHandler.cs\r\nusing UnityEngine;\r\n\r\nnamespace ModularTopDown.Locomotion\r\n{\r\n    public class PlayerInputHandler : MonoBehaviour, ILocomotionInput\r\n    {\r\n        public Vector2 MoveInput { get; private set; }\r\n        public bool IsRunning { get; private set; }\r\n        public bool JumpInput { get; private set; }\r\n        public bool DashInput { get; private set; }\r\n\r\n        private bool jumpInputConsumed;\r\n        private bool dashInputConsumed;\r\n\r\n        void Update()\r\n        {\r\n            if (jumpInputConsumed) { JumpInput = false; }\r\n            if (dashInputConsumed) { DashInput = false; }\r\n\r\n            MoveInput = new Vector2(Input.GetAxisRaw(\"Horizontal\"), Input.GetAxisRaw(\"Vertical\"));\r\n            IsRunning = Input.GetKey(KeyCode.LeftShift);\r\n\r\n            // if (Input.GetButtonDown(\"Jump\")) { JumpInput = true; jumpInputConsumed = false; }\r\n            if (Input.GetKeyDown(KeyCode.)) { DashInput = true; dashInputConsumed = false; }\r\n        }\r\n\r\n        public void ConsumeJumpInput() => jumpInputConsumed = true;\r\n        public void ConsumeDashInput() => dashInputConsumed = true;\r\n    }\r\n}"
+        }
+    ]
+}

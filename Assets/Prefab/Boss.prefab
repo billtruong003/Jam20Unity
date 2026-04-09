@@ -417,6 +417,25 @@ MonoBehaviour:
   _hitClip: Hit
   _deathClip: Die
   _deathExplosionFXId: BossDeathExplosion
+  _appearanceSets:
+  - Albedo: {fileID: 2800000, guid: 17bb60fa1db03a749b12ebd2307664ca, type: 3}
+    EmissionMask: {fileID: 2800000, guid: 6b96106d31346e64fa023ebe02d4eba1, type: 3}
+  - Albedo: {fileID: 2800000, guid: 9f1980971a1c5bf45bc70379a24f7ea2, type: 3}
+    EmissionMask: {fileID: 2800000, guid: b21fe6fc2c79be748aba3c3eb98f9b19, type: 3}
+  - Albedo: {fileID: 2800000, guid: 96d70b078fa852244a307290bdd7119e, type: 3}
+    EmissionMask: {fileID: 2800000, guid: 37b45776fa2bec04cbff2e05ced9c124, type: 3}
+  - Albedo: {fileID: 2800000, guid: a2676b147b1c4f54d9744d657958198c, type: 3}
+    EmissionMask: {fileID: 2800000, guid: cad32ad7798462147a726c8d0a2c41e8, type: 3}
+  - Albedo: {fileID: 2800000, guid: fba1ef7d948297a4da1d1d47d7b544e0, type: 3}
+    EmissionMask: {fileID: 2800000, guid: 475abdf28a0f020458ba3e3255b4787e, type: 3}
+  - Albedo: {fileID: 2800000, guid: eb164ed60d706e248b1ae9e5851d1109, type: 3}
+    EmissionMask: {fileID: 2800000, guid: 19f370668288afa468a53ef3460c6557, type: 3}
+  - Albedo: {fileID: 2800000, guid: 9808f5a0e6b071848890ef7ebabe50a3, type: 3}
+    EmissionMask: {fileID: 2800000, guid: ebe44cc8a23bda74a9b90dc8156eef56, type: 3}
+  - Albedo: {fileID: 2800000, guid: 4b89f5aa296e66e499a481103a1576ed, type: 3}
+    EmissionMask: {fileID: 2800000, guid: 11f344aa2cbab2e45b141f56f5245293, type: 3}
+  - Albedo: {fileID: 2800000, guid: 1b0c9363edf008d4597ee9e9f65e863f, type: 3}
+    EmissionMask: {fileID: 2800000, guid: 908bf5c179fe1ab4bad339b5613e02ff, type: 3}
 --- !u!33 &4471161967106809910
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -470,6 +489,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 193686, guid: ede42a52a2caa594dbc67cd13f591f5a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 198048, guid: ede42a52a2caa594dbc67cd13f591f5a, type: 3}
       propertyPath: m_Layer
       value: 8
@@ -480,7 +503,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 463002, guid: ede42a52a2caa594dbc67cd13f591f5a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.138
       objectReference: {fileID: 0}
     - target: {fileID: 463002, guid: ede42a52a2caa594dbc67cd13f591f5a, type: 3}
       propertyPath: m_LocalPosition.z

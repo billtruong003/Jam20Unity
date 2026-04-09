@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: BillTheDev_URP_Aura_Morph
+  m_Shader: {fileID: 4800000, guid: f54859d7c50dced49b009c89ee21e0b5, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _NoiseTex:
+        m_Texture: {fileID: 2800000, guid: 107583a1205f435408de53c0eed94464, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _CutoffHeight: 1
+    - _DisplacementStrength: 0.2
+    - _FlowSpeedX: 1
+    - _FlowSpeedY: 1
+    - _NoiseScale: 2
+    - _OutlineWidth: 0.5
+    - _RimPower: 0.33
+    - _RimSharpness: 5.57
+    - _VerticalRise: 0.5
+    - _ZOffset: 1
+    m_Colors:
+    - _CoreColor: {r: 0, g: 0.03137297, b: 5.9921575, a: 0.003921569}
+    - _RimColor: {r: 2.178009, g: 0, b: 31.999998, a: 0.09803922}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1

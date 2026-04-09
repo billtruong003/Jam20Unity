@@ -21,12 +21,16 @@ namespace EchoMage.Core
         #region Events
         public event Action<float> OnMusicVolumeChanged;
         public event Action<float> OnSFXVolumeChanged;
+        public event Action<bool> OnMusicEnabledChanged;
+        public event Action<bool> OnSFXEnabledChanged;
         public event Action<string, KeyCode> OnKeybindChanged;
         #endregion
 
         #region PlayerPrefs Keys
         private const string MUSIC_VOLUME_KEY = "Settings_MusicVolume";
         private const string SFX_VOLUME_KEY = "Settings_SFXVolume";
+        private const string MUSIC_ENABLED_KEY = "Settings_MusicEnabled";
+        private const string SFX_ENABLED_KEY = "Settings_SFXEnabled";
         private const string KEYBIND_PREFIX = "Settings_Keybind_";
         #endregion
 
@@ -53,10 +57,14 @@ namespace EchoMage.Core
         private Dictionary<string, KeyCode> _keybinds = new Dictionary<string, KeyCode>();
         private float _musicVolume = 1f;
         private float _sfxVolume = 1f;
+        private bool _musicEnabled = true;
+        private bool _sfxEnabled = true;
 
         #region Properties
         public float MusicVolume => _musicVolume;
         public float SFXVolume => _sfxVolume;
+        public bool IsMusicEnabled => _musicEnabled;
+        public bool IsSFXEnabled => _sfxEnabled;
         #endregion
 
         private void Awake()
@@ -96,14 +104,52 @@ namespace EchoMage.Core
             PlayerPrefs.SetFloat(SFX_VOLUME_KEY, _sfxVolume);
             PlayerPrefs.Save();
 
-            // SFX volume → SoundManager (quản lý SFX pool, scene-specific)
-            // Có thể null khi đang ở giữa scene transition — an toàn vì chỉ là SFX
-            if (SoundManager.Instance != null)
+            // Route qua MusicManager (persist xuyên scene) → nó sẽ cập nhật SoundManager nếu có
+            if (MusicManager.Instance != null)
             {
+                MusicManager.Instance.SetSfxVolume(_sfxVolume);
+            }
+            else if (SoundManager.Instance != null)
+            {
+                // Fallback: gọi thẳng SoundManager nếu MusicManager chưa init
                 SoundManager.Instance.SetSFXVolume(_sfxVolume);
             }
 
             OnSFXVolumeChanged?.Invoke(_sfxVolume);
+        }
+
+        /// <summary>
+        /// Bật/tắt Music (toggle mute). Volume vẫn được giữ nguyên.
+        /// </summary>
+        public void SetMusicEnabled(bool enabled)
+        {
+            _musicEnabled = enabled;
+            PlayerPrefs.SetInt(MUSIC_ENABLED_KEY, enabled ? 1 : 0);
+            PlayerPrefs.Save();
+
+            if (MusicManager.Instance != null)
+            {
+                MusicManager.Instance.SetMusicEnabled(enabled);
+            }
+
+            OnMusicEnabledChanged?.Invoke(enabled);
+        }
+
+        /// <summary>
+        /// Bật/tắt SFX (toggle mute). Volume vẫn được giữ nguyên.
+        /// </summary>
+        public void SetSFXEnabled(bool enabled)
+        {
+            _sfxEnabled = enabled;
+            PlayerPrefs.SetInt(SFX_ENABLED_KEY, enabled ? 1 : 0);
+            PlayerPrefs.Save();
+
+            if (MusicManager.Instance != null)
+            {
+                MusicManager.Instance.SetSfxEnabled(enabled);
+            }
+
+            OnSFXEnabledChanged?.Invoke(enabled);
         }
 
         #endregion
@@ -184,6 +230,8 @@ namespace EchoMage.Core
         {
             _musicVolume = PlayerPrefs.GetFloat(MUSIC_VOLUME_KEY, 1f);
             _sfxVolume = PlayerPrefs.GetFloat(SFX_VOLUME_KEY, 1f);
+            _musicEnabled = PlayerPrefs.GetInt(MUSIC_ENABLED_KEY, 1) == 1;
+            _sfxEnabled = PlayerPrefs.GetInt(SFX_ENABLED_KEY, 1) == 1;
 
             _keybinds.Clear();
             foreach (var entry in _defaultKeybinds)
@@ -212,6 +260,8 @@ namespace EchoMage.Core
         {
             SetMusicVolume(1f);
             SetSFXVolume(1f);
+            SetMusicEnabled(true);
+            SetSFXEnabled(true);
             ResetKeybindsToDefault();
         }
 

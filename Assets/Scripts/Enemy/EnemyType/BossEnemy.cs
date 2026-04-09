@@ -98,6 +98,23 @@ namespace EchoMage.Enemies
     }
 
     // ============================================================
+    //  BOSS APPEARANCE — Random skin mỗi lần spawn
+    // ============================================================
+
+    /// <summary>
+    /// Một bộ skin cho boss: albedo + emission đi cặp với nhau.
+    /// </summary>
+    [Serializable]
+    public class BossAppearanceSet
+    {
+        [Tooltip("Texture albedo (base color) cho skin này.")]
+        public Texture2D Albedo;
+
+        [Tooltip("Texture emission mask cho skin này (R channel = emissive). Có thể null.")]
+        public Texture2D EmissionMask;
+    }
+
+    // ============================================================
     //  BOSS ENEMY — Main Controller
     // ============================================================
 
@@ -133,9 +150,16 @@ namespace EchoMage.Enemies
         [Header("Visual Effects")]
         [SerializeField] private string _deathExplosionFXId = "BossDeathExplosion";
 
+        [Header("Random Appearance")]
+        [Tooltip("Mỗi set gồm Albedo + Emission texture đi cặp. Random 1 set mỗi lần spawn.")]
+        [SerializeField] private BossAppearanceSet[] _appearanceSets;
+
         // Components
         private NavMeshAgent _navAgent;
         private VAT_Animator _vatAnimator;
+        private Renderer _renderer;
+        private static readonly int _albedoPropertyId = Shader.PropertyToID("_MainTex");
+        private static readonly int _emissionPropertyId = Shader.PropertyToID("_EmissionMask");
 
         // State
         private Transform _playerTarget;
@@ -155,6 +179,7 @@ namespace EchoMage.Enemies
         {
             _navAgent = GetComponent<NavMeshAgent>();
             _vatAnimator = GetComponent<VAT_Animator>();
+            _renderer = GetComponentInChildren<Renderer>();
         }
 
         public void Initialize(Transform target, float threatLevel)
@@ -173,6 +198,24 @@ namespace EchoMage.Enemies
             // Khởi tạo phase đầu tiên
             EvaluatePhase();
 
+            OnBossHealthChanged?.Invoke(_currentHealth, _maxHealth * _threatMultiplier);
+        }
+
+        /// <summary>
+        /// [FIX] Cập nhật target khi player respawn.
+        /// GameManager gọi khi player mới spawn để boss tìm lại được player.
+        /// </summary>
+        public void UpdatePlayerTarget(Transform newTarget)
+        {
+            _playerTarget = newTarget;
+        }
+
+        /// <summary>
+        /// [FIX] Re-broadcast HP hiện tại cho UI.
+        /// Gọi sau khi UI đã subscribe (sau OnBossSpawned) để UI nhận được HP ban đầu.
+        /// </summary>
+        public void BroadcastHealth()
+        {
             OnBossHealthChanged?.Invoke(_currentHealth, _maxHealth * _threatMultiplier);
         }
 
@@ -498,6 +541,29 @@ namespace EchoMage.Enemies
             _navAgent.isStopped = true;
             GetComponent<Collider>().enabled = true;
             GameManager.Instance.RegisterEnemy(gameObject);
+            ApplyRandomTexture();
+        }
+
+        /// <summary>
+        /// [MỚI] Random appearance set (albedo + emission) mỗi lần spawn.
+        /// Dùng MaterialPropertyBlock — không tạo material clone, giữ GPU instancing.
+        /// </summary>
+        private void ApplyRandomTexture()
+        {
+            if (_appearanceSets == null || _appearanceSets.Length == 0) return;
+            if (_renderer == null) return;
+
+            BossAppearanceSet chosen = _appearanceSets[UnityEngine.Random.Range(0, _appearanceSets.Length)];
+            MaterialPropertyBlock mpb = new MaterialPropertyBlock();
+            _renderer.GetPropertyBlock(mpb);
+
+            if (chosen.Albedo != null)
+                mpb.SetTexture(_albedoPropertyId, chosen.Albedo);
+
+            if (chosen.EmissionMask != null)
+                mpb.SetTexture(_emissionPropertyId, chosen.EmissionMask);
+
+            _renderer.SetPropertyBlock(mpb);
         }
 
         public void OnObjectReturn()

@@ -4,8 +4,6 @@ using EchoMage.Echoes;
 using EchoMage.Player;
 using UnityEngine;
 using System.Collections;
-using EchoMage.Loot;
-using EchoMage.Loot.Effects;
 
 namespace EchoMage.World
 {
@@ -85,7 +83,6 @@ namespace EchoMage.World
             // Mộ vẫn tồn tại — nhưng không cho tương tác nữa trong life này
         }
 
-        StatUpgradeData statUpgradeData = new();
         private void ChoosePowerBoost()
         {
             PlayerStats playerStats = GameManager.Instance.PlayerStats;

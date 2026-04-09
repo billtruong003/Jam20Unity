@@ -182,6 +182,15 @@ namespace EchoMage.Enemies
 
         protected abstract void Attack();
 
+        /// <summary>
+        /// [FIX] Cập nhật target khi player respawn.
+        /// GameManager gọi hàm này cho tất cả enemy đang sống sau khi player hồi sinh.
+        /// </summary>
+        public void UpdatePlayerTarget(Transform newTarget)
+        {
+            PlayerTarget = newTarget;
+        }
+
         private void ReturnToPool()
         {
             ObjectPoolManager.Instance.Despawn(gameObject);

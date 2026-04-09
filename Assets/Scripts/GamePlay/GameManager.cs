@@ -2,6 +2,7 @@ using EchoMage.Player;
 using EchoMage.UI;
 using EchoMage.World;
 using EchoMage.AI;
+using EchoMage.Enemies;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
@@ -94,6 +95,12 @@ namespace EchoMage.Core
             PlayerTransform = playerInstance.transform;
             PlayerStats = playerInstance.GetComponent<PlayerStats>();
             ResetAllGravesForNewLife();
+
+            // [FIX] Cập nhật player target cho TẤT CẢ enemy đang sống + boss
+            // Khi player chết → Destroy(player) → enemy._playerTarget = null → enemy đứng đơ
+            // Giờ khi respawn, gán lại target mới cho toàn bộ
+            UpdateAllEnemyTargets(PlayerTransform);
+
             OnPlayerSpawned?.Invoke(playerInstance);
 
             if (PauseManager.Instance != null)
@@ -102,20 +109,58 @@ namespace EchoMage.Core
             }
         }
 
+        /// <summary>
+        /// [FIX] Gán lại player target cho tất cả enemy thường + boss đang active.
+        /// Gọi khi player respawn để enemy không bị mất target.
+        /// </summary>
+        private void UpdateAllEnemyTargets(Transform newTarget)
+        {
+            // Cập nhật tất cả enemy thường (EnemyBase)
+            foreach (var enemyObj in _activeEnemies)
+            {
+                if (enemyObj != null && enemyObj.TryGetComponent<EnemyBase>(out var enemyBase))
+                {
+                    enemyBase.UpdatePlayerTarget(newTarget);
+                }
+            }
+
+            // Cập nhật boss nếu đang active
+            if (EnemySpawner != null && EnemySpawner.IsBossActive && EnemySpawner.CurrentBossInstance != null)
+            {
+                if (EnemySpawner.CurrentBossInstance.TryGetComponent<BossEnemy>(out var boss))
+                {
+                    boss.UpdatePlayerTarget(newTarget);
+                }
+            }
+        }
+
         public void HandlePlayerDeath(PlayerStats deadPlayerStats, Vector3 deathPosition)
         {
             PlayerTransform = null;
-            CreateEchoGrave(deadPlayerStats, deathPosition);
 
-            Time.timeScale = 0f;
-
-            // [FIX] Broadcast event trước khi cleanup — GhostCompanion nghe để tự hủy
+            // Broadcast event trước khi cleanup
             OnPlayerDied?.Invoke();
 
-            // [FIX] Dọn DẸP TOÀN BỘ: quái + ghost + loot + projectiles
+            // Ẩn boss HP bar TRƯỚC khi cleanup
+            UIManager.HideBossHealthBar();
+
+            // ═══ CLEANUP TRƯỚC ═══
+            // Phải dọn dẹp TRƯỚC khi tạo EchoGrave, vì CleanupTaggedObjects
+            // xoá tất cả object có tag "Pickup" — bao gồm cả EchoGrave nếu tạo trước
             CleanupAllEnemies();
             CleanupAllGhosts();
             CleanupTaggedObjects();
+
+            // ═══ TẠO ECHOGRAVE SAU CLEANUP ═══
+            // Giờ EchoGrave mới tạo sẽ không bị CleanupTaggedObjects xoá mất
+            try
+            {
+                CreateEchoGrave(deadPlayerStats, deathPosition);
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogWarning($"[GameManager] Lỗi tạo EchoGrave (game vẫn tiếp tục): {e.Message}");
+            }
 
             GameSessionManager.Instance.HandlePlayerDeath(DeathCause.HealthDepletion);
             UIManager.ShowContinueScreen();
@@ -132,6 +177,26 @@ namespace EchoMage.Core
             {
                 MusicManager.Instance.PlayGameplayMusic();
             }
+        }
+
+        /// <summary>
+        /// Player chọn bỏ cuộc ở màn hình Continue → chuyển sang Game Over hiện điểm.
+        /// Gắn vào nút "Give Up" / "Bỏ cuộc" trên continueScreen.
+        /// </summary>
+        public void GiveUp()
+        {
+            _isGameOver = true;
+            Time.timeScale = 0f;
+
+            UIManager.HideContinueScreen();
+
+            if (PauseManager.Instance != null)
+                PauseManager.Instance.SetGameOverState(true);
+
+            if (MusicManager.Instance != null)
+                MusicManager.Instance.PlayGameOverMusic();
+
+            UIManager.ShowGameOverScreen("You have fallen.");
         }
 
         private void CreateEchoGrave(PlayerStats stats, Vector3 position)
@@ -258,19 +323,33 @@ namespace EchoMage.Core
         {
             foreach (string tag in cleanupTags)
             {
-                GameObject[] objects = GameObject.FindGameObjectsWithTag(tag);
+                GameObject[] objects;
+                try
+                {
+                    objects = GameObject.FindGameObjectsWithTag(tag);
+                }
+                catch (UnityException)
+                {
+                    continue;
+                }
+
                 foreach (var obj in objects)
                 {
                     if (obj == null) continue;
 
-                    // Thử despawn qua pool trước (hiệu quả hơn Destroy)
+                    // [FIX] EchoGrave tồn tại vĩnh viễn (chỉ mất khi absorb) — KHÔNG xoá
+                    // GhostCompanion đã được CleanupAllGhosts() xử lý riêng — KHÔNG xoá ở đây
+                    if (obj.GetComponent<EchoMage.World.EchoGrave>() != null) continue;
+                    if (obj.GetComponent<EchoMage.AI.GhostCompanion>() != null) continue;
+
                     try
                     {
                         ObjectPoolManager.Instance.Despawn(obj);
                     }
-                    catch
+                    catch { }
+
+                    if (obj != null && obj.activeInHierarchy)
                     {
-                        // Không thuộc pool → Destroy thường
                         Destroy(obj);
                     }
                 }

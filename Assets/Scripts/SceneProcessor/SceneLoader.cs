@@ -32,6 +32,11 @@ namespace CleanCode.SceneManagement
         {
             if (isLoading) return;
 
+            // [FIX] Reset game state trước khi load — tránh scene mới bị đóng băng
+            // Game Over / Pause set timeScale = 0 → phải reset về 1 trước khi chuyển scene
+            Time.timeScale = 1f;
+            AudioListener.pause = false;
+
             ProcessLoadRequestAsync(request);
         }
 
@@ -39,33 +44,42 @@ namespace CleanCode.SceneManagement
         {
             isLoading = true;
 
-            if (request.FadeCanvasGroup != null)
+            try
             {
-                await Fade(request.FadeCanvasGroup, 1f, request.FadeDuration);
+                if (request.FadeCanvasGroup != null)
+                {
+                    await Fade(request.FadeCanvasGroup, 1f, request.FadeDuration);
+                }
+
+                AsyncOperation sceneLoadOperation = SceneManager.LoadSceneAsync(request.SceneName, request.LoadMode);
+                sceneLoadOperation.allowSceneActivation = false;
+
+                while (sceneLoadOperation.progress < 0.9f)
+                {
+                    await Task.Yield();
+                }
+
+                sceneLoadOperation.allowSceneActivation = true;
+
+                while (!sceneLoadOperation.isDone)
+                {
+                    await Task.Yield();
+                }
+
+                if (request.FadeCanvasGroup != null)
+                {
+                    await Fade(request.FadeCanvasGroup, 0f, request.FadeDuration);
+                }
             }
-
-            AsyncOperation sceneLoadOperation = SceneManager.LoadSceneAsync(request.SceneName, request.LoadMode);
-            sceneLoadOperation.allowSceneActivation = false;
-
-            while (sceneLoadOperation.progress < 0.9f)
+            catch (System.Exception e)
             {
-                await Task.Yield();
+                Debug.LogError($"[SceneLoader] Failed to load scene '{request.SceneName}': {e.Message}");
             }
-
-            sceneLoadOperation.allowSceneActivation = true;
-
-            // Wait for the scene activation to complete
-            while (!sceneLoadOperation.isDone)
+            finally
             {
-                await Task.Yield();
+                // [FIX] LUÔN reset isLoading — nếu không, mọi lần gọi sau đều bị reject
+                isLoading = false;
             }
-
-            if (request.FadeCanvasGroup != null)
-            {
-                await Fade(request.FadeCanvasGroup, 0f, request.FadeDuration);
-            }
-
-            isLoading = false;
         }
 
         private async Task Fade(CanvasGroup canvasGroup, float targetAlpha, float duration)
@@ -77,7 +91,8 @@ namespace CleanCode.SceneManagement
             while (time < duration)
             {
                 canvasGroup.alpha = Mathf.Lerp(startAlpha, targetAlpha, time / duration);
-                time += Time.deltaTime;
+                // [FIX] unscaledDeltaTime — fade chạy đúng kể cả khi timeScale vừa được reset
+                time += Time.unscaledDeltaTime;
                 await Task.Yield();
             }
 

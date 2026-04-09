@@ -22,7 +22,8 @@ namespace ModularTopDown.Locomotion
             IsRunning = Input.GetKey(KeyCode.LeftShift);
 
             // if (Input.GetButtonDown("Jump")) { JumpInput = true; jumpInputConsumed = false; }
-            if (Input.GetKeyDown(KeyCode.Z)) { DashInput = true; dashInputConsumed = false; }
+            if (Input.GetMouseButtonDown(1))
+            { DashInput = true; dashInputConsumed = false; }
         }
 
         public void ConsumeJumpInput() => jumpInputConsumed = true;

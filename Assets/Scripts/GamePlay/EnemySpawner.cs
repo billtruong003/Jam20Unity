@@ -27,20 +27,23 @@ namespace EchoMage.Spawning
         [SerializeField] private float _statMultiplierPerCycle = 1.2f;
 
         [Header("Boss Configuration")]
-        [SerializeField] private GameObject _bossPrefab;
-        [SerializeField] private float _bossSpawnTime = 600f;
+        [Tooltip("Danh sách boss prefabs — mỗi lần spawn sẽ random 1 con từ list này.")]
+        [SerializeField] private GameObject[] _bossPrefabs;
+        [Tooltip("Boss đầu tiên spawn sau bao nhiêu giây từ khi game bắt đầu.")]
+        [SerializeField] private float _bossFirstSpawnTime = 600f;
+        [Tooltip("Cứ mỗi bao nhiêu giây sẽ spawn thêm 1 boss (kể cả khi boss cũ còn sống).")]
+        [SerializeField] private float _bossSpawnInterval = 30f;
         [SerializeField] private Transform _bossSpawnPoint;
         [SerializeField] private int _bossKillScore = 500;
         [SerializeField] private float _bossDeathExplosionRadius = 25f;
-        [SerializeField] private float _bossRespawnDelay = 120f;
 
         private int _currentWaveIndex = 0;
         private int _endlessCycleCount = 1;
         private Coroutine _spawnCoroutine;
         private Coroutine _bossTimerCoroutine;
 
-        private GameObject _currentBossInstance;
-        private bool _bossIsActive = false;
+        // Boss mới nhất (cho UI HP bar). Nhiều boss có thể tồn tại cùng lúc.
+        private GameObject _latestBossInstance;
         private float _gameTimer = 0f;
         private bool _isSpawning = false;
         private int _activeEnemyCount = 0;
@@ -79,10 +82,9 @@ namespace EchoMage.Spawning
             _endlessCycleCount = 1;
             _gameTimer = 0f;
             _activeEnemyCount = 0;
-            _bossIsActive = false;
+            _latestBossInstance = null;
             _isSpawning = true;
 
-            // [MỚI] Start difficulty timer nếu có DifficultyManager
             if (DifficultyManager.Instance != null)
             {
                 DifficultyManager.Instance.StartDifficulty();
@@ -90,7 +92,7 @@ namespace EchoMage.Spawning
 
             StartNextWave();
 
-            if (_bossPrefab != null)
+            if (_bossPrefabs != null && _bossPrefabs.Length > 0)
             {
                 _bossTimerCoroutine = StartCoroutine(BossSpawnTimerRoutine());
             }
@@ -196,26 +198,56 @@ namespace EchoMage.Spawning
 
         #region Boss System
 
+        /// <summary>
+        /// Boss spawn theo interval liên tục:
+        /// 1. Đợi _bossFirstSpawnTime cho boss đầu tiên
+        /// 2. Spawn boss
+        /// 3. Đợi _bossSpawnInterval
+        /// 4. Spawn boss tiếp (dù con cũ còn sống) → quay lại bước 3
+        /// 
+        /// Nhiều boss tồn tại cùng lúc. Mỗi con tự quản lý death riêng.
+        /// Khi player chết → coroutine bị stop bởi ResetAndRestartWaves.
+        /// Khi respawn → coroutine mới chạy, đếm lại từ đầu.
+        /// </summary>
         private IEnumerator BossSpawnTimerRoutine()
         {
-            while (_gameTimer < _bossSpawnTime)
+            // Đợi boss đầu tiên
+            while (_gameTimer < _bossFirstSpawnTime)
             {
                 yield return new WaitForSeconds(1f);
             }
-            SpawnBoss();
+
+            // Loop vô hạn: spawn → đợi interval → spawn tiếp
+            while (true)
+            {
+                try
+                {
+                    SpawnBoss();
+                }
+                catch (System.Exception e)
+                {
+                    Debug.LogError($"[EnemySpawner] SpawnBoss failed: {e.Message}\n{e.StackTrace}");
+                }
+
+                // Đợi interval rồi spawn con tiếp — KHÔNG đợi con cũ chết
+                yield return new WaitForSeconds(_bossSpawnInterval);
+            }
         }
 
         private void SpawnBoss()
         {
-            if (_bossPrefab == null || _bossIsActive) return;
+            if (_bossPrefabs == null || _bossPrefabs.Length == 0) return;
+            if (GameManager.Instance == null || GameManager.Instance.PlayerTransform == null) return;
+
+            GameObject chosenBossPrefab = _bossPrefabs[UnityEngine.Random.Range(0, _bossPrefabs.Length)];
 
             Transform spawnPoint = _bossSpawnPoint != null
                 ? _bossSpawnPoint
                 : _spawnPoints[UnityEngine.Random.Range(0, _spawnPoints.Length)];
 
-            _currentBossInstance = ObjectPoolManager.Instance.Spawn(_bossPrefab, spawnPoint.position, spawnPoint.rotation);
+            GameObject bossInstance = ObjectPoolManager.Instance.Spawn(chosenBossPrefab, spawnPoint.position, spawnPoint.rotation);
 
-            if (_currentBossInstance.TryGetComponent<BossEnemy>(out var boss))
+            if (bossInstance != null && bossInstance.TryGetComponent<BossEnemy>(out var boss))
             {
                 float healthMult = DifficultyManager.Instance != null
                     ? DifficultyManager.Instance.EnemyHealthMultiplier
@@ -225,23 +257,39 @@ namespace EchoMage.Spawning
                 boss.OnBossDeath += HandleBossDeath;
             }
 
-            _bossIsActive = true;
-            OnBossSpawned?.Invoke();
+            // Track con mới nhất cho UI HP bar
+            _latestBossInstance = bossInstance;
+
+            try
+            {
+                OnBossSpawned?.Invoke();
+
+                if (bossInstance != null && bossInstance.TryGetComponent<BossEnemy>(out var bossForHP))
+                {
+                    bossForHP.BroadcastHealth();
+                }
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogWarning($"[EnemySpawner] Boss spawned nhưng event/UI lỗi: {e.Message}");
+            }
         }
 
         private void HandleBossDeath(BossEnemy boss)
         {
             boss.OnBossDeath -= HandleBossDeath;
-            _bossIsActive = false;
 
-            GameSessionManager.Instance.AddScore(_bossKillScore);
-            KillNearbyEnemies(boss.transform.position, _bossDeathExplosionRadius);
+            try
+            {
+                GameSessionManager.Instance.AddScore(_bossKillScore);
+                KillNearbyEnemies(boss.transform.position, _bossDeathExplosionRadius);
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogWarning($"[EnemySpawner] Lỗi trong HandleBossDeath: {e.Message}");
+            }
+
             OnBossKilled?.Invoke();
-
-            if (_bossTimerCoroutine != null)
-                StopCoroutine(_bossTimerCoroutine);
-
-            _bossTimerCoroutine = StartCoroutine(RespawnBossAfterDelay());
         }
 
         private void KillNearbyEnemies(Vector3 center, float radius)
@@ -251,20 +299,18 @@ namespace EchoMage.Spawning
 
             foreach (var col in colliders)
             {
-                if (col.gameObject == _currentBossInstance) continue;
                 if (col.TryGetComponent<EnemyBase>(out var enemy))
                 {
-                    ObjectPoolManager.Instance.Spawn("EnemyExplosionFX", col.transform.position, Quaternion.identity);
+                    try
+                    {
+                        ObjectPoolManager.Instance.Spawn("EnemyExplosionFX", col.transform.position, Quaternion.identity);
+                    }
+                    catch { }
+
                     enemy.ForceKill();
                     GameSessionManager.Instance.AddScore(explosionKillScore);
                 }
             }
-        }
-
-        private IEnumerator RespawnBossAfterDelay()
-        {
-            yield return new WaitForSeconds(_bossRespawnDelay);
-            SpawnBoss();
         }
 
         #endregion
@@ -276,7 +322,7 @@ namespace EchoMage.Spawning
             return false;
         }
 
-        public bool IsBossActive => _bossIsActive;
-        public GameObject CurrentBossInstance => _currentBossInstance;
+        public bool IsBossActive => _latestBossInstance != null && _latestBossInstance.activeInHierarchy;
+        public GameObject CurrentBossInstance => _latestBossInstance;
     }
 }

@@ -1,0 +1,528 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6170917656570886091
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6797490040037535231}
+  - component: {fileID: 710453599508897431}
+  - component: {fileID: 3372906811464857196}
+  - component: {fileID: 873822943235805923}
+  - component: {fileID: 682594656347336620}
+  - component: {fileID: 4471161967106809910}
+  - component: {fileID: 8701610792725291302}
+  m_Layer: 8
+  m_Name: Boss 1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6797490040037535231
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6170917656570886091}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -8.51726, y: 0, z: -25.88176}
+  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_ConstrainProportionsScale: 1
+  m_Children:
+  - {fileID: 8041833556327387913}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!195 &710453599508897431
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6170917656570886091}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
+--- !u!23 &3372906811464857196
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6170917656570886091}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: e56d3deb83587d949b353729a065e520, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &873822943235805923
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6170917656570886091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c2b9f90f11184ff8a33de834dcf035a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VAT_Animator
+  animationData: {fileID: 11400000, guid: 15ecca3b871d2b04f865952c71270566, type: 2}
+  playbackSpeed: 1
+  defaultClipIndex: 0
+  showAnimationBounds: 1
+--- !u!114 &682594656347336620
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6170917656570886091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15d857e7004d2e940ae007ac7c7067aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EchoMage.Enemies.BossEnemy
+  _maxHealth: 2000
+  _baseMoveSpeed: 2.5
+  _chaseRange: 30
+  _phases:
+  - PhaseName: Phase
+    HealthThreshold: 1
+    MoveSpeedMultiplier: 1
+    AttackSpeedMultiplier: 1
+    PhaseTransitionClip: 
+    TransitionDuration: 1.5
+    TransitionVFXId: 
+    AvailableCombos:
+    - ComboName: Basic Combo
+      Moves:
+      - AnimClip: Attack1
+        Damage: 30
+        HitRadius: 3
+        HitForwardOffset: 1.5
+        WindupTime: 0.3
+        RecoveryTime: 0.4
+        HitVFXId: 
+        LungeDistance: 0
+      - AnimClip: Attack2
+        Damage: 30
+        HitRadius: 3
+        HitForwardOffset: 1.5
+        WindupTime: 0.3
+        RecoveryTime: 0.4
+        HitVFXId: 
+        LungeDistance: 0
+      CooldownAfterCombo: 2
+      SelectionWeight: 5
+    - ComboName: Basic Combo
+      Moves:
+      - AnimClip: Attack1
+        Damage: 30
+        HitRadius: 3
+        HitForwardOffset: 1.5
+        WindupTime: 0.3
+        RecoveryTime: 0.4
+        HitVFXId: 
+        LungeDistance: 0
+      - AnimClip: Attack3
+        Damage: 30
+        HitRadius: 3
+        HitForwardOffset: 1.5
+        WindupTime: 0.3
+        RecoveryTime: 0.4
+        HitVFXId: 
+        LungeDistance: 0
+      CooldownAfterCombo: 2
+      SelectionWeight: 5
+    - ComboName: Basic Combo
+      Moves:
+      - AnimClip: Attack2
+        Damage: 30
+        HitRadius: 3
+        HitForwardOffset: 1.5
+        WindupTime: 0.3
+        RecoveryTime: 0.4
+        HitVFXId: 
+        LungeDistance: 0
+      - AnimClip: Attack3
+        Damage: 30
+        HitRadius: 3
+        HitForwardOffset: 1.5
+        WindupTime: 0.3
+        RecoveryTime: 0.4
+        HitVFXId: 
+        LungeDistance: 0
+      CooldownAfterCombo: 2
+      SelectionWeight: 5
+  - PhaseName: Phase
+    HealthThreshold: 0.5
+    MoveSpeedMultiplier: 1.5
+    AttackSpeedMultiplier: 2
+    PhaseTransitionClip: 
+    TransitionDuration: 0.5
+    TransitionVFXId: 
+    AvailableCombos:
+    - ComboName: Attack3
+      Moves:
+      - AnimClip: Attack1
+        Damage: 30
+        HitRadius: 3
+        HitForwardOffset: 1.5
+        WindupTime: 0.3
+        RecoveryTime: 0.4
+        HitVFXId: 
+        LungeDistance: 0
+      - AnimClip: Attack2
+        Damage: 30
+        HitRadius: 3
+        HitForwardOffset: 1.5
+        WindupTime: 0.3
+        RecoveryTime: 0.4
+        HitVFXId: 
+        LungeDistance: 0
+      - AnimClip: Attack3
+        Damage: 30
+        HitRadius: 3
+        HitForwardOffset: 1.5
+        WindupTime: 0.3
+        RecoveryTime: 0.4
+        HitVFXId: 
+        LungeDistance: 0
+      - AnimClip: Attack4
+        Damage: 30
+        HitRadius: 3
+        HitForwardOffset: 1.5
+        WindupTime: 0.3
+        RecoveryTime: 0.4
+        HitVFXId: 
+        LungeDistance: 0
+      - AnimClip: Attack5
+        Damage: 30
+        HitRadius: 3
+        HitForwardOffset: 1.5
+        WindupTime: 0.3
+        RecoveryTime: 0.4
+        HitVFXId: 
+        LungeDistance: 0
+      - AnimClip: Attack6
+        Damage: 30
+        HitRadius: 3
+        HitForwardOffset: 1.5
+        WindupTime: 0.3
+        RecoveryTime: 0.4
+        HitVFXId: 
+        LungeDistance: 0
+      CooldownAfterCombo: 2
+      SelectionWeight: 5
+    - ComboName: Basic Combo
+      Moves:
+      - AnimClip: Attack4
+        Damage: 30
+        HitRadius: 3
+        HitForwardOffset: 1.5
+        WindupTime: 0.3
+        RecoveryTime: 0.4
+        HitVFXId: 
+        LungeDistance: 0
+      - AnimClip: Attack5
+        Damage: 30
+        HitRadius: 3
+        HitForwardOffset: 1.5
+        WindupTime: 0.3
+        RecoveryTime: 0.4
+        HitVFXId: 
+        LungeDistance: 0
+      - AnimClip: Attack6
+        Damage: 30
+        HitRadius: 3
+        HitForwardOffset: 1.5
+        WindupTime: 0.3
+        RecoveryTime: 0.4
+        HitVFXId: 
+        LungeDistance: 0
+      CooldownAfterCombo: 2
+      SelectionWeight: 5
+    - ComboName: Basic Combo
+      Moves:
+      - AnimClip: Attack2
+        Damage: 30
+        HitRadius: 3
+        HitForwardOffset: 1.5
+        WindupTime: 0.3
+        RecoveryTime: 0.4
+        HitVFXId: 
+        LungeDistance: 0
+      - AnimClip: Attack4
+        Damage: 30
+        HitRadius: 3
+        HitForwardOffset: 1.5
+        WindupTime: 0.3
+        RecoveryTime: 0.4
+        HitVFXId: 
+        LungeDistance: 0
+      - AnimClip: Attack6
+        Damage: 30
+        HitRadius: 3
+        HitForwardOffset: 1.5
+        WindupTime: 0.3
+        RecoveryTime: 0.4
+        HitVFXId: 
+        LungeDistance: 0
+      CooldownAfterCombo: 2
+      SelectionWeight: 5
+    - ComboName: Basic Combo
+      Moves:
+      - AnimClip: Attack1
+        Damage: 30
+        HitRadius: 3
+        HitForwardOffset: 1.5
+        WindupTime: 0.3
+        RecoveryTime: 0.4
+        HitVFXId: 
+        LungeDistance: 0
+      - AnimClip: Attack3
+        Damage: 30
+        HitRadius: 3
+        HitForwardOffset: 1.5
+        WindupTime: 0.3
+        RecoveryTime: 0.4
+        HitVFXId: 
+        LungeDistance: 0
+      - AnimClip: Attack5
+        Damage: 30
+        HitRadius: 3
+        HitForwardOffset: 1.5
+        WindupTime: 0.3
+        RecoveryTime: 0.4
+        HitVFXId: 
+        LungeDistance: 0
+      CooldownAfterCombo: 2
+      SelectionWeight: 5
+    - ComboName: Basic Combo
+      Moves:
+      - AnimClip: Attack1
+        Damage: 30
+        HitRadius: 3
+        HitForwardOffset: 1.5
+        WindupTime: 0.3
+        RecoveryTime: 0.4
+        HitVFXId: 
+        LungeDistance: 0
+      - AnimClip: Attack4
+        Damage: 30
+        HitRadius: 3
+        HitForwardOffset: 1.5
+        WindupTime: 0.3
+        RecoveryTime: 0.4
+        HitVFXId: 
+        LungeDistance: 0
+      - AnimClip: Attack5
+        Damage: 30
+        HitRadius: 3
+        HitForwardOffset: 1.5
+        WindupTime: 0.3
+        RecoveryTime: 0.4
+        HitVFXId: 
+        LungeDistance: 0
+      CooldownAfterCombo: 2
+      SelectionWeight: 5
+    - ComboName: Basic Combo
+      Moves:
+      - AnimClip: Attack2
+        Damage: 30
+        HitRadius: 3
+        HitForwardOffset: 1.5
+        WindupTime: 0.3
+        RecoveryTime: 0.4
+        HitVFXId: 
+        LungeDistance: 0
+      - AnimClip: Attack1
+        Damage: 30
+        HitRadius: 3
+        HitForwardOffset: 1.5
+        WindupTime: 0.3
+        RecoveryTime: 0.4
+        HitVFXId: 
+        LungeDistance: 0
+      - AnimClip: Attack6
+        Damage: 30
+        HitRadius: 3
+        HitForwardOffset: 1.5
+        WindupTime: 0.3
+        RecoveryTime: 0.4
+        HitVFXId: 
+        LungeDistance: 0
+      CooldownAfterCombo: 2
+      SelectionWeight: 5
+  _attackRange: 3
+  _playerLayerMask:
+    serializedVersion: 2
+    m_Bits: 8
+  _idleClip: Idle
+  _moveClip: Move
+  _hitClip: Hit
+  _deathClip: Die
+  _deathExplosionFXId: BossDeathExplosion
+  _randomAlbedoTextures: []
+  _albedoPropertyName: _MainTex
+--- !u!33 &4471161967106809910
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6170917656570886091}
+  m_Mesh: {fileID: -5204071817200651584, guid: 15ecca3b871d2b04f865952c71270566, type: 2}
+--- !u!65 &8701610792725291302
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6170917656570886091}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.5, y: 2, z: 1.5}
+  m_Center: {x: 0, y: 1, z: 0}
+--- !u!1001 &8041833556327187347
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 6797490040037535231}
+    m_Modifications:
+    - target: {fileID: 107380, guid: ede42a52a2caa594dbc67cd13f591f5a, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 184392, guid: ede42a52a2caa594dbc67cd13f591f5a, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 193686, guid: ede42a52a2caa594dbc67cd13f591f5a, type: 3}
+      propertyPath: m_Name
+      value: FireFloorTrail
+      objectReference: {fileID: 0}
+    - target: {fileID: 193686, guid: ede42a52a2caa594dbc67cd13f591f5a, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 198048, guid: ede42a52a2caa594dbc67cd13f591f5a, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 463002, guid: ede42a52a2caa594dbc67cd13f591f5a, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 463002, guid: ede42a52a2caa594dbc67cd13f591f5a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 463002, guid: ede42a52a2caa594dbc67cd13f591f5a, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 463002, guid: ede42a52a2caa594dbc67cd13f591f5a, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 463002, guid: ede42a52a2caa594dbc67cd13f591f5a, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 463002, guid: ede42a52a2caa594dbc67cd13f591f5a, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 463002, guid: ede42a52a2caa594dbc67cd13f591f5a, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 463002, guid: ede42a52a2caa594dbc67cd13f591f5a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 463002, guid: ede42a52a2caa594dbc67cd13f591f5a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 463002, guid: ede42a52a2caa594dbc67cd13f591f5a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ede42a52a2caa594dbc67cd13f591f5a, type: 3}
+--- !u!4 &8041833556327387913 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 463002, guid: ede42a52a2caa594dbc67cd13f591f5a, type: 3}
+  m_PrefabInstance: {fileID: 8041833556327187347}
+  m_PrefabAsset: {fileID: 0}

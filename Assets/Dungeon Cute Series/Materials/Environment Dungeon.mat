@@ -68,7 +68,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissionMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: b8aecaf10b1a42d4a8b121d4aa2d291f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _HologramPatternTex:
@@ -276,7 +276,7 @@ Material:
     - _DissolveDirection: {r: 0, g: 1, b: 0, a: 0}
     - _DissolveEdgeColor: {r: 1, g: 0.5, b: 0, a: 1}
     - _DitherEdgeColor: {r: 0.5, g: 0.8, b: 1, a: 1}
-    - _EmissionColor: {r: 0.003921569, g: 0, b: 0.007843138, a: 1}
+    - _EmissionColor: {r: 0.26415098, g: 0.26415098, b: 0.26415098, a: 1}
     - _EpicColor1: {r: 1, g: 0.5, b: 0, a: 1}
     - _EpicColor2: {r: 1, g: 1, b: 0, a: 1}
     - _FakeLightColor: {r: 0.8, g: 0.8, b: 0.8, a: 1}

@@ -42,6 +42,12 @@ namespace EchoMage.Core
         // AudioSource RIÊNG của MusicManager — không phụ thuộc SoundManager
         private AudioSource _musicSource;
         private float _musicVolume = 1f;
+        private bool _musicEnabled = true;
+
+        // [MỚI] SFX settings — lưu ở MusicManager vì nó sống xuyên scene
+        // SoundManager ở play scene sẽ đọc từ đây trong Start()
+        private float _sfxVolume = 1f;
+        private bool _sfxEnabled = true;
 
         private int _currentTrackIndex = -1;
         private Coroutine _playlistCoroutine;
@@ -65,9 +71,15 @@ namespace EchoMage.Core
             _musicSource.spatialBlend = 0f; // 2D — nhạc nền không cần 3D
             _musicSource.priority = 0;       // Ưu tiên cao nhất
 
-            // Load volume đã lưu từ PlayerPrefs (nếu SettingsManager chưa init)
+            // Load volume đã lưu từ PlayerPrefs
             _musicVolume = PlayerPrefs.GetFloat("Settings_MusicVolume", 1f);
-            _musicSource.volume = _musicVolume;
+            _musicEnabled = PlayerPrefs.GetInt("Settings_MusicEnabled", 1) == 1;
+            _musicSource.volume = _musicEnabled ? _musicVolume : 0f;
+
+            // [MỚI] Load SFX settings
+            _sfxVolume = PlayerPrefs.GetFloat("Settings_SFXVolume", 1f);
+            _sfxEnabled = PlayerPrefs.GetInt("Settings_SFXEnabled", 1) == 1;
+
             PlayMenuMusic();
         }
 
@@ -140,19 +152,88 @@ namespace EchoMage.Core
         }
 
         /// <summary>
-        /// Được gọi bởi SettingsManager khi user thay đổi music volume.
-        /// KHÔNG gọi qua SoundManager nữa — MusicManager tự quản lý volume riêng.
+        /// Set music volume (0-1). Lưu PlayerPrefs.
+        /// Nếu music đang tắt (mute), volume vẫn được lưu nhưng không apply lên AudioSource.
         /// </summary>
         public void SetVolume(float volume)
         {
             _musicVolume = Mathf.Clamp01(volume);
+            PlayerPrefs.SetFloat("Settings_MusicVolume", _musicVolume);
+
             if (_musicSource != null)
             {
-                _musicSource.volume = _musicVolume;
+                _musicSource.volume = _musicEnabled ? _musicVolume : 0f;
             }
         }
 
         public float GetVolume() => _musicVolume;
+
+        /// <summary>
+        /// Bật/tắt Music. Dùng cho toggle mute trong Settings UI.
+        /// Khi tắt → volume AudioSource = 0 (nhạc vẫn play, chỉ mute).
+        /// Khi bật lại → khôi phục volume đã lưu trước đó.
+        /// </summary>
+        public void SetMusicEnabled(bool enabled)
+        {
+            _musicEnabled = enabled;
+            PlayerPrefs.SetInt("Settings_MusicEnabled", enabled ? 1 : 0);
+
+            if (_musicSource != null)
+            {
+                _musicSource.volume = enabled ? _musicVolume : 0f;
+            }
+        }
+
+        /// <summary>
+        /// Music đang bật hay tắt? Dùng cho toggle UI binding.
+        /// </summary>
+        public bool IsMusicEnabled() => _musicEnabled;
+
+        // ─────────────────── SFX Settings API ───────────────────
+        // MusicManager giữ SFX settings vì nó sống xuyên scene (DontDestroyOnLoad).
+        // SoundManager (ở play scene) sẽ đọc từ đây trong Start().
+
+        /// <summary>
+        /// Set SFX volume (0-1). Lưu PlayerPrefs luôn.
+        /// SoundManager đang active sẽ được cập nhật ngay lập tức.
+        /// </summary>
+        public void SetSfxVolume(float volume)
+        {
+            _sfxVolume = Mathf.Clamp01(volume);
+            PlayerPrefs.SetFloat("Settings_SFXVolume", _sfxVolume);
+
+            // Cập nhật SoundManager nếu đang tồn tại trong scene hiện tại
+            if (SoundManager.Instance != null)
+            {
+                SoundManager.Instance.SetSFXVolume(_sfxVolume);
+            }
+        }
+
+        /// <summary>
+        /// Lấy SFX volume hiện tại (0-1).
+        /// </summary>
+        public float GetSfxVolume() => _sfxVolume;
+
+        /// <summary>
+        /// Bật/tắt SFX. Dùng cho toggle button trong Settings UI.
+        /// Lưu PlayerPrefs luôn.
+        /// </summary>
+        public void SetSfxEnabled(bool enabled)
+        {
+            _sfxEnabled = enabled;
+            PlayerPrefs.SetInt("Settings_SFXEnabled", enabled ? 1 : 0);
+
+            // Cập nhật SoundManager nếu đang tồn tại
+            if (SoundManager.Instance != null)
+            {
+                SoundManager.Instance.SetSFXVolume(enabled ? _sfxVolume : 0f);
+            }
+        }
+
+        /// <summary>
+        /// SFX đang bật hay tắt? Dùng cho toggle UI binding.
+        /// </summary>
+        public bool IsSfxEnabled() => _sfxEnabled;
 
         #endregion
 
@@ -172,7 +253,7 @@ namespace EchoMage.Core
             {
                 _musicSource.clip = clip;
                 _musicSource.loop = loop;
-                _musicSource.volume = _musicVolume;
+                _musicSource.volume = _musicEnabled ? _musicVolume : 0f;
                 _musicSource.Play();
             }
 

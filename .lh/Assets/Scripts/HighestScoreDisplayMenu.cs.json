@@ -1,0 +1,38 @@
+{
+    "sourceFile": "Assets/Scripts/HighestScoreDisplayMenu.cs",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 5,
+            "patches": [
+                {
+                    "date": 1775662835044,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1775662841930,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,15 @@\n+using UnityEngine;\r\n+\r\n+public class HighestScoreDisplayMenu : MonoBehaviour\r\n+{\r\n+\r\n+    void Start()\r\n+    {    \r\n+    }\r\n+\r\n+    // Update is called once per frame\r\n+    void Update()\r\n+    {\r\n+        \r\n+    }\r\n+}\r\n"
+                },
+                {
+                    "date": 1775662848135,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,27 +1,14 @@\n using UnityEngine;\r\n \r\n public class HighestScoreDisplayMenu : MonoBehaviour\r\n {\r\n-\r\n-    void Start()\r\n-    {    \r\n-    }\r\n-\r\n-    // Update is called once per frame\r\n-    void Update()\r\n+    private void Awake()\r\n     {\r\n         \r\n     }\r\n-}\r\n-using UnityEngine;\r\n-\r\n-public class HighestScoreDisplayMenu : MonoBehaviour\r\n-{\r\n-    \r\n     void Start()\r\n-    {\r\n-        \r\n+    {    \r\n     }\r\n \r\n     // Update is called once per frame\r\n     void Update()\r\n"
+                },
+                {
+                    "date": 1775662857210,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,11 +1,12 @@\n+using TMPro;\r\n using UnityEngine;\r\n \r\n public class HighestScoreDisplayMenu : MonoBehaviour\r\n {\r\n     private void Awake()\r\n     {\r\n-        \r\n+        TextMeshProUGUI textComponent = GetComponent<TextMeshProUGUI>();\r\n     }\r\n     void Start()\r\n     {    \r\n     }\r\n"
+                },
+                {
+                    "date": 1775662886889,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,4 +1,5 @@\n+using EchoMage.Core;\r\n using TMPro;\r\n using UnityEngine;\r\n \r\n public class HighestScoreDisplayMenu : MonoBehaviour\r\n@@ -7,9 +8,9 @@\n     {\r\n         TextMeshProUGUI textComponent = GetComponent<TextMeshProUGUI>();\r\n         if (textComponent != null)\r\n         {\r\n-            int highestScore = PlayerPrefs.GetInt(\"HighestScore\", 0);\r\n+            int highestScore = GameSessionManager.Instance.HighestScore;\r\n             textComponent.text = $\"Highest Score: {highestScore}\";\r\n         }\r\n         else\r\n         {\r\n"
+                },
+                {
+                    "date": 1775662901101,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -16,14 +16,5 @@\n         {\r\n             Debug.LogError(\"TextMeshProUGUI component not found on HighestScoreDisplayMenu.\");\r\n         }\r\n     }\r\n-    void Start()\r\n-    {\r\n-    }\r\n-\r\n-    // Update is called once per frame\r\n-    void Update()\r\n-    {\r\n-\r\n-    }\r\n }\r\n"
+                }
+            ],
+            "date": 1775662835044,
+            "name": "Commit-0",
+            "content": "using UnityEngine;\r\n\r\npublic class HighestScoreDisplayMenu : MonoBehaviour\r\n{\r\n    \r\n    void Start()\r\n    {\r\n        \r\n    }\r\n\r\n    // Update is called once per frame\r\n    void Update()\r\n    {\r\n        \r\n    }\r\n}\r\n"
+        }
+    ]
+}
