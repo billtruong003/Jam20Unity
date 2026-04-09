@@ -1,0 +1,18 @@
+{
+    "sourceFile": "Assets/Scripts/GamePlay/GamePlayUI.cs",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1775757849457,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1775757849457,
+            "name": "Commit-0",
+            "content": "using UnityEngine;\r\nusing TMPro;\r\nusing EchoMage.Core;\r\n\r\nnamespace EchoMage.UI\r\n{\r\n    public class GamePlayUI : MonoBehaviour\r\n    {\r\n        [SerializeField] private TextMeshProUGUI currentScoreText;\r\n        [SerializeField] private TextMeshProUGUI highestScoreText;\r\n        [SerializeField] private string scoreFormat = \"Score: {0}\";\r\n        [SerializeField] private string highestScoreFormat = \"Best: {0}\";\r\n\r\n        private void Start()\r\n        {\r\n            // [FIX] Tự pull giá trị ban đầu từ GameSessionManager\r\n            // UIManager fire event trong Awake/Start TRƯỚC khi GamePlayUI sẵn sàng\r\n            // → UI hiện stale/0 cho đến khi có event mới\r\n            if (GameSessionManager.Instance != null)\r\n            {\r\n                SetCurrentScore(GameSessionManager.Instance.CurrentScore);\r\n                SetHighestScore(GameSessionManager.Instance.HighestScore);\r\n            }\r\n        }\r\n\r\n        public void SetCurrentScore(int score)\r\n        {\r\n            if (currentScoreText != null)\r\n                currentScoreText.text = string.Format(scoreFormat, score);\r\n        }\r\n\r\n        public void SetHighestScore(int score)\r\n        {\r\n            if (highestScoreText != null)\r\n                highestScoreText.text = string.Format(highestScoreFormat, score);\r\n        }\r\n    }\r\n}"
+        }
+    ]
+}

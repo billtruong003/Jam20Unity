@@ -158,6 +158,27 @@ public sealed class AfterImageController : MonoBehaviour
     public void SetRoot(GameObject root) => sourceCharacterRoot = root;
     public void SetOrigin(Transform origin) => afterImageOrigin = origin;
 
+    /// <summary>
+    /// [FIX] Gán lại mesh root khi player respawn (player cũ bị Destroy, player mới Instantiate).
+    /// Gọi bởi GameManager.NotifyPlayerSpawned().
+    /// </summary>
+    public void Reinitialize(GameObject newRoot, Transform newOrigin)
+    {
+        // Cleanup state cũ
+        DeactivateAllImages();
+        _isInitialized = false;
+
+        // Gán source mới
+        sourceCharacterRoot = newRoot;
+        afterImageOrigin = newOrigin;
+
+        // Re-enable nếu bị disable bởi ValidateSetup lần trước
+        enabled = true;
+
+        // Re-init pool + collect renderers từ source mới
+        Initialize();
+    }
+
     private void Start()
     {
         Initialize();

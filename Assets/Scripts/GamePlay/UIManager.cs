@@ -110,6 +110,15 @@ namespace EchoMage.UI
             {
                 despairSystem.InitializeDespair();
             }
+
+            // [FIX] Khởi tạo hiển thị điểm ban đầu
+            // GameSessionManager fire events trong Awake/Start TRƯỚC khi UIManager subscribe
+            // → UI miss hết giá trị ban đầu → current score hiện sai, highest score hiện 0
+            if (GameSessionManager.Instance != null)
+            {
+                UpdateScoreDisplay(GameSessionManager.Instance.CurrentScore);
+                UpdateHighestScoreDisplay(GameSessionManager.Instance.HighestScore);
+            }
         }
 
         #region Player Health

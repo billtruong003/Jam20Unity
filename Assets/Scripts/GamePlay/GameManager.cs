@@ -37,6 +37,8 @@ namespace EchoMage.Core
 
         [Header("Echo System")]
         [SerializeField] private GameObject echoGravePrefab;
+        [Tooltip("Pool ID của particle effect khi GhostCompanion biến mất (player chết).")]
+        [SerializeField] private string ghostExplosionVFXId = "ExplosionGhostCompanion";
 
         [Header("Cleanup Tags")]
         [Tooltip("Các tag sẽ bị dọn khi player chết (loot drops, projectiles, v.v.)")]
@@ -96,10 +98,15 @@ namespace EchoMage.Core
             PlayerStats = playerInstance.GetComponent<PlayerStats>();
             ResetAllGravesForNewLife();
 
-            // [FIX] Cập nhật player target cho TẤT CẢ enemy đang sống + boss
-            // Khi player chết → Destroy(player) → enemy._playerTarget = null → enemy đứng đơ
-            // Giờ khi respawn, gán lại target mới cho toàn bộ
             UpdateAllEnemyTargets(PlayerTransform);
+
+            // [FIX] Gán lại mesh root cho AfterImageController
+            // Player cũ bị Destroy → sourceCharacterRoot = null → AfterImage vô hiệu hoá
+            // Player mới Instantiate → cần gán lại root + origin
+            if (AfterImageController != null)
+            {
+                AfterImageController.Reinitialize(playerInstance, playerInstance.transform);
+            }
 
             OnPlayerSpawned?.Invoke(playerInstance);
 
@@ -138,31 +145,68 @@ namespace EchoMage.Core
         {
             PlayerTransform = null;
 
-            // Broadcast event trước khi cleanup
-            OnPlayerDied?.Invoke();
+            // try-finally: ShowContinueScreen LUÔN chạy dù bất kỳ bước nào crash
+            try
+            {
+                OnPlayerDied?.Invoke();
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogWarning($"[GameManager] OnPlayerDied listener lỗi: {e.Message}");
+            }
 
-            // Ẩn boss HP bar TRƯỚC khi cleanup
-            UIManager.HideBossHealthBar();
+            try
+            {
+                UIManager.HideBossHealthBar();
+            }
+            catch { }
 
-            // ═══ CLEANUP TRƯỚC ═══
-            // Phải dọn dẹp TRƯỚC khi tạo EchoGrave, vì CleanupTaggedObjects
-            // xoá tất cả object có tag "Pickup" — bao gồm cả EchoGrave nếu tạo trước
-            CleanupAllEnemies();
-            CleanupAllGhosts();
-            CleanupTaggedObjects();
+            try
+            {
+                CleanupAllEnemies();
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogWarning($"[GameManager] CleanupAllEnemies lỗi: {e.Message}");
+            }
 
-            // ═══ TẠO ECHOGRAVE SAU CLEANUP ═══
-            // Giờ EchoGrave mới tạo sẽ không bị CleanupTaggedObjects xoá mất
+            try
+            {
+                CleanupAllGhosts();
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogWarning($"[GameManager] CleanupAllGhosts lỗi: {e.Message}");
+            }
+
+            try
+            {
+                CleanupTaggedObjects();
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogWarning($"[GameManager] CleanupTaggedObjects lỗi: {e.Message}");
+            }
+
             try
             {
                 CreateEchoGrave(deadPlayerStats, deathPosition);
             }
             catch (System.Exception e)
             {
-                Debug.LogWarning($"[GameManager] Lỗi tạo EchoGrave (game vẫn tiếp tục): {e.Message}");
+                Debug.LogWarning($"[GameManager] CreateEchoGrave lỗi: {e.Message}");
             }
 
-            GameSessionManager.Instance.HandlePlayerDeath(DeathCause.HealthDepletion);
+            try
+            {
+                GameSessionManager.Instance.HandlePlayerDeath(DeathCause.HealthDepletion);
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogWarning($"[GameManager] GameSessionManager lỗi: {e.Message}");
+            }
+
+            // ĐẢM BẢO LUÔN HIỆN UI — dù tất cả ở trên crash
             UIManager.ShowContinueScreen();
         }
 
@@ -170,6 +214,13 @@ namespace EchoMage.Core
         {
             Time.timeScale = 1f;
             UIManager.HideContinueScreen();
+
+            // [FIX] Reset điểm về 0 khi chơi lại
+            if (GameSessionManager.Instance != null)
+            {
+                GameSessionManager.Instance.ResetCurrentScore();
+            }
+
             EnemySpawner.ResetAndRestartWaves();
             PlayerSpawner.RequestRespawn();
 
@@ -275,7 +326,8 @@ namespace EchoMage.Core
         }
 
         /// <summary>
-        /// [MỚI] Hủy tất cả GhostCompanion khi player chết.
+        /// Hủy tất cả GhostCompanion khi player chết.
+        /// Spawn particle VFX tại vị trí mỗi ghost trước khi destroy.
         /// </summary>
         private void CleanupAllGhosts()
         {
@@ -283,6 +335,20 @@ namespace EchoMage.Core
             {
                 if (ghost != null && ghost.gameObject != null)
                 {
+                    // [FIX] Spawn explosion VFX tại vị trí ghost trước khi hủy
+                    if (!string.IsNullOrEmpty(ghostExplosionVFXId))
+                    {
+                        try
+                        {
+                            ObjectPoolManager.Instance.Spawn(
+                                ghostExplosionVFXId,
+                                ghost.transform.position,
+                                Quaternion.identity
+                            );
+                        }
+                        catch { }
+                    }
+
                     Destroy(ghost.gameObject);
                 }
             }

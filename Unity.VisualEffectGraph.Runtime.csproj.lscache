@@ -401,9 +401,7 @@ Library/PackageCache/
 Temp/bin/Debug/
  Unity.InputSystem.dll
  Unity.Timeline.dll
- UnityEditor.TestRunner.dll
  UnityEditor.UI.dll
- UnityEngine.TestRunner.dll
  UnityEngine.UI.dll
 
 [analyzerReferences]

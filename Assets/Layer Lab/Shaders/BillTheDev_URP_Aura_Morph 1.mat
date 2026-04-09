@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: BillTheDev_URP_Aura_Morph
+  m_Name: BillTheDev_URP_Aura_Morph 1
   m_Shader: {fileID: 4800000, guid: f54859d7c50dced49b009c89ee21e0b5, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -24,23 +24,23 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _NoiseTex:
-        m_Texture: {fileID: 2800000, guid: 107583a1205f435408de53c0eed94464, type: 3}
+        m_Texture: {fileID: 2800000, guid: 0aee21c781d42df4eac85e738951fcf6, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
     - _CutoffHeight: 1
-    - _DisplacementStrength: 0.2
-    - _FlowSpeedX: 1
-    - _FlowSpeedY: 1
+    - _DisplacementStrength: 0.15
+    - _FlowSpeedX: 0.2
+    - _FlowSpeedY: 0.5
     - _NoiseScale: 2
-    - _OutlineWidth: 0.25
-    - _RimPower: 0.33
-    - _RimSharpness: 5.57
-    - _VerticalRise: 0
+    - _OutlineWidth: 0.024
+    - _RimPower: 0.92
+    - _RimSharpness: 2.92
+    - _VerticalRise: 0.5
     - _ZOffset: 1
     m_Colors:
-    - _CoreColor: {r: 0.046059404, g: 0, b: 5.992157, a: 0}
-    - _RimColor: {r: 1.6313716, g: 0, b: 23.968628, a: 0.5686275}
+    - _CoreColor: {r: 0, g: 5.6003976, b: 5.992157, a: 0}
+    - _RimColor: {r: 0, g: 0.17726193, b: 0.7490197, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

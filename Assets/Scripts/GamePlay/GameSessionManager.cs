@@ -77,6 +77,17 @@ namespace EchoMage.Core
             CurrentScore = 0;
             _sessionStartTime = Time.time;
             OnScoreUpdated?.Invoke(CurrentScore);
+            OnHighestScoreUpdated?.Invoke(HighestScore);
+        }
+
+        /// <summary>
+        /// Reset điểm về 0 khi player chọn Continue sau khi chết.
+        /// Khác StartNewGame ở chỗ không reset session timer.
+        /// </summary>
+        public void ResetCurrentScore()
+        {
+            CurrentScore = 0;
+            OnScoreUpdated?.Invoke(CurrentScore);
         }
 
         public void AddScore(int points)

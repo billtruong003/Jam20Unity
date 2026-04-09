@@ -3,11 +3,15 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 0,
+            "activePatchIndex": 1,
             "patches": [
                 {
                     "date": 1775662685630,
                     "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1775757735437,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -76,10 +76,21 @@\n         {\r\n             CurrentScore = 0;\r\n             _sessionStartTime = Time.time;\r\n             OnScoreUpdated?.Invoke(CurrentScore);\r\n+            OnHighestScoreUpdated?.Invoke(HighestScore);\r\n         }\r\n \r\n+        /// <summary>\r\n+        /// Reset điểm về 0 khi player chọn Continue sau khi chết.\r\n+        /// Khác StartNewGame ở chỗ không reset session timer.\r\n+        /// </summary>\r\n+        public void ResetCurrentScore()\r\n+        {\r\n+            CurrentScore = 0;\r\n+            OnScoreUpdated?.Invoke(CurrentScore);\r\n+        }\r\n+\r\n         public void AddScore(int points)\r\n         {\r\n             if (points <= 0) return;\r\n             CurrentScore += points;\r\n"
                 }
             ],
             "date": 1775662685630,

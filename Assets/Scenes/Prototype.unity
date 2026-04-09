@@ -12217,6 +12217,11 @@ MonoBehaviour:
     PreloadCount: 5
     AllowGrowth: 1
     MaxSize: 0
+  - Id: EchoGraveSummonFX
+    Prefab: {fileID: 120316, guid: ba31194ef34f22e49a0a0b1f178dc13c, type: 3}
+    PreloadCount: 5
+    AllowGrowth: 1
+    MaxSize: 0
 --- !u!4 &1244239955
 Transform:
   m_ObjectHideFlags: 0
@@ -12289,6 +12294,7 @@ MonoBehaviour:
   EnemySpawner: {fileID: 1244239956}
   WorldThreatLevel: 1
   echoGravePrefab: {fileID: 1033397734755971260, guid: 20042a7960bccab4b926b3feb81c67bd, type: 3}
+  ghostExplosionVFXId: ExplosionGhostCompanion
   cleanupTags:
   - IgnoreProjectile
   - Target
